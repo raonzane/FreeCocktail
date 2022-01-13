@@ -20,7 +20,7 @@
 <img alt="TypeScript" src ="https://img.shields.io/badge/TypeScript-3178C6.svg?&style=for-the-badge&logo=TypeScript&logoColor=fff"/> <img alt="Node.js" src ="https://img.shields.io/badge/Node.js-339933.svg?&style=for-the-badge&logo=Node.js&logoColor=fff"/>
 <img alt="Express" src ="https://img.shields.io/badge/Express-000000.svg?&style=for-the-badge&logo=Express&logoColor=fff"/>
 <img alt="PostgreSQL" src ="https://img.shields.io/badge/PostgreSQL-4169E1.svg?&style=for-the-badge&logo=PostgreSQL&logoColor=fff"/>
-<img alt="typeORM" src ="https://img.shields.io/badge/typeORM-C9284D.svg?&style=for-the-badge&logo=typeORM&logoColor=fff"/>
+<img alt="Sequelize" src ="https://img.shields.io/badge/Sequelize-3178C6.svg?&style=for-the-badge&logo=Sequelize&logoColor=#52B0E7"/>
 <img alt="JSON Web Tokens" src ="https://img.shields.io/badge/JSON Web Tokens-000000.svg?&style=for-the-badge&logo=JSON Web Tokens&logoColor=fff"/>
 
 
