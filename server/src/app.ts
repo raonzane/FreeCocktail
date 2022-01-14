@@ -2,7 +2,6 @@ import * as express from 'express';
 import * as cors from 'cors';
 import * as cookieParser from 'cookie-parser';
 import 'dotenv/config';
-import { dbConfig } from './models';
 
 const app = express();
 
