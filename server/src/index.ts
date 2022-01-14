@@ -1,9 +1,20 @@
+import 'dotenv/config';
 import * as express from 'express';
 import * as cors from 'cors';
 import * as cookieParser from 'cookie-parser';
-import 'dotenv/config';
+
+import { createConnection } from 'typeorm';
+import { config } from '../ormconfig';
 
 const app = express();
+
+createConnection(config)
+  .then(() => {
+    console.log('DB CONNECTION!');
+  })
+  .catch((error) => {
+    console.log(error);
+  });
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
