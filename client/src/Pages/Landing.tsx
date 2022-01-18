@@ -5,5 +5,3 @@ const Landing = () => {
 };
 
 export default Landing;
-
-export {};
