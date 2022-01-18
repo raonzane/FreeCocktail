@@ -1,11 +1,7 @@
-!import React from 'react'
+import React from 'react';
 
-const RecipeList = () => {
-  return (
-    <div>
-      
-    </div>
-  )
-}
+const RecipeList = function RecipeList() {
+  return <div>RecipeList</div>;
+};
 
-export default RecipeList
+export default RecipeList;

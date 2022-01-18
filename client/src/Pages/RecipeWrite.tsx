@@ -1,11 +1,7 @@
-!import React from 'react'
+import React from 'react';
 
-const RecipeWrite = () => {
-  return (
-    <div>
-      
-    </div>
-  )
-}
+const RecipeWrite = function RecipeWrite() {
+  return <div>RecipeWrite</div>;
+};
 
-export default RecipeWrite
+export default RecipeWrite;
