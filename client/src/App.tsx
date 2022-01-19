@@ -1,5 +1,5 @@
 import React from 'react';
-import { Routes, Route } from 'react-router-dom'; //* In react-router-dom v6, "Switch" is replaced by routes "Routes"
+import { Routes, Route } from 'react-router-dom';
 import './App.css';
 import Landing from './Pages/Landing';
 import LoginPage from './Pages/LoginPage';
