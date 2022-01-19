@@ -10,7 +10,8 @@ import SignUpPage from './Pages/SignUpPage';
 
 function App() {
   return (
-    <div>
+    <>
+      <GlobalStyle />
       <Routes>
         <Route path="/" element={<Landing />} />
         <Route path="/loginPage" element={<LoginPage />} />
@@ -19,7 +20,7 @@ function App() {
         <Route path="/recipeList" element={<RecipeList />} />
         <Route path="/recipeWrite" element={<RecipeWrite />} />
       </Routes>
-    </div>
+    </>
   );
 }
 
