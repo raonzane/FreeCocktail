@@ -1,5 +1,6 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom'; //* In react-router-dom v6, "Switch" is replaced by routes "Routes"
+import GlobalStyle from 'styles/GlobalStyle';
 import './App.css';
 import Landing from './Pages/Landing';
 import LoginPage from './Pages/LoginPage';
@@ -10,7 +11,8 @@ import SignUpPage from './Pages/SignUpPage';
 
 function App() {
   return (
-    <div>
+    <>
+      <GlobalStyle />
       <Routes>
         <Route path="/" element={<Landing />} />
         <Route path="/loginPage" element={<LoginPage />} />
@@ -19,7 +21,7 @@ function App() {
         <Route path="/recipeList" element={<RecipeList />} />
         <Route path="/recipeWrite" element={<RecipeWrite />} />
       </Routes>
-    </div>
+    </>
   );
 }
 
