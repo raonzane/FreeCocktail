@@ -2,6 +2,7 @@ import 'dotenv/config';
 import * as express from 'express';
 import * as cors from 'cors';
 import * as cookieParser from 'cookie-parser';
+import router from './routes';
 
 import { createConnection } from 'typeorm';
 import { config } from '../ormconfig';
@@ -26,6 +27,9 @@ app.use(
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
   })
 );
+
+app.use('/', router);
+
 app.get('/', (req: express.Request, res: express.Response) => {
   res.send(`hello`);
 });
