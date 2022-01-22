@@ -1,10 +1,26 @@
-import { configureStore, createSlice } from '@reduxjs/toolkit';
+import { configureStore } from '@reduxjs/toolkit';
+import { combineReducers } from 'redux';
+import { persistReducer } from 'redux-persist';
+import storageSession from 'redux-persist/es/storage/session';
+import userSlice from '../_slices/userSlice';
+import recipeSlice from '../_slices/recipeSlice';
 // import { Stream } from 'stream';
 
-// //* configureStore는 옵션 객체를 정확한 key와 함께 넘겨야 하므로
-// //* rootReducer를 첫 번째 매개변수로 전달하는 대신 reducer라는 key의 value로 전달
+const persistConfig = {
+  key: 'root',
+  storage: storageSession,
+};
+
+const rootReducer = combineReducers({
+  userSlice: userSlice,
+  recipeSlice: recipeSlice,
+});
+
+const persistedReducer = persistReducer(persistConfig, rootReducer);
+
 export const store = configureStore({
-  reducer: {},
+  reducer: { persistedReducer },
+  // devTools
 });
 
 // // Infer the `RootState` and `AppDispatch` types from the store itself
