@@ -3,11 +3,11 @@ import { Routes, Route } from 'react-router-dom';
 import GlobalStyle from 'styles/GlobalStyle';
 import './App.css';
 import Landing from './Pages/Landing';
-import LoginPage from './Pages/LoginPage';
-import MyPage from './Pages/MyPage';
+import LoginPage from './Pages/LoginPage/LoginPage';
+import SignUpPage from './Pages/SignUpPage/SignUpPage';
+import MyPage from './Pages/MyPage/MyPage';
 import RecipeList from './Pages/RecipeList';
 import RecipeWrite from './Pages/RecipeWrite';
-import SignUpPage from './Pages/SignUpPage';
 
 function App() {
   return (

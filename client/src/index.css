@@ -2,3 +2,21 @@
   font-family: 'HS San Tokki';
   src: url('./styles/font/HSSanTokki-Regular.ttf');
 }
+
+@font-face {
+  font-family: 'Gmarket Sans TTF';
+  font-weight: 100;
+  src: url('./styles/font/GmarketSansTTFLight.ttf') format('opentype');
+}
+
+@font-face {
+  font-family: 'Gmarket Sans TTF';
+  font-weight: 300;
+  src: url('./styles/font/GmarketSansTTFMedium.ttf') format('opentype');
+}
+
+@font-face {
+  font-family: 'Gmarket Sans TTF';
+  font-weight: 500;
+  src: url('./styles/font/GmarketSansTTFBold.ttf') format('opentype');
+}
