@@ -13,10 +13,10 @@ const userSlice = createSlice({
   name: 'user',
   initialState: {},
   reducers: {
-    signup: (useeState, action: PayloadAction<userStateType>) => {
+    signup: (userState, action: PayloadAction<userStateType>) => {
       const { id, nickname, email, password, image, OAuth } = action.payload;
-      useeState = { id, nickname, email, password, image, OAuth };
-      return useeState;
+      userState = { id, nickname, email, password, image, OAuth };
+      return userState;
     },
   },
 });
