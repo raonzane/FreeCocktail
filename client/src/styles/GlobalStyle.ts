@@ -4,28 +4,35 @@ import reset from 'styled-reset';
 const GlobalStyle = createGlobalStyle`
   ${reset}
   *{
+    margin: 0;
+    padding: 0;
     box-sizing: border-box;
   }
 
   body {
-    font-family: 'HS San Tokki';
+    font-family: 'Gmarket Sans TTF';
   }
+  
   a {
     color: inherit;
     text-decoration: none;
     cursor: pointer;
   }
+
   input, button {
     background-color: transparent;
     border: none;
     outline: none;
   }
+
   h1, h2, h3, h4, h5, h6 {
-    /* font-family: 'HS San Tokki'; */
+    font-family: 'HS San Tokki';
   }
+
   ol, ul, li {
     list-style: none;
   }
+  
   img {
     display: block;
     width: 100%;
