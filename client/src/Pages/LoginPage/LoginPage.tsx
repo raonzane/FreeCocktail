@@ -20,7 +20,7 @@ const LoginPage = function LoginPage() {
     <Body>
       <MainArea>
         <Container>
-          <ImgContainer>이미지</ImgContainer>
+          <ImgContainer>이미지 자리</ImgContainer>
           <ContentContainer>
             <TitleWrapper>
               <Title>로그인</Title>

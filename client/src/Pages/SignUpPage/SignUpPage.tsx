@@ -44,7 +44,7 @@ const SignUpPage = function SignUpPage() {
               이미 가입하셨나요? <p>로그인 하기</p>
             </LoginBtn>
           </ContentContainer>
-          <ImgContainer>이미지</ImgContainer>
+          <ImgContainer>이미지 자리</ImgContainer>
         </Container>
       </MainArea>
     </Body>
