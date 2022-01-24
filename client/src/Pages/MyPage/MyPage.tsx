@@ -5,7 +5,11 @@ const MyPage = function MyPage() {
   return (
     <>
       <div>마이페이지 연습</div>
-      <svg viewBox="0 0 100 100" preserveAspectRatio="xMidYMid slice">
+      <svg
+        viewBox="0 0 100 100"
+        preserveAspectRatio="xMidYMid slice"
+        id="mypage-svg"
+      >
         <defs>
           <radialGradient
             id="Gradient1"
