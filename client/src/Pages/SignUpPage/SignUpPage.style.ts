@@ -3,15 +3,17 @@ import { theme } from '../../styles/theme';
 
 export const Body = styled.div`
   min-height: 90vh;
-  margin-top: 4.938rem;
-  background: linear-gradient(0deg, #fbfafc, #fbfafc);
+  margin-top: 6.938rem;
+  /* background: linear-gradient(0deg, #fbfafc, #fbfafc); */
   display: flex;
   justify-content: center;
   padding: 0 30px 0 30px;
   @media ${theme.mobile} {
+    margin-top: 7.938rem;
     padding: 0 10px 0 10px;
   }
   @media ${theme.tablet} {
+    margin-top: 7.938rem;
     padding: 0 20px 0 20px;
   }
 `;
@@ -24,6 +26,7 @@ export const MainArea = styled.main`
 `;
 
 export const Container = styled.div`
+  z-index: 9;
   display: flex;
   font-family: 'Gmarket Sans TTF';
   color: #333;
@@ -36,24 +39,21 @@ export const ContentContainer = styled.div`
   align-items: left;
   width: 25rem;
   height: 40rem;
-  background-color: #fdfbfe;
-  border: 1px solid red;
+  background: transparent;
   border-radius: 0.313rem;
   padding: 2rem;
   transition: 0.5s all;
   @media ${theme.mobile} {
-    border: 1px solid blue;
     width: 21rem;
     height: 32rem;
     transition: 0.5s all;
-    background-color: #fbfafc;
+    background: transparent;
   }
   @media ${theme.tablet} {
-    border: 1px solid orange;
     width: 23rem;
     height: 35rem;
     transition: 0.5s all;
-    background-color: #fbfafc;
+    background: transparent;
   }
 `;
 
@@ -70,7 +70,7 @@ export const TitleWrapper = styled.span`
 export const Title = styled.span`
   font-weight: 300;
   font-size: 1.4rem;
-  border-bottom: 5px solid #cb77ff;
+  border-bottom: 5px solid #f876de;
   transition: 0.5s all;
   @media ${theme.mobile} {
     font-size: 1.2rem;
@@ -101,7 +101,7 @@ export const InputTitle = styled.div`
 
 export const InputField = styled.input`
   outline: none;
-  background-color: #fdfbfe;
+  background: #fdfbfe;
   border: 1px solid #e0dde1;
   border-radius: 0.313rem;
   padding-left: 0.5rem;
@@ -147,25 +147,25 @@ export const InvalidMessage = styled.div`
 
 export const SignupBtn = styled.button`
   outline: none;
-  border: 1px solid #cb77ff;
+  border: 1px solid #f876de;
   background: transparent;
   border-radius: 0.313rem;
   padding-left: 0.5rem;
   font-family: 'Gmarket Sans TTF';
   font-weight: 300;
   font-size: 1rem;
-  color: #cb77ff;
+  color: #f876de;
   height: 2.6rem;
   width: 100%;
   margin-top: 10px;
   cursor: pointer;
   transition: 0.5s all;
   &:hover {
-    background: #cb77ff;
+    background: #f876de;
     color: #ffffff;
   }
   &:active {
-    background: #cb77ff;
+    background: #f876de;
     color: #ffffff;
     box-shadow: 0 0 10px #3d3d3d;
   }
