@@ -8,6 +8,43 @@ import {
   ManyToOne,
 } from 'typeorm';
 
+/**
+ * @swagger
+ *  components:
+ *   schemas:
+ *    Drink:
+ *      type: object
+ *      properties:
+ *       id:
+ *         type: number
+ *       name:
+ *         type: string
+ *       image:
+ *         type: string
+ *       tags:
+ *         type: array
+ *         items:
+ *          type:string
+ *         example: ["str1","str2"]
+ *       Ingredient:
+ *         type: array
+ *         items:
+ *          type:string
+ *         example: ["str1","str2"]
+ *       measure:
+ *         type: array
+ *         items:
+ *          type:string
+ *         example: ["str1","str2"]
+ *       Instructions:
+ *         type: array
+ *         items:
+ *          type:string
+ *         example: ["str1","str2"]
+ *
+ *
+ */
+
 @Entity()
 export class Drink extends BaseEntity {
   @PrimaryGeneratedColumn({ type: 'int' })
