@@ -1,5 +1,6 @@
 import React from 'react';
 import Waves from 'Components/Waves';
+import Google from '../../Components/SocialLoginGoogle';
 import {
   Body,
   MainArea,
