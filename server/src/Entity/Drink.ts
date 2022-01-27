@@ -5,8 +5,9 @@ import {
   Column,
   CreateDateColumn,
   UpdateDateColumn,
-  ManyToOne,
+  OneToMany,
 } from 'typeorm';
+import { Like } from './Like';
 
 /**
  * @swagger
@@ -24,23 +25,19 @@ import {
  *       tags:
  *         type: array
  *         items:
- *          type:string
- *         example: ["str1","str2"]
+ *          type: string
  *       Ingredient:
  *         type: array
  *         items:
- *          type:string
- *         example: ["str1","str2"]
+ *          type: string
  *       measure:
  *         type: array
  *         items:
- *          type:string
- *         example: ["str1","str2"]
+ *          type: string
  *       Instructions:
  *         type: array
  *         items:
- *          type:string
- *         example: ["str1","str2"]
+ *          type: string
  *
  *
  */
@@ -73,4 +70,7 @@ export class Drink extends BaseEntity {
 
   @UpdateDateColumn()
   updatedAt: Date;
+
+  @OneToMany((type) => Like, (like) => like.drink)
+  likes: Like[];
 }

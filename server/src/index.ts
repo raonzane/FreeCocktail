@@ -2,10 +2,10 @@ import 'dotenv/config';
 import * as express from 'express';
 import * as cors from 'cors';
 import * as cookieParser from 'cookie-parser';
-import router from './routes';
+import router from './Routes';
 import { createConnection } from 'typeorm';
-import { config } from '../ormconfig';
-import options from './modules/swagger';
+import config from '../ormconfig';
+import options from './Modules/swagger';
 import * as swaggerJSDoc from 'swagger-jsdoc';
 import * as swaggerUi from 'swagger-ui-express';
 
