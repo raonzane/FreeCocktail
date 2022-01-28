@@ -1,6 +1,7 @@
 import React from 'react';
 import Waves from 'Components/Waves';
 import Google from '../../Components/SocialLoginGoogle';
+import Naver from '../../Components/SocialLoginNaver';
 import {
   Body,
   MainArea,
@@ -37,12 +38,12 @@ const LoginPage = function LoginPage() {
                 <div>이메일과 비밀번호를 확인해 주세요.</div>
               </InvalidMessage>
               <LoginBtn>로그인</LoginBtn>
-              <SocialLoginBtn>
-                <div>네이버 로그인</div>
-              </SocialLoginBtn>
-              <SocialLoginBtn>
-                <div>카카오 로그인</div>
-              </SocialLoginBtn>
+              {/* <SocialLoginBtn> */}
+              <Naver />
+              {/* </SocialLoginBtn> */}
+              {/* <SocialLoginBtn> */}
+              <Google />
+              {/* </SocialLoginBtn> */}
               <SignupBtn>
                 아직 회원이 아니신가요? <p>회원가입 하러가기</p>
               </SignupBtn>
