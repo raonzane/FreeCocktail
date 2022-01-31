@@ -1,5 +1,6 @@
 import React from 'react';
 import Waves from 'Components/Waves';
+import Google from '../../Components/SocialLoginGoogle';
 import Naver from '../../Components/SocialLoginNaver';
 import {
   Body,
@@ -40,9 +41,9 @@ const LoginPage = function LoginPage() {
               {/* <SocialLoginBtn> */}
               <Naver />
               {/* </SocialLoginBtn> */}
-              <SocialLoginBtn>
-                <div>카카오 로그인</div>
-              </SocialLoginBtn>
+              {/* <SocialLoginBtn> */}
+              <Google />
+              {/* </SocialLoginBtn> */}
               <SignupBtn>
                 아직 회원이 아니신가요? <p>회원가입 하러가기</p>
               </SignupBtn>
