@@ -1,23 +1,41 @@
 import React, { useEffect } from 'react';
 
+//* 참조 https://bit.ly/3Gf0IS4
 const SocialLoginGoogle = function SocialLoginGoogle() {
   useEffect(() => {
-    // console.log(1);
+    googleSDK();
   }, []);
 
-  const { gapi } = window;
+  const { REACT_APP_GOOGLE_CLIENTID } = process.env;
   const { google } = window;
-  console.log(window.google);
-  const { REACT_APP_GOOGLE_CLIENTID, REACT_APP_GOOGLE_API_KEY } = process.env;
 
-  function callbackHandler() {
-    const location = window.location.href;
-    console.log(location);
+  function handleCredentialResponse(response: any) {
+    console.log('ID 토큰 === ', response.credential); // ID 토큰
+    const responsePayload = response.credential;
+    console.log(responsePayload.sub);
+    console.log(responsePayload.name);
+    console.log(responsePayload.given_name);
+    console.log(responsePayload.family_name);
+    console.log(responsePayload.picture);
+    console.log(responsePayload.email);
+  }
+
+  function googleSDK() {
+    google.accounts.id.initialize({
+      client_id: REACT_APP_GOOGLE_CLIENTID,
+      login_uri: 'http://localhost:3000/loginPage',
+      callback: handleCredentialResponse,
+    });
+    google.accounts.id.renderButton(document.getElementById('buttonDiv'), {
+      theme: 'outline',
+      size: 'large',
+    });
+    google.accounts.id.prompt();
   }
 
   return (
-    <button id="buttonDiv" type="submit">
-      Google login
+    <button type="button" id="buttonDiv">
+      Google Login
     </button>
   );
 };
