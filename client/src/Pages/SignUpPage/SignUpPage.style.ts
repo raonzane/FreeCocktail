@@ -26,7 +26,7 @@ export const MainArea = styled.main`
 `;
 
 export const Container = styled.div`
-  z-index: 9;
+  z-index: 3;
   display: flex;
   font-family: 'Gmarket Sans TTF';
   color: #333;
