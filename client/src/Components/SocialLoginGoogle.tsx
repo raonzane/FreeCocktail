@@ -1,29 +1,27 @@
 import React, { useEffect } from 'react';
+import axios from 'axios';
 
-//* 참조 https://bit.ly/3Gf0IS4
+axios.defaults.withCredentials = true;
+
+//! 참조 https://bit.ly/3Gf0IS4
 const SocialLoginGoogle = function SocialLoginGoogle() {
   useEffect(() => {
     googleSDK();
   }, []);
 
-  const { REACT_APP_GOOGLE_CLIENTID } = process.env;
+  const { REACT_APP_GOOGLE_CLIENTID, REACT_APP_REDIRECT_URI } = process.env;
   const { google } = window;
 
   function handleCredentialResponse(response: any) {
-    console.log('ID 토큰 === ', response.credential); // ID 토큰
-    const responsePayload = response.credential;
-    console.log(responsePayload.sub);
-    console.log(responsePayload.name);
-    console.log(responsePayload.given_name);
-    console.log(responsePayload.family_name);
-    console.log(responsePayload.picture);
-    console.log(responsePayload.email);
+    console.log('ID 토큰 ', response.credential); //* ID 토큰
+    const idToken = response.credential;
+    axios.post('http://localhost:3001/oauth/google', { data: idToken });
   }
 
   function googleSDK() {
     google.accounts.id.initialize({
       client_id: REACT_APP_GOOGLE_CLIENTID,
-      login_uri: 'http://localhost:3000/loginPage',
+      login_uri: REACT_APP_REDIRECT_URI,
       callback: handleCredentialResponse,
     });
     google.accounts.id.renderButton(document.getElementById('buttonDiv'), {

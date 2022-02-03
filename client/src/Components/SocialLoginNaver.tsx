@@ -3,24 +3,19 @@ import axios from 'axios';
 
 axios.defaults.withCredentials = true;
 
+//! 참조: https://bit.ly/35ESTsd
 const SocialLoginNaver = function () {
   useEffect(() => {
     naverButton();
   }, []);
 
-  interface naverUser {
-    email: string;
-    nickname: string;
-    image: string;
-  }
-
   const { naver } = window;
 
   function naverButton() {
-    const { REACT_APP_NAVER_CLIENT_ID } = process.env;
+    const { REACT_APP_NAVER_CLIENT_ID, REACT_APP_REDIRECT_URI } = process.env;
     const naverLogin = new naver.LoginWithNaverId({
       clientId: REACT_APP_NAVER_CLIENT_ID,
-      callbackUrl: 'http://localhost:3000/loginPage',
+      callbackUrl: REACT_APP_REDIRECT_URI,
       callbackHandle: true,
       loginButton: {
         color: 'white',
@@ -29,18 +24,23 @@ const SocialLoginNaver = function () {
       },
     });
     naverLogin.init();
-  }
 
-  function naverLogin() {
-    if (window.location.href.includes('access_token')) {
+    if (window.location.href.includes('#')) {
       const location = window.location.href.split('=')[1];
-      const Authorization = location.split('&')[0];
-      const header = { Authorization };
-      // console.log('왜 안 나오지', location, Authorization);
+      const accessToken = location.split('&')[0];
+      // console.log('토큰', accessToken);
+      axios
+        .post('http://localhost:3001/oauth/naver', { data: accessToken })
+        .then(function (res: any) {
+          console.log('응답', res);
+        })
+        .catch(function (err: any) {
+          console.log('에러', err);
+        });
     }
   }
 
-  return <button type="submit" id="naverIdLogin" onClick={naverLogin} />;
+  return <button type="button" id="naverIdLogin" />;
 };
 
 export default SocialLoginNaver;
