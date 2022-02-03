@@ -13,9 +13,16 @@ const SocialLoginGoogle = function SocialLoginGoogle() {
   const { google } = window;
 
   function handleCredentialResponse(response: any) {
-    console.log('ID 토큰 ', response.credential); //* ID 토큰
+    // console.log('ID 토큰 ', response.credential); //* ID 토큰
     const idToken = response.credential;
-    axios.post('http://localhost:3001/oauth/google', { data: idToken });
+    axios
+      .post('http://localhost:3001/oauth/google', { data: idToken })
+      .then(function (res: any) {
+        console.log('응답', res);
+      })
+      .catch(function (err: any) {
+        console.log('에러', err);
+      });
   }
 
   function googleSDK() {
