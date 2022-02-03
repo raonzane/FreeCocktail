@@ -1,8 +1,5 @@
 import styled from 'styled-components';
 import { theme } from '../../styles/theme';
-// 메인 포인트 색 (hotpink) : #f876de
-// 검정 : #333;
-// 버튼 배경색 : #fff;
 
 export const Body = styled.div`
   min-height: 90vh;
@@ -16,7 +13,7 @@ export const Body = styled.div`
     padding: 0 10px 0 10px;
   }
   @media ${theme.tablet} {
-    margin-top: 7.938rem;
+    margin-top: 8.938rem;
     padding: 0 20px 0 20px;
   }
 `;
@@ -29,7 +26,7 @@ export const MainArea = styled.main`
 `;
 
 export const Container = styled.div`
-  z-index: 9;
+  z-index: 3;
   display: flex;
   font-family: 'Gmarket Sans TTF';
   color: #333;
