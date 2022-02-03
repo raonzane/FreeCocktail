@@ -6,7 +6,7 @@ import Landing from './Pages/Landing';
 import LoginPage from './Pages/LoginPage/LoginPage';
 import SignUpPage from './Pages/SignUpPage/SignUpPage';
 import MyPage from './Pages/MyPage/MyPage';
-import RecipeList from './Pages/RecipeList';
+import RecipeList from './Pages/RecipeList/RecipeList';
 import RecipeWrite from './Pages/RecipeWrite';
 
 function App() {
