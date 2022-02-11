@@ -1,4 +1,5 @@
 import { Router } from 'express';
+import { upload } from '../Modules/multer';
 import UserController from '../Controllers/UserController';
 const userRoter = Router();
 
@@ -129,11 +130,11 @@ userRoter.get('/:userEmail', UserController.UserInfo);
  *       description: 잘못된 회원 정보
  */
 
-userRoter.patch('/edit', UserController.Edit);
+userRoter.patch('/:userId', upload.single('image'), UserController.Edit);
 /**
  * @swagger
  * paths:
- *  /user/edit:
+ *  /user/{userId}:
  *   patch:
  *    tags: [User]
  *    summary: 유저 정보수정
