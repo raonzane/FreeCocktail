@@ -1,8 +1,8 @@
 import { Router } from 'express';
 import UserController from '../Controllers/UserController';
-const userRoter = Router();
+const userRouter = Router();
 
-userRoter.post('/signup', UserController.SignUp);
+userRouter.post('/signup', UserController.SignUp);
 /**
  * @swagger
  * paths:
@@ -36,7 +36,7 @@ userRoter.post('/signup', UserController.SignUp);
  *      409:
  *       description: 이미 가입된 이메일
  */
-userRoter.delete('/signout', UserController.SignOut);
+userRouter.delete('/signout', UserController.SignOut);
 /**
  * @swagger
  * paths:
@@ -60,7 +60,7 @@ userRoter.delete('/signout', UserController.SignOut);
  *      404:
  *       description: 잘못된 회원 정보
  */
-userRoter.post('/login', UserController.LogIn);
+userRouter.post('/login', UserController.LogIn);
 /**
  * @swagger
  * paths:
@@ -90,7 +90,7 @@ userRoter.post('/login', UserController.LogIn);
  *      404:
  *       description: 잘못된 회원 정보
  */
-userRoter.post('/logout', UserController.LogOut);
+userRouter.post('/logout', UserController.LogOut);
 /**
  * @swagger
  * paths:
@@ -103,7 +103,7 @@ userRoter.post('/logout', UserController.LogOut);
  *      200:
  *       description: 로그아웃 성공
  */
-userRoter.get('/:userEmail', UserController.UserInfo);
+userRouter.get('/:userEmail', UserController.UserInfo);
 /**
  * @swagger
  * paths:
@@ -129,7 +129,7 @@ userRoter.get('/:userEmail', UserController.UserInfo);
  *       description: 잘못된 회원 정보
  */
 
-userRoter.patch('/edit', UserController.Edit);
+userRouter.patch('/edit', UserController.Edit);
 /**
  * @swagger
  * paths:
@@ -163,4 +163,4 @@ userRoter.patch('/edit', UserController.Edit);
  *      404:
  *       description: 잘못된 회원 정보
  */
-export default userRoter;
+export default userRouter;

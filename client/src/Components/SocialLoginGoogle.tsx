@@ -16,7 +16,7 @@ const SocialLoginGoogle = function SocialLoginGoogle() {
     // console.log('ID 토큰 ', response.credential); //* ID 토큰
     const idToken = response.credential;
     axios
-      .post('http://localhost:3001/oauth/google', { data: idToken })
+      .post('http://localhost:3001/oauth/google', { idToken })
       .then(function (res: any) {
         console.log('응답', res);
       })

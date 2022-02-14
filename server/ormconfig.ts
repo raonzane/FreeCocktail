@@ -10,8 +10,9 @@ const config: ConnectionOptions = {
   database: process.env.DATABASE_NAME,
   synchronize: false, //혹시나 true로 되어있으면 false 바꿔주세요
   logging: false,
-  entities: ['dist/src/Entity/**/*{.js,.ts}'],
-  migrations: ['src/migration/**/*.ts'],
+  entities:
+    process.env.NODE_ENV === 'dev' ? ['src/Entity/**/*.ts'] : ['dist/src/Entity/**/*{.js,.ts}'],
+  migrations: [__dirname + '/../**/**.entity{.ts,.js}'],
   subscribers: ['src/subscriber/**/*.ts'],
   cli: {
     entitiesDir: 'src/Entity',
