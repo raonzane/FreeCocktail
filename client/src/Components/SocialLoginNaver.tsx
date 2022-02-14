@@ -30,7 +30,7 @@ const SocialLoginNaver = function () {
       const accessToken = location.split('&')[0];
       // console.log('토큰', accessToken);
       axios
-        .post('http://localhost:3001/oauth/naver', { data: accessToken })
+        .post('http://localhost:3001/oauth/naver', { idToken: accessToken })
         .then(function (res: any) {
           console.log('응답', res);
         })
