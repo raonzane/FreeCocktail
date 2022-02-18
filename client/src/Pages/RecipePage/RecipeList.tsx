@@ -1,7 +1,8 @@
 import React from 'react';
+import { FilterButton } from './RecipeList.style';
 
 const RecipeList = function RecipeList() {
-  return <div>RecipeList</div>;
+  return <FilterButton>generation kill</FilterButton>;
 };
 
 export default RecipeList;
