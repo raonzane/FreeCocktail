@@ -37,7 +37,6 @@ const SocialLoginGoogle = function SocialLoginGoogle() {
       size: 'large',
       text: 'signin_with',
       shape: 'rectangular',
-      // width: 200,
     });
     google.accounts.id.prompt();
   }
