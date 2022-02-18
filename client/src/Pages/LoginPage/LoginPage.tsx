@@ -14,7 +14,6 @@ import {
   InputField,
   InvalidMessage,
   LoginBtn,
-  // SocialLoginBtn,
   SocialLoginBtn2,
   SignupBtn,
 } from './LoginPage.style';
