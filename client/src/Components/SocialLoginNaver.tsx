@@ -19,8 +19,8 @@ const SocialLoginNaver = function () {
       callbackHandle: true,
       loginButton: {
         color: 'white',
-        type: 3,
-        height: 10,
+        type: 1,
+        height: 40,
       },
     });
     naverLogin.init();
@@ -40,7 +40,7 @@ const SocialLoginNaver = function () {
     }
   }
 
-  return <button type="button" id="naverIdLogin" />;
+  return <div id="naverIdLogin" />;
 };
 
 export default SocialLoginNaver;

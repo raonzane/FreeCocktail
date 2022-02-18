@@ -32,17 +32,16 @@ const SocialLoginGoogle = function SocialLoginGoogle() {
       callback: handleCredentialResponse,
     });
     google.accounts.id.renderButton(document.getElementById('buttonDiv'), {
+      type: 'icon',
       theme: 'outline',
       size: 'large',
+      text: 'signin_with',
+      shape: 'rectangular',
     });
     google.accounts.id.prompt();
   }
 
-  return (
-    <button type="button" id="buttonDiv">
-      Google Login
-    </button>
-  );
+  return <div id="buttonDiv">Google Login</div>;
 };
 
 export default SocialLoginGoogle;
