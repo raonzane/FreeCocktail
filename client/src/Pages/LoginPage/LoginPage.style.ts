@@ -221,6 +221,7 @@ export const SignupBtn = styled.div`
 `;
 
 export const SocialLoginBtn2 = styled.div`
+  /* background-color: orange; */
   display: flex;
   flex-direction: row;
   margin: 15px;
@@ -228,7 +229,7 @@ export const SocialLoginBtn2 = styled.div`
   > * {
     &:nth-child(1) {
       /* background-color: orange; */
-      flex: 3 1 0;
+      flex: 2.2 1 0;
       text-align: left;
       margin: auto;
     }
@@ -239,6 +240,40 @@ export const SocialLoginBtn2 = styled.div`
       > * {
         &:nth-child(2) {
           margin-left: 15px;
+        }
+      }
+    }
+  }
+  @media ${theme.tablet} {
+    word-break: keep-all;
+    font-size: 0.9rem;
+    > * {
+      &:nth-child(1) {
+        /* background-color: orange; */
+        flex: 1.9 1 0;
+        text-align: left;
+        margin: auto;
+      }
+    }
+  }
+  @media ${theme.mobile} {
+    word-break: keep-all;
+    font-size: 0.8rem;
+    > * {
+      &:nth-child(1) {
+        /* background-color: orange; */
+        flex: 1.9 1 0;
+        text-align: left;
+        margin: auto;
+      }
+      &:nth-child(2) {
+        /* background-color: red; */
+        flex: 1 1 0;
+        display: flex;
+        > * {
+          &:nth-child(2) {
+            margin-left: 3px;
+          }
         }
       }
     }
