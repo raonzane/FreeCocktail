@@ -16,7 +16,7 @@ const SocialLoginGoogle = function SocialLoginGoogle() {
     // console.log('ID 토큰 ', response.credential); //* ID 토큰
     const idToken = response.credential;
     axios
-      .post('http://localhost:3001/oauth/google', { data: idToken })
+      .post('http://localhost:3001/oauth/google', { idToken })
       .then(function (res: any) {
         console.log('응답', res);
       })
@@ -32,17 +32,16 @@ const SocialLoginGoogle = function SocialLoginGoogle() {
       callback: handleCredentialResponse,
     });
     google.accounts.id.renderButton(document.getElementById('buttonDiv'), {
+      type: 'icon',
       theme: 'outline',
       size: 'large',
+      text: 'signin_with',
+      shape: 'rectangular',
     });
     google.accounts.id.prompt();
   }
 
-  return (
-    <button type="button" id="buttonDiv">
-      Google Login
-    </button>
-  );
+  return <div id="buttonDiv">Google Login</div>;
 };
 
 export default SocialLoginGoogle;

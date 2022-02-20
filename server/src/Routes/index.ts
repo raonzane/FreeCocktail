@@ -1,9 +1,11 @@
 import * as express from 'express';
 //import translateRoter from './translate';
-import userRoter from './UserRouter';
+import userRouter from './UserRouter';
+import oauthRouter from './OauthRouter';
 const app = express();
 
 //app.use('/translate', translateRoter);
-app.use('/user', userRoter);
+app.use('/user', userRouter);
+app.use('/oauth', oauthRouter);
 
 export default app;

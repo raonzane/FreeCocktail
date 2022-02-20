@@ -35,6 +35,7 @@ const SignUp = async (req: Request, res: Response) => {
     return res.status(500).send({ message: 'Internal Server Error', err: err });
   }
 };
+
 const SignOut = async (req: Request, res: Response) => {
   const { email }: IUserInput = req.body;
   const userInfo = await FindUserInfo(email);
@@ -45,14 +46,14 @@ const SignOut = async (req: Request, res: Response) => {
   res.status(200).send({ message: 'Success' });
 };
 
-export const Edit = async (req: Request, res: Response) => {
+const Edit = async (req: Request, res: Response) => {
   const { nickname, password, image, email }: IUserInput = req.body;
   let userInfo = await FindUserInfo(email);
 
   if (!userInfo) {
     return res.status(404).send({ message: 'Resource Not Found' });
   }
-
+  ///image 코드 확인
   userInfo.nickname = nickname || userInfo.nickname;
   userInfo.password = password || userInfo.password;
   userInfo.password = email || userInfo.email;
@@ -88,7 +89,7 @@ const LogOut = async (req: Request, res: Response) => {
 };
 
 const UserInfo = async (req: Request, res: Response) => {
-  const { email }: IUserInput = req.body;
+  const { email }: any = req.params;
   const userInfo = await FindUserInfo(email);
 
   if (!userInfo) {

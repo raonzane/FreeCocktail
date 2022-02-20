@@ -19,8 +19,8 @@ const SocialLoginNaver = function () {
       callbackHandle: true,
       loginButton: {
         color: 'white',
-        type: 3,
-        height: 10,
+        type: 1,
+        height: 40,
       },
     });
     naverLogin.init();
@@ -30,7 +30,7 @@ const SocialLoginNaver = function () {
       const accessToken = location.split('&')[0];
       // console.log('토큰', accessToken);
       axios
-        .post('http://localhost:3001/oauth/naver', { data: accessToken })
+        .post('http://localhost:3001/oauth/naver', { idToken: accessToken })
         .then(function (res: any) {
           console.log('응답', res);
         })
@@ -40,7 +40,7 @@ const SocialLoginNaver = function () {
     }
   }
 
-  return <button type="button" id="naverIdLogin" />;
+  return <div id="naverIdLogin" />;
 };
 
 export default SocialLoginNaver;

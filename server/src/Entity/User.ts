@@ -41,7 +41,7 @@ import { loginType } from '../Interfaces/IUser';
  *     properties:
  *           userInfo:
  *            $ref: '#/components/schemas/User'
- *           token:
+ *           accessToken:
  *            type: string
  */
 @Entity()
