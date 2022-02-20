@@ -43,6 +43,7 @@ export const LikesImg = styled.img`
   width: 0.8rem;
   height: 0.8rem;
 `;
+
 export const LikesNum = styled.div`
   height: 1rem;
   color: #000;
@@ -62,5 +63,5 @@ export const CardTag = styled.div`
   font-size: 0.5rem;
   border: 1px solid #000;
   border-radius: 0.3rem;
-  padding: 0.1rem;
+  padding: 0.2rem;
 `;

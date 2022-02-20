@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import RecipeCard from 'Components/RecipeCard/RecipeCard';
 import RecipeCreate from 'Components/RecipeCreate/RecipeCreate';
 import {
@@ -11,6 +11,11 @@ import {
 } from './RecipeList.style';
 
 const RecipeList = function RecipeList() {
+  const [isList, setIsList] = useState<boolean>(true);
+  const chagneScreen = () => {
+    setIsList(!isList);
+  };
+
   return (
     <Container>
       <div> Header</div>
@@ -18,13 +23,10 @@ const RecipeList = function RecipeList() {
         <SearchArea>SearchArea</SearchArea>
 
         <CreateArea>
-          <CreateBtn>+</CreateBtn>
+          <CreateBtn onClick={chagneScreen}>+</CreateBtn>
         </CreateArea>
 
-        <CardArea>
-          <RecipeCard />
-          <RecipeCreate />
-        </CardArea>
+        <CardArea>{isList ? <RecipeCard /> : <RecipeCreate />}</CardArea>
       </Body>
     </Container>
   );

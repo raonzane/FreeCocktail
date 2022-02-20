@@ -23,7 +23,6 @@ export const SearchArea = styled.div`
 
 export const CardArea = styled.div`
   width: 100%;
-  background-color: #ddd;
   display: flex;
   flex-direction: column;
   justify-content: center;

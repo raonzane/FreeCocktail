@@ -14,7 +14,6 @@ export const Select = styled.select`
   color: #2d2d2d;
   height: 2.313rem;
   width: 100%;
-  margin-bottom: 1.4rem;
   transition: 0.5s all;
 `;
 
@@ -29,9 +28,9 @@ export const Option = styled.option`
   font-size: 1rem;
   color: #2d2d2d;
   height: 2.313rem;
-  width: 100%;
   margin-bottom: 1.4rem;
   transition: 0.5s all;
+  cursor: pointer;
   :focus {
     border: 1px solid #2d2d2d;
     background-color: #2d2d2d;

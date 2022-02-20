@@ -3,7 +3,7 @@ import { Container, Select, Option } from './Dropdown.style';
 
 const Dropdown = function Dropdown() {
   return (
-    <div>
+    <Container>
       <Select>
         <Option value="">칵테일 베이스</Option>
         <Option value="0">Champagne</Option>
@@ -15,7 +15,7 @@ const Dropdown = function Dropdown() {
         <Option value="6">Whisky</Option>
         <Option value="7">Other</Option>
       </Select>
-    </div>
+    </Container>
   );
 };
 

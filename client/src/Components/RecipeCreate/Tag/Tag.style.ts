@@ -1,65 +1,60 @@
 import styled from 'styled-components';
+import { theme } from '../../../styles/theme';
 
 export const Container = styled.div``;
 
-export const TagsInput = styled.div`
-  margin: 8rem auto;
+export const TagsInput = styled.input`
+  outline: none;
+  background-color: #fdfbfe;
+  border: 1px solid #e0dde1;
+  border-radius: 0.313rem;
+  padding-left: 0.5rem;
+  margin-bottom: 0.5rem;
+  font-family: 'Gmarket Sans TTF';
+  font-weight: 100;
+  font-size: 1rem;
+  color: #2d2d2d;
+  height: 2.313rem;
+  width: 100%;
+  transition: 0.5s all;
+  :focus {
+    border: 1px solid #2d2d2d;
+  }
+  @media ${theme.mobile} {
+    font-size: 0.8rem;
+    transition: 0.5s all;
+  }
+  @media ${theme.tablet} {
+    font-size: 0.9rem;
+    transition: 0.5s all;
+  }
+`;
+
+export const EnteredTags = styled.div`
   display: flex;
-  align-items: flex-start;
-  flex-wrap: wrap;
-  min-height: 48px;
-  width: 480px;
-  padding: 0 8px;
-  border: 1px solid rgb(214, 216, 218);
-  border-radius: 6px;
+  padding-left: 0.2rem;
+  width: 12rem;
+  gap: 0.5rem;
+`;
 
-  > ul {
-    display: flex;
-    flex-wrap: wrap;
-    padding: 0;
-    margin: 8px 0 0 0;
+export const EnteredTag = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.5rem;
+  border: 1px solid #000;
+  border-radius: 0.3rem;
+  padding: 0.2rem;
+  cursor: pointer;
+`;
 
-    > .tag {
-      width: auto;
-      height: 32px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #fff;
-      padding: 0 8px;
-      font-size: 14px;
-      list-style: none;
-      border-radius: 6px;
-      margin: 0 8px 8px 0;
-      background: #4000c7;
-      > .tag-close-icon {
-        display: block;
-        width: 16px;
-        height: 16px;
-        line-height: 16px;
-        text-align: center;
-        font-size: 14px;
-        margin-left: 8px;
-        color: #4000c7;
-        border-radius: 50%;
-        background: #fff;
-        cursor: pointer;
-      }
-    }
-  }
-
-  > input {
-    flex: 1;
-    border: none;
-    height: 46px;
-    font-size: 14px;
-    padding: 4px 0 0 0;
-    :focus {
-      outline: transparent;
-    }
-  }
-
-  &:focus-within {
-    border: 1px solid #4000c7;
-  }
+export const XBtn = styled.span`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 0.9rem;
+  height: 0.9rem;
+  margin-left: 0.3rem;
+  border: 1px solid #000;
+  border-radius: 50rem;
 `;
