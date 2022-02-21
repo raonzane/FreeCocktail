@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import Waves from '../../Components/Waves';
 import {
   Body,
@@ -16,6 +17,15 @@ const RecipeList = function RecipeList() {
   const recipeName = 'Magarita';
   const likes = '1917';
 
+  const [isPick, setIsPick] = useState(false);
+  const [child, setChild] = useState('');
+  const makePickOrNot = function (e: any): any {
+    // console.log('e', e.target.innerHTML);
+    // console.log(isPick);
+    setIsPick(!isPick);
+    setChild(e.target.innerHTML);
+  };
+
   console.log('브라우저 너비', document.body.offsetWidth);
 
   const moveToTheTop = function () {
@@ -27,10 +37,18 @@ const RecipeList = function RecipeList() {
       <Waves />
       <Body>
         <Category>
-          <CategoryButtons> 전체보기 </CategoryButtons>
-          <CategoryButtons> 인기순 </CategoryButtons>
-          <CategoryButtons> 해시태그 </CategoryButtons>
-          <CategoryButtons> 베이스 </CategoryButtons>
+          <CategoryButtons onClick={(e: any) => makePickOrNot(e)}>
+            전체보기
+          </CategoryButtons>
+          <CategoryButtons onClick={(e: any) => makePickOrNot(e)}>
+            인기순
+          </CategoryButtons>
+          <CategoryButtons onClick={(e: any) => makePickOrNot(e)}>
+            해시태그
+          </CategoryButtons>
+          <CategoryButtons onClick={(e: any) => makePickOrNot(e)}>
+            베이스
+          </CategoryButtons>
         </Category>
         <Filter>
           <FilterButtons> # 달달한 </FilterButtons>

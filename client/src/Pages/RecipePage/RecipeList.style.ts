@@ -1,7 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Button, Divider, Card } from 'semantic-ui-react';
+import { Button, Card, Divider } from 'semantic-ui-react';
 import { theme } from '../../styles/theme';
+
+console.log();
 
 const Body = styled.div`
   /* border: 1px solid green; */
@@ -40,14 +42,48 @@ const Category = styled.div`
   }
 `;
 
-const CategoryButtons = styled(Button)({
+// const CategoryButtons = styled(Button).attrs((props): any => {
+//   console.log(props);
+//   // backgroundColor: props.backgroundColor ? '#94FDD7' : '#FFFFFF';
+// })({
+//   'width': '10rem',
+//   'height': '3rem',
+//   '&&&': {
+//     'zIndex': 2,
+//     'margin': 'auto',
+//     'borderRadius': '50px',
+//     'backgroundColor': '#FFFFFF',
+//     // 'backgroundColor': '${props => #94FDD7 || #FFFFFF}',
+//     'border': '1.5px solid #494949',
+//     'color': '#494949',
+//     'fontSize': '18px',
+//     //* Responsive (tablet - mobile)
+//     '@media (min-width: 481px) and (max-width: 1023px)': {
+//       width: '8rem',
+//       fontSize: '13px',
+//     },
+//     '@media (max-width: 480px)': {
+//       width: '6rem',
+//       fontSize: '10px',
+//     },
+//   },
+//   '&&&:hover': {
+//     backgroundColor: '#94FDD7',
+//   },
+// });
+
+const CategoryButtons = styled(Button).attrs((props): any => {
+  console.log(props);
+  backgroundColor: props.backgroundColor ? '#94FDD7' : '#FFFFFF';
+})({
   'width': '10rem',
   'height': '3rem',
   '&&&': {
     'zIndex': 2,
     'margin': 'auto',
     'borderRadius': '50px',
-    'backgroundColor': '#FFFFFF',
+    // 'backgroundColor': '#FFFFFF',
+    'backgroundColor': '${props => #94FDD7 || #FFFFFF}',
     'border': '1.5px solid #494949',
     'color': '#494949',
     'fontSize': '18px',
