@@ -1,24 +1,25 @@
 import React, { useState } from 'react';
 import {
   Container,
-  CenterArea,
   CreateImg,
   CreateDetails,
   CreateTitle,
   CreateInput,
   CreateTextarea,
   Br,
-  AddBtn,
   SubmitBtn,
 } from './RecipeCreate.style';
+import AddImg from './AddImg/AddImg';
 import Dropdown from './Dropdown/Dropdown';
 import Tag from './Tag/Tag';
+import PMInput from './PMInput/PMInput';
 
 const RecipeCreate = function RecipeCreate() {
-  // const addInput = () => {};
   return (
     <Container>
-      <CreateImg>Image</CreateImg>
+      <CreateImg>
+        <AddImg />
+      </CreateImg>
       <CreateDetails>
         <CreateTitle>칵테일 이름</CreateTitle>
         <CreateInput />
@@ -33,10 +34,7 @@ const RecipeCreate = function RecipeCreate() {
 
         <Br />
         <CreateTitle>재료 및 용량</CreateTitle>
-        <CreateInput />
-        <CenterArea>
-          <AddBtn>+</AddBtn>
-        </CenterArea>
+        <PMInput />
 
         <Br />
         <CreateTitle>만드는법</CreateTitle>

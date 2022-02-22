@@ -9,12 +9,11 @@ export const TagsInput = styled.input`
   border: 1px solid #e0dde1;
   border-radius: 0.313rem;
   padding-left: 0.5rem;
-  margin-bottom: 0.5rem;
   font-family: 'Gmarket Sans TTF';
   font-weight: 100;
   font-size: 1rem;
   color: #2d2d2d;
-  height: 2.313rem;
+  height: 2rem;
   width: 100%;
   transition: 0.5s all;
   :focus {
@@ -22,39 +21,28 @@ export const TagsInput = styled.input`
   }
   @media ${theme.mobile} {
     font-size: 0.8rem;
-    transition: 0.5s all;
-  }
-  @media ${theme.tablet} {
-    font-size: 0.9rem;
+    height: 1.6rem;
     transition: 0.5s all;
   }
 `;
 
 export const EnteredTags = styled.div`
-  display: flex;
+  width: 100%;
   padding-left: 0.2rem;
-  width: 12rem;
-  gap: 0.5rem;
 `;
 
-export const EnteredTag = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
+export const EnteredTag = styled.span`
+  display: inline-block;
   font-size: 0.5rem;
   border: 1px solid #000;
   border-radius: 0.3rem;
   padding: 0.2rem;
-  cursor: pointer;
+  margin: 0.5rem 0.5rem 0rem 0rem;
 `;
 
 export const XBtn = styled.span`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 0.9rem;
-  height: 0.9rem;
-  margin-left: 0.3rem;
-  border: 1px solid #000;
-  border-radius: 50rem;
+  width: 1rem;
+  height: 1rem;
+  margin-left: 0.5rem;
+  cursor: pointer;
 `;

@@ -21,32 +21,52 @@ export const Container = styled.div`
   @media ${theme.mobile} {
     flex-direction: column;
     transition: all 0.5s;
-    width: 218px;
   }
 `;
 
 export const CreateImg = styled.div`
-  width: 400px;
-  height: 500px;
-  cursor: pointer;
-  background-color: #eee;
   display: flex;
   align-items: center;
   justify-content: center;
+  cursor: pointer;
+  background-color: #eee;
 
   @media ${theme.desktop} {
+    transition: all 0.5s;
     margin-right: 0.5rem;
+    width: 400px;
+    height: 500px;
+  }
+
+  @media ${theme.tablet} {
+    transition: all 0.5s;
+    margin-right: 0.5rem;
+    width: 300px;
+    height: 375px;
+    background-color: gray;
   }
 
   @media ${theme.mobile} {
     transition: all 0.5s;
+    margin-bottom: 0.5rem;
     width: 200px;
     height: 250px;
-    margin-bottom: 0.5rem;
   }
 `;
 
-export const CreateDetails = styled.div``;
+export const CreateDetails = styled.div`
+  @media ${theme.desktop} {
+    width: 400px;
+  }
+
+  @media ${theme.tablet} {
+    width: 300px;
+  }
+
+  @media ${theme.mobile} {
+    width: 200px;
+  }
+`;
 
 export const CreateTitle = styled.div`
   font-family: 'Gmarket Sans TTF';
@@ -109,39 +129,6 @@ export const CreateTextarea = styled.textarea`
 
 export const Br = styled.div`
   height: 1.4rem;
-`;
-
-export const CenterArea = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-
-export const AddBtn = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-top: 0.5rem;
-  width: 1rem;
-  height: 1rem;
-  font-size: 1rem;
-  font-weight: lighter;
-  border: 1px solid #f876de;
-  background: transparent;
-  border-radius: 50rem;
-  font-family: 'Gmarket Sans TTF';
-  color: #f876de;
-  cursor: pointer;
-  transition: 0.5s all;
-  &:hover {
-    background: #f876de;
-    color: #ffffff;
-  }
-  &:active {
-    background: #f876de;
-    color: #ffffff;
-    box-shadow: 0 0 10px #3d3d3d;
-  }
 `;
 
 export const SubmitBtn = styled.button`
