@@ -1,20 +1,38 @@
 import { Request, Response } from 'express';
 import { Drink } from '../Entity/Drink';
 import { getRepository } from 'typeorm';
+import { FindAllRecipe, FindTagRecipe, FindLikeRecipe } from '../Services/RecipeService';
 
 const RecipeSerchTag = async (req: Request, res: Response) => {
-  const Tag = req.body.Tag;
+  try {
+    const Tag = req.body.tag;
 
-  // const drinkInfo = await Drink.findOneOrFail({
-  //   where: { tags: { ...Tag } },
-  // });
-  const data = '달달한';
-  const drinkInfo = await getRepository(Drink)
-    .createQueryBuilder('drink')
-    .where('drink.tags like :tags', { tags: `%${data}%` })
-    .getMany();
+    const drinkInfo = await FindTagRecipe(Tag);
 
-  console.log(drinkInfo);
+    res.status(200).send({ data: drinkInfo, message: 'Success' });
+  } catch (err) {
+    return res.status(500).send({ message: 'Internal Server Error', err: err });
+  }
 };
 
-export default { RecipeSerchTag };
+const RecipeFindAll = async (req: Request, res: Response) => {
+  try {
+    const drinkInfo = await FindAllRecipe();
+
+    res.status(200).send({ data: drinkInfo, message: 'Success' });
+  } catch (err) {
+    return res.status(500).send({ message: 'Internal Server Error', err: err });
+  }
+};
+
+const RecipeFindLike = async (req: Request, res: Response) => {
+  try {
+    const drinkInfo = await FindLikeRecipe();
+
+    res.status(200).send({ data: drinkInfo, message: 'Success' });
+  } catch (err) {
+    return res.status(500).send({ message: 'Internal Server Error', err: err });
+  }
+};
+
+export default { RecipeSerchTag, RecipeFindAll, RecipeFindLike };
