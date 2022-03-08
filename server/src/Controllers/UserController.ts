@@ -6,6 +6,7 @@ import { CreateUser, DeleteUser, EditUser, FindUserInfo } from '../Services/User
 
 const SignUp = async (req: Request, res: Response) => {
   try {
+    //image 작업필요
     const { nickname, password, image, email }: IUserInput = req.body;
     const findUser = await FindUserInfo(email);
     if (findUser) {
@@ -47,7 +48,9 @@ const SignOut = async (req: Request, res: Response) => {
 };
 
 const Edit = async (req: Request, res: Response) => {
-  const { nickname, password, image, email }: IUserInput = req.body;
+  //image 작업필요
+  const { nickname, password, image }: IUserInput = req.body;
+  const { email }: any = req.params;
   let userInfo = await FindUserInfo(email);
 
   if (!userInfo) {
@@ -56,7 +59,6 @@ const Edit = async (req: Request, res: Response) => {
   ///image 코드 확인
   userInfo.nickname = nickname || userInfo.nickname;
   userInfo.password = password || userInfo.password;
-  userInfo.password = email || userInfo.email;
   userInfo.password = image || userInfo.image;
 
   const editUserInfo = await EditUser(userInfo);

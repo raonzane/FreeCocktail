@@ -3,7 +3,7 @@ import { upload } from '../Modules/multer';
 import UserController from '../Controllers/UserController';
 const userRouter = Router();
 
-userRouter.post('/signup', UserController.SignUp);
+userRouter.post('/signup', upload.single('image'), UserController.SignUp);
 /**
  * @swagger
  * paths:
@@ -14,9 +14,7 @@ userRouter.post('/signup', UserController.SignUp);
  *    parameters:
  *    - in: body
  *      name: body
- *      content:
- *       application/x-www-form-urlencoded:
- *        schema:
+ *      schema:
  *         type: object
  *         properties:
  *           nickname:
@@ -47,10 +45,8 @@ userRouter.delete('/signout', UserController.SignOut);
  *    summary: 회원탈퇴
  *    parameters:
  *    - in: body
- *      name: body
- *      content:
- *       application/x-www-form-urlencoded:
- *        schema:
+ *      name: email
+ *      schema:
  *         type: object
  *         properties:
  *           email:
@@ -72,9 +68,7 @@ userRouter.post('/login', UserController.LogIn);
  *    parameters:
  *    - in: body
  *      name: body
- *      content:
- *       application/x-www-form-urlencoded:
- *        schema:
+ *      schema:
  *         type: object
  *         properties:
  *           email:
@@ -99,7 +93,6 @@ userRouter.post('/logout', UserController.LogOut);
  *   post:
  *    tags: [User]
  *    summary: 로그아웃
-
  *    responses:
  *      200:
  *       description: 로그아웃 성공
@@ -115,9 +108,7 @@ userRouter.get('/:email', UserController.UserInfo);
  *    parameters:
  *    - in: path
  *      name: email
- *      content:
- *       application/x-www-form-urlencoded:
- *        schema:
+ *      schema:
  *         type: string
  *    responses:
  *      200:
@@ -130,27 +121,27 @@ userRouter.get('/:email', UserController.UserInfo);
  *       description: 잘못된 회원 정보
  */
 
-userRouter.patch('/:userId', upload.single('image'), UserController.Edit);
+userRouter.patch('/:email', upload.single('image'), UserController.Edit);
 /**
  * @swagger
  * paths:
- *  /user/{userId}:
+ *  /user/{email}:
  *   patch:
  *    tags: [User]
  *    summary: 유저 정보수정
  *    parameters:
+ *    - in: path
+ *      name: userId
+ *      schema:
+ *         type: string
  *    - in: body
  *      name: body
- *      content:
- *       application/x-www-form-urlencoded:
- *        schema:
+ *      schema:
  *         type: object
  *         properties:
  *           nickname:
  *              type: string
  *           password:
- *              type: string
- *           email:
  *              type: string
  *           image:
  *              type: string
