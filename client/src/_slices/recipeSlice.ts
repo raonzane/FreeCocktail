@@ -1,36 +1,56 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import type { RootState } from '../_store/store';
 
-interface recipeStateType {
-  id: number;
+interface RecipeState {
+  image: any;
   name: string;
-  image: string;
-  tags: string;
-  ingredient: string;
-  measure: number;
+  baseDrink: string;
+  tags: string[];
+  ingredient: string[];
+  measure: string[];
   instructions: string;
 }
+
+const INITIAL_STATE: RecipeState = {
+  image: '',
+  name: '',
+  baseDrink: '',
+  tags: [],
+  ingredient: [],
+  measure: [],
+  instructions: '',
+};
 
 // https://bit.ly/3FQtXug
 const recipeSlice = createSlice({
   name: 'recipe',
-  initialState: {},
+  initialState: INITIAL_STATE,
   reducers: {
-    addRecipe: (recipeState, action: PayloadAction<recipeStateType>) => {
-      const { id, name, image, tags, ingredient, measure, instructions } =
-        action.payload;
-      recipeState = {
-        id,
-        name,
+    addRecipe: (state, action: PayloadAction<RecipeState>) => {
+      const {
         image,
+        name,
+        baseDrink,
+        tags,
+        ingredient,
+        measure,
+        instructions,
+      } = action.payload;
+      state = {
+        image,
+        name,
+        baseDrink,
         tags,
         ingredient,
         measure,
         instructions,
       };
-      return recipeState;
+      return state;
     },
   },
 });
 
+export const recipeData = (state: RootState) => state.recipeInfo;
 export const { addRecipe } = recipeSlice.actions;
+
 export default recipeSlice.reducer;

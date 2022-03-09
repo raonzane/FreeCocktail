@@ -1,7 +1,37 @@
 import styled from 'styled-components';
 import { theme } from '../../../styles/theme';
 
-export const Container = styled.div``;
+export const Container = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border-radius: 0.3rem;
+
+  @media ${theme.desktop} {
+    transition: all 0.5s;
+    margin-right: 0.5rem;
+    width: 400px;
+    height: 500px;
+    background-color: #eee;
+  }
+
+  @media ${theme.tablet} {
+    transition: all 0.5s;
+    margin-bottom: 0.5rem;
+    width: 300px;
+    height: 375px;
+    background-color: #eee;
+  }
+
+  @media ${theme.mobile} {
+    transition: all 0.5s;
+    margin-bottom: 0.5rem;
+    width: 200px;
+    height: 250px;
+    background-color: gray;
+  }
+`;
 
 export const DefaultImg = styled.img`
   position: relative;

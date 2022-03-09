@@ -1,6 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { recipeData, addRecipe } from '../../../_slices/recipeSlice';
 import {
   Container,
+  Title,
   TagsInput,
   EnteredTags,
   EnteredTag,
@@ -8,31 +11,47 @@ import {
 } from './Tag.style';
 
 const Tag = function Tag() {
-  const [tags, setTags] = useState<string[]>([]);
+  const [tag, setTag] = useState<string[]>([]);
 
-  const enterTag = (e: any) => {
+  const enterTag = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
-      if (tags.includes(e.target.value)) {
+      if (tag.includes(e.currentTarget.value)) {
         alert('이미 추가된 태그입니다.');
-        e.target.value = null;
+        e.currentTarget.value = '';
       } else {
-        setTags([...tags, e.target.value]);
-        e.target.value = null;
+        setTag([...tag, e.currentTarget.value]);
+        e.currentTarget.value = '';
       }
     }
   };
 
   const removeTag = (key: string) => {
-    setTags(tags.filter((el) => el !== key));
+    setTag(tag.filter((el) => el !== key));
   };
+
+  const data = useSelector(recipeData);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(
+      addRecipe({
+        ...data,
+        tags: tag,
+      })
+    );
+  }, [tag]);
 
   return (
     <Container>
-      <TagsInput placeholder="Press enter to add tags" onKeyUp={enterTag} />
+      <Title>태그</Title>
+      <TagsInput
+        placeholder="Press enter to add tags"
+        onKeyUp={(e) => enterTag(e)}
+      />
       <EnteredTags>
-        {tags.map((el: string) => (
+        {tag.map((el: string) => (
           <EnteredTag key={el}>
-            #{el}
+            # {el}
             <XBtn onClick={() => removeTag(el)}>x</XBtn>
           </EnteredTag>
         ))}

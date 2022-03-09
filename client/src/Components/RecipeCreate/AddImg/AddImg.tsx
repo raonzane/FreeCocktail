@@ -1,4 +1,7 @@
 import React, { useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { recipeData, addRecipe } from '../../../_slices/recipeSlice';
+
 import {
   Container,
   DefaultImg,
@@ -8,11 +11,31 @@ import {
 } from './AddImg.style';
 
 const AddImg = function AddImg() {
+  const data = useSelector(recipeData);
+  const dispatch = useDispatch();
+
+  const [img, setImg] = useState<any>();
+
+  //* 이미지 미리보기
   const changeImage = (e: any) => {
-    const img = e.target.files[0];
-    const formData = new FormData();
-    formData.append('img', img);
-    console.log(formData); // FormData {}
+    const reader = new FileReader();
+
+    reader.onloadend = () => {
+      const base64 = reader.result;
+      if (base64) {
+        setImg(base64.toString());
+      }
+    };
+    if (e.target.files[0]) {
+      reader.readAsDataURL(e.target.files[0]);
+    }
+    console.log(e.target.files[0]);
+    // dispatch(
+    //   addRecipe({
+    //     ...data,
+    //     image: e.target.files[0],
+    //   })
+    // );
   };
 
   return (
@@ -27,7 +50,7 @@ const AddImg = function AddImg() {
         />
         <DefaultImg
           className="DefaultImg"
-          src="/defaultImg.png"
+          src={img || '/defaultImg.png'}
           alt="Default Image"
         />
         <HoveredArea className="HoveredArea">

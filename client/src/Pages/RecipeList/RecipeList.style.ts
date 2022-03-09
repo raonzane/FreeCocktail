@@ -2,23 +2,11 @@ import styled from 'styled-components';
 import { theme } from '../../styles/theme';
 
 export const Container = styled.div`
-  padding: 0% 10%;
-`;
-
-export const Body = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-`;
-
-export const SearchArea = styled.div`
-  width: 100%;
-  height: 15rem;
-  background-color: #eee;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  padding: 10% 10%;
 `;
 
 export const CardArea = styled.div`
@@ -56,5 +44,20 @@ export const CreateBtn = styled.button`
     background: #f876de;
     color: #ffffff;
     box-shadow: 0 0 10px #3d3d3d;
+  }
+`;
+
+export const BackBtn = styled.div`
+  font-weight: 300;
+  margin: 0.5rem 0rem;
+  transition: 0.5s all;
+  width: 826px;
+  @media ${theme.tablet} {
+    transition: 0.5s all;
+    width: 318px;
+  }
+  @media ${theme.mobile} {
+    transition: 0.5s all;
+    width: 218px;
   }
 `;

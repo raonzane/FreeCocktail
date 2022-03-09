@@ -1,33 +1,55 @@
 import React, { useState } from 'react';
 import RecipeCard from 'Components/RecipeCard/RecipeCard';
+import RecipeClicked from 'Components/RecipeClicked/RecipeClicked';
 import RecipeCreate from 'Components/RecipeCreate/RecipeCreate';
 import {
   Container,
-  Body,
-  SearchArea,
   CreateArea,
   CreateBtn,
   CardArea,
+  BackBtn,
 } from './RecipeList.style';
 
 const RecipeList = function RecipeList() {
-  const [isList, setIsList] = useState<boolean>(true);
-  const chagneScreen = () => {
-    setIsList(!isList);
+  const [isBtnClicked, setIsBtnClicked] = useState<boolean>(false);
+  const clickedBtn = () => {
+    setIsBtnClicked(!isBtnClicked);
   };
 
+  const [isCardClicked, setIsCardClicked] = useState<boolean>(false);
   return (
     <Container>
-      <div> Header</div>
-      <Body>
-        <SearchArea>SearchArea</SearchArea>
+      <CreateArea>
+        <CreateBtn onClick={clickedBtn}>+</CreateBtn>
+      </CreateArea>
 
-        <CreateArea>
-          <CreateBtn onClick={chagneScreen}>+</CreateBtn>
-        </CreateArea>
-
-        <CardArea>{isList ? <RecipeCard /> : <RecipeCreate />}</CardArea>
-      </Body>
+      <CardArea>
+        {isCardClicked && !isBtnClicked ? (
+          <BackBtn
+            onClick={() => setIsCardClicked(!isCardClicked)}
+            aria-hidden="true"
+          >
+            {'<<< 리스트로 돌아가기'}
+          </BackBtn>
+        ) : (
+          <br />
+        )}
+        {isBtnClicked ? (
+          <RecipeCreate />
+        ) : (
+          !isBtnClicked &&
+          (isCardClicked ? (
+            <RecipeClicked />
+          ) : (
+            <div
+              onClick={() => setIsCardClicked(!isCardClicked)}
+              aria-hidden="true"
+            >
+              <RecipeCard />
+            </div>
+          ))
+        )}
+      </CardArea>
     </Container>
   );
 };

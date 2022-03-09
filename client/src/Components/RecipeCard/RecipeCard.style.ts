@@ -10,7 +10,7 @@ export const Card = styled.div`
   padding: 0.5rem;
 `;
 
-export const CardImg = styled.div`
+export const CardImg = styled.img`
   width: 200px;
   height: 250px;
   cursor: pointer;
@@ -51,17 +51,18 @@ export const LikesNum = styled.div`
 `;
 
 export const CardTags = styled.div`
-  display: flex;
+  /* display: flex; */
   width: 12rem;
   gap: 0.5rem;
 `;
 
-export const CardTag = styled.div`
-  display: flex;
+export const CardTag = styled.span`
+  display: inline-block;
   align-items: center;
   justify-content: center;
   font-size: 0.5rem;
   border: 1px solid #000;
   border-radius: 0.3rem;
   padding: 0.2rem;
+  margin-right: 0.2rem;
 `;
