@@ -1,5 +1,5 @@
 // import { Router } from 'express';
-// import { GoogleTranslate, TagEdit } from '../Controllers/translate';
+// //import { GoogleTranslate, TagEdit } from '../Controllers/translate';
 
 // const translateRoter = Router();
 

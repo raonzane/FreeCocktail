@@ -15,7 +15,6 @@ oauthRouter.post('/google', OauthController.Google);
  *    - in: body
  *      name: idToken
  *      schema:
- *       idToken:
  *       type: string
  *
  *    responses:

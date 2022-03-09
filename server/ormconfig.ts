@@ -8,7 +8,7 @@ const config: ConnectionOptions = {
   username: process.env.DATABASE_USER,
   password: process.env.DATABASE_PASSWORD,
   database: process.env.DATABASE_NAME,
-  synchronize: false, //혹시나 true로 되어있으면 false 바꿔주세요
+  synchronize: true, //혹시나 true로 되어있으면 false 바꿔주세요
   logging: false,
   entities:
     process.env.NODE_ENV === 'dev' ? ['src/Entity/**/*.ts'] : ['dist/src/Entity/**/*{.js,.ts}'],
