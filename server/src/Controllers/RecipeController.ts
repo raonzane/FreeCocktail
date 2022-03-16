@@ -5,9 +5,9 @@ import { FindAllRecipe, FindTagRecipe, FindLikeRecipe } from '../Services/Recipe
 
 const RecipeSerchTag = async (req: Request, res: Response) => {
   try {
-    const Tag = req.body.tag;
+    const tag = req.query.tag;
 
-    const drinkInfo = await FindTagRecipe(Tag);
+    const drinkInfo = await FindTagRecipe(tag);
 
     res.status(200).send({ data: drinkInfo, message: 'Success' });
   } catch (err) {

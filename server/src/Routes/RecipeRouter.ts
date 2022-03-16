@@ -28,14 +28,10 @@ recipeRouter.get('/tag', RecipeController.RecipeSerchTag);
  *    tags: [Recipe]
  *    summary: 태그에 해당하는 레시피 조회
  *    parameters:
- *     - in: body
+ *     - in: query
  *       name: tag
  *       schema:
- *         type: array
- *         items:
- *          type: string
- *         example:
- *          tag: ["청량한","위스키"]
+ *         type: string
  *
  *    responses:
  *     200:

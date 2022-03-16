@@ -5,7 +5,10 @@ export const FindAllRecipe = () => {
   return Drink.find({ order: { id: 'ASC' } });
 };
 
-export const FindTagRecipe = (tags: Array<string>) => {
+export const FindTagRecipe = (tags) => {
+  if (typeof tags === 'string') {
+    tags = [tags];
+  }
   return getRepository(Drink)
     .createQueryBuilder()
     .where('tags && ARRAY[:...tags]', { tags })
