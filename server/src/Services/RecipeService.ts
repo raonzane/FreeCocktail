@@ -19,3 +19,12 @@ export const FindTagRecipe = (tags) => {
 export const FindLikeRecipe = () => {
   return Drink.find({ order: { likeCount: 'DESC' } });
 };
+
+export const FindIdRecipe = (id) => {
+  return Drink.findOne({ where: { id } });
+};
+
+export const AddRecipe = (drinkInfo) => {
+  const drink = Drink.create(drinkInfo);
+  return Drink.save(drink);
+};
