@@ -145,6 +145,26 @@ export const InvalidMessage = styled.div`
   }
 `;
 
+export const ValidMessage = styled.div`
+  display: flex;
+  justify-content: center;
+  font-weight: 100;
+  font-size: 1rem;
+  color: #008000;
+  margin: 10px 0 20px 0;
+  transition: 0.5s all;
+  @media ${theme.mobile} {
+    font-size: 0.8rem;
+    transition: 0.5s all;
+    margin: 5px 0 10px 0;
+  }
+  @media ${theme.tablet} {
+    font-size: 0.9rem;
+    transition: 0.5s all;
+    margin: 5px 0 10px 0;
+  }
+`;
+
 export const SignupBtn = styled.button`
   outline: none;
   border: 1px solid #f876de;
@@ -245,4 +265,14 @@ export const MsgContainer = styled.div`
     font-size: 0.8rem;
     height: 10px;
   }
+`;
+
+export const Br = styled.div`
+  height: 10px;
+  margin: 5px 0px 11px 0px;
+`;
+
+export const Br2 = styled.div`
+  height: 14.4px;
+  margin: 5px 0px 10px 0px;
 `;

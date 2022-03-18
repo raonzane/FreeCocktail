@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import type { RootState } from '../_store/store';
 
 interface RecipeState {
-  image: any;
+  image: string;
   name: string;
   baseDrink: string;
   tags: string[];
