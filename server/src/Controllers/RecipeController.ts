@@ -46,6 +46,10 @@ const RecipeFindId = async (req: Request, res: Response) => {
     const recipeId = req.params.id;
     const drinkInfo = await FindIdRecipe(recipeId);
 
+    if (!drinkInfo) {
+      return res.status(404).send({ message: 'Resource Not Found' });
+    }
+
     res.status(200).send({ data: drinkInfo, message: 'Success' });
   } catch (err) {
     return res.status(500).send({ message: 'Internal Server Error', err: err });

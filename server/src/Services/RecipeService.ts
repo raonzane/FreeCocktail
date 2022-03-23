@@ -7,7 +7,7 @@ export const FindAllRecipe = () => {
 
 export const FindTagRecipe = (tags) => {
   if (typeof tags === 'string') {
-    tags = [tags];
+    tags = StringToArray(tags);
   }
   return getRepository(Drink)
     .createQueryBuilder()
@@ -25,6 +25,19 @@ export const FindIdRecipe = (id) => {
 };
 
 export const AddRecipe = (drinkInfo) => {
+  if (typeof drinkInfo.tags === 'string') {
+    drinkInfo.tags = StringToArray(drinkInfo.tags);
+  }
+  if (typeof drinkInfo.Ingredient === 'string') {
+    drinkInfo.Ingredient = StringToArray(drinkInfo.Ingredient);
+  }
+  if (typeof drinkInfo.measure === 'string') {
+    drinkInfo.Ingredient = StringToArray(drinkInfo.Ingredient);
+  }
   const drink = Drink.create(drinkInfo);
   return Drink.save(drink);
+};
+
+const StringToArray = (itme) => {
+  return [itme];
 };
