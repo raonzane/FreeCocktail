@@ -12,7 +12,6 @@ import { theme } from '../../styles/theme';
 
 export const Container = styled.div`
   display: flex;
-  align-items: center;
   border: 1px solid #000;
   border-radius: 0.3rem;
   padding: 0.5rem;
@@ -31,6 +30,9 @@ export const Container = styled.div`
 
 export const RecipeData = styled.div`
   @media ${theme.desktop} {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
     transition: 0.5s all;
     width: 400px;
     height: 500px;
@@ -170,12 +172,13 @@ export const Tag = styled.span`
   margin: 0.5rem 0rem 0rem 0.5rem;
 `;
 
-export const Ingredient = styled.span`
+export const Ingredient = styled.div`
   transition: 0.5s all;
   display: inline-block;
   font-family: 'Gmarket Sans TTF';
   font-weight: 200;
   margin: 0.5rem 0rem 0rem 0.5rem;
+  width: 100%;
 
   @media ${theme.mobile} {
     transition: 0.5s all;

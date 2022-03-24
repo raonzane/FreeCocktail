@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import type { RootState } from '../_store/store';
 
 interface RecipeState {
-  image: string;
+  image: string | Blob;
   name: string;
   baseDrink: string;
   tags: string[];
@@ -12,7 +12,7 @@ interface RecipeState {
 }
 
 const INITIAL_STATE: RecipeState = {
-  image: '',
+  image: '/defaultImg.png',
   name: '',
   baseDrink: '',
   tags: [],
