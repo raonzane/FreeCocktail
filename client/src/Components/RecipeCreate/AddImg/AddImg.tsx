@@ -29,13 +29,12 @@ const AddImg = function AddImg() {
     if (e.target.files[0]) {
       reader.readAsDataURL(e.target.files[0]);
     }
-    console.log(e.target.files[0]);
-    // dispatch(
-    //   addRecipe({
-    //     ...data,
-    //     image: e.target.files[0],
-    //   })
-    // );
+    dispatch(
+      addRecipe({
+        ...data,
+        image: e.target.files[0],
+      })
+    );
   };
 
   return (

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { recipeData } from '../../_slices/recipeSlice';
 
 import {
@@ -18,32 +19,43 @@ import Ingredient from './Ingredient/Ingredient';
 import Instruction from './Instruction/Instruction';
 
 const RecipeCreate = function RecipeCreate() {
+  const navigate = useNavigate();
   const data = useSelector(recipeData);
 
   //* 입력정보 유효성 검사
-  const [isEmpty, setIsEmpty] = useState<boolean>(false);
+  const [isValid, setIsValid] = useState<boolean>(true);
   const submit = () => {
-    console.log(data);
     if (
-      data.name.length < 1 ||
-      data.baseDrink.length < 1 ||
-      data.tags.length < 1 ||
-      data.ingredient[0].length < 1 ||
-      data.measure[0].length < 1 ||
-      data.instructions.length < 1
+      data.name &&
+      data.baseDrink &&
+      data.instructions &&
+      data.tags[0] &&
+      data.ingredient[0] &&
+      data.measure[0]
     ) {
-      setIsEmpty(true);
+      setIsValid(true);
+      //* formData 선언 후 append
       const formData = new FormData();
-      // formData.set('image', data.image);
-      // formData.set('name', data.name);
-      // formData.set('baseDrink', data.baseDrink);
-      // formData.set('tags', data.tags);
-      // formData.set('ingredient', data.ingredient);
-      // formData.set('measure', data.measure);
-      // formData.set('instructions', data.instructions);
-      // axios.post('url', formData).then((res) => console.log(res));
+      formData.append('image', data.image);
+      formData.append('name', data.name);
+      formData.append('baseDrink', data.baseDrink);
+      formData.append('Instructions', data.instructions);
+      data.tags.map((el) => formData.append('tags', el));
+      data.ingredient.map((el) => formData.append('Ingredient', el));
+      data.measure.map((el) => formData.append('measure', el));
+      //! --- redux-persist 및 로그인 구현 후 user.id 추가 예정
+      // console.log(...formData);
+      axios
+        .post(`http://localhost:3001/recipe`, formData)
+        .then((res) => {
+          alert(`${res.data.data.name} 레시피 등록이 완료되었습니다!`);
+          navigate(0);
+        })
+        .catch((err) => {
+          if (err.response.status === 404) alert('잘못된 레시피 데이터입니다!');
+        });
     } else {
-      setIsEmpty(false);
+      setIsValid(false);
     }
   };
 
@@ -57,10 +69,10 @@ const RecipeCreate = function RecipeCreate() {
         <Tag />
         <Ingredient />
         <Instruction />
-        {isEmpty ? (
-          <InvalidMessage>입력사항을 모두 입력해주세요.</InvalidMessage>
-        ) : (
+        {isValid ? (
           <Br />
+        ) : (
+          <InvalidMessage>입력사항을 모두 입력해주세요.</InvalidMessage>
         )}
         <SubmitBtn onClick={submit}>레시피 등록</SubmitBtn>
       </RecipeData>
