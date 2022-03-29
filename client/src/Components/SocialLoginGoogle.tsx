@@ -1,28 +1,31 @@
 import React, { useEffect } from 'react';
 import axios from 'axios';
+import { useDispatch } from 'react-redux';
+import { socialUserAsnyc } from '../_slices/userSlice';
 
 axios.defaults.withCredentials = true;
 
-//! 참조 https://bit.ly/3Gf0IS4
 const SocialLoginGoogle = function SocialLoginGoogle() {
   useEffect(() => {
     googleSDK();
   }, []);
 
+  interface GoogleDispatchArg {
+    snsName: string;
+    accessToken: string;
+  }
+
   const { REACT_APP_GOOGLE_CLIENTID, REACT_APP_REDIRECT_URI } = process.env;
   const { google } = window;
+  const dispatch = useDispatch();
 
   function handleCredentialResponse(response: any) {
-    // console.log('ID 토큰 ', response.credential); //* ID 토큰
-    const idToken = response.credential;
-    axios
-      .post('http://localhost:3001/oauth/google', { idToken })
-      .then(function (res: any) {
-        console.log('응답', res);
-      })
-      .catch(function (err: any) {
-        console.log('에러', err);
-      });
+    const accessToken = response.credential;
+    const GOOGLE_DISPATCH_ARG: GoogleDispatchArg = {
+      snsName: 'google',
+      accessToken,
+    };
+    dispatch(socialUserAsnyc(GOOGLE_DISPATCH_ARG));
   }
 
   function googleSDK() {

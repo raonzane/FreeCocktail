@@ -17,8 +17,10 @@ import {
   SocialLoginBtn2,
   SignupBtn,
 } from './LoginPage.style';
+import { store } from '../../_store/store';
 
 const LoginPage = function LoginPage() {
+  console.log('로그인 페이지에서 확인한 state', store.getState());
   return (
     <>
       <Waves />
