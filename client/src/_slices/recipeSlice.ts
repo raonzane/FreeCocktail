@@ -50,7 +50,9 @@ const recipeSlice = createSlice({
   },
 });
 
-export const recipeData = (state: RootState) => state.recipeInfo;
+// export const recipeData = (state: RootState) => state.recipeInfo;
+export const recipeData = (state: RootState) =>
+  state.persistedReducer.recipeInfo;
 export const { addRecipe } = recipeSlice.actions;
 
 export default recipeSlice.reducer;
