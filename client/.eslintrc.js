@@ -11,7 +11,6 @@ module.exports = {
     'plugin:prettier/recommended',
   ],
   rules: {
-    'no-template-curly-in-string': 'off',
     'linebreak-style': 0,
     'import/prefer-default-export': 0,
     'import/extensions': 0,
