@@ -1,8 +1,5 @@
 import styled from 'styled-components';
 import { theme } from '../../styles/theme';
-// 메인 포인트 색 (hotpink) : #f876de
-// 검정 : #333;
-// 버튼 배경색 : #fff;
 
 export const Body = styled.div`
   min-height: 90vh;
@@ -16,7 +13,7 @@ export const Body = styled.div`
     padding: 0 10px 0 10px;
   }
   @media ${theme.tablet} {
-    margin-top: 7.938rem;
+    margin-top: 8.938rem;
     padding: 0 20px 0 20px;
   }
 `;
@@ -29,7 +26,7 @@ export const MainArea = styled.main`
 `;
 
 export const Container = styled.div`
-  z-index: 9;
+  z-index: 3;
   display: flex;
   font-family: 'Gmarket Sans TTF';
   color: #333;
@@ -195,41 +192,6 @@ export const LoginBtn = styled.button`
   }
 `;
 
-export const SocialLoginBtn = styled.button`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  outline: none;
-  border: 1px solid #2d2d2d;
-  background: transparent;
-  border-radius: 0.313rem;
-  padding-left: 0.5rem;
-  font-family: 'Gmarket Sans TTF';
-  font-weight: 100;
-  font-size: 1rem;
-  color: #2d2d2d;
-  height: 2.6rem;
-  width: 100%;
-  margin-top: 10px;
-  cursor: pointer;
-  transition: 0.5s all;
-  &:hover {
-    background: #2d2d2d;
-    color: #fdfbfe;
-  }
-  &:active {
-    background: #f5f4f5;
-  }
-  @media ${theme.mobile} {
-    font-size: 0.8rem;
-    transition: 0.5s all;
-  }
-  @media ${theme.tablet} {
-    font-size: 0.9rem;
-    transition: 0.5s all;
-  }
-`;
-
 export const SignupBtn = styled.div`
   display: flex;
   justify-content: center;
@@ -255,5 +217,65 @@ export const SignupBtn = styled.div`
     word-break: keep-all;
     font-size: 0.9rem;
     transition: 0.5s all;
+  }
+`;
+
+export const SocialLoginBtn2 = styled.div`
+  /* background-color: orange; */
+  display: flex;
+  flex-direction: row;
+  margin: 15px;
+  font-weight: 200;
+  > * {
+    &:nth-child(1) {
+      /* background-color: orange; */
+      flex: 2.2 1 0;
+      text-align: left;
+      margin: auto;
+    }
+    &:nth-child(2) {
+      /* background-color: red; */
+      flex: 1 1 0;
+      display: flex;
+      > * {
+        &:nth-child(2) {
+          margin-left: 15px;
+        }
+      }
+    }
+  }
+  @media ${theme.tablet} {
+    word-break: keep-all;
+    font-size: 0.9rem;
+    > * {
+      &:nth-child(1) {
+        /* background-color: orange; */
+        flex: 1.9 1 0;
+        text-align: left;
+        margin: auto;
+      }
+    }
+  }
+  @media ${theme.mobile} {
+    word-break: keep-all;
+    font-size: 0.8rem;
+    > * {
+      &:nth-child(1) {
+        /* background-color: orange; */
+        flex: 1.9 1 0;
+        text-align: left;
+        margin: auto;
+      }
+      &:nth-child(2) {
+        /* background-color: red; */
+        flex: 1 1 0;
+        display: flex;
+        > * {
+          &:nth-child(2) {
+            margin-left: 3px;
+          }
+        }
+      }
+    }
   }
 `;
