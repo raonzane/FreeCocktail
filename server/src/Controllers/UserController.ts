@@ -38,7 +38,7 @@ const SignUp = async (req: Request, res: Response) => {
 };
 
 const SignOut = async (req: Request, res: Response) => {
-  const { email }: IUserInput = req.body;
+  const email = req.params.email;
   const userInfo = await FindUserInfo(email);
   if (!userInfo) {
     return res.status(404).send({ message: 'Resource Not Found' });
