@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Waves from 'Components/Waves';
-import Withdrawal from 'Components/Withdrawal/Withdrawal';
-
 import { Link, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { userData, signup } from '../../_slices/userSlice';
@@ -88,7 +86,7 @@ const SignUpPage = function SignUpPage() {
           <Container>
             {/* 회원가입 Form */}
             <ContentContainer>
-              {/* <TitleWrapper>
+              <TitleWrapper>
                 <Title>회원가입</Title>
               </TitleWrapper>
 
@@ -104,8 +102,7 @@ const SignUpPage = function SignUpPage() {
                 <p>
                   <Link to="/loginPage">로그인 하기</Link>
                 </p>
-              </LoginBtn> */}
-              <Withdrawal />
+              </LoginBtn>
             </ContentContainer>
             <ImgContainer>이미지 자리</ImgContainer>
           </Container>
