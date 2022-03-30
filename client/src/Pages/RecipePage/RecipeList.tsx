@@ -1,4 +1,6 @@
 import { useState, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { recipeCardsAsnyc } from '_slices/recipeSlice';
 import axios from 'axios';
 import Waves from '../../Components/Waves';
 import {
@@ -42,6 +44,11 @@ interface RecipeListDataType {
   description: string;
 }
 
+interface ExtraURI {
+  categoryURI: string;
+  filteringURI: string;
+}
+
 //! 레시피 리스트 페이지
 // console.log('브라우저 너비', document.body.offsetWidth);
 const RecipeListPage = function RecipeList() {
@@ -56,29 +63,30 @@ const RecipeListPage = function RecipeList() {
   useEffect(() => {
     recipeResult();
   }, [categoryBtn.requestedCategoryBtn]);
+  const dispatch = useDispatch();
 
   //! RecipeList 기본 렌더: 전체보기 조회
   const recipeResult = async function (): Promise<any> {
     const strClickedTags = isClickedTags.join('&tag=');
-    await axios
-      .get(
-        `http://localhost:3001/recipe/${categoryBtn.requestedCategoryBtn}${strClickedTags}`
-      )
-
-      .then((info) => {
-        //! Recipe 카드 TAG 갯수 3개로 제한
-        const result = info.data.data;
-        // console.log('result', result);
-        for (let i = 0; i < result.length; i += 1) {
-          if (result[i].tags.length >= 3) {
-            result[i].tags = result[i].tags.splice(0, 3);
-          }
-        }
-        setNowRecipeListResult(result);
-      })
-      .catch((err) => {
-        console.log('에러', err);
-      });
+    const URI: ExtraURI = {
+      categoryURI: `${categoryBtn.requestedCategoryBtn}`,
+      filteringURI: `${strClickedTags}`,
+    };
+    dispatch(recipeCardsAsnyc(URI));
+    // .then((info) => {
+    //   //! Recipe 카드 TAG 갯수 3개로 제한
+    //   const result = info.data.data;
+    //   // console.log('result', result);
+    //   for (let i = 0; i < result.length; i += 1) {
+    //     if (result[i].tags.length >= 3) {
+    //       result[i].tags = result[i].tags.splice(0, 3);
+    //     }
+    //   }
+    //   setNowRecipeListResult(result);
+    // })
+    // .catch((err) => {
+    //   console.log('에러', err);
+    // });
   };
 
   //! 카테고리 버튼 만드는 함수
