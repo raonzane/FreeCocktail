@@ -35,22 +35,19 @@ userRouter.post('/signup', upload.single('image'), UserController.SignUp);
  *      409:
  *       description: 이미 가입된 이메일
  */
-userRouter.delete('/signout', UserController.SignOut);
+userRouter.delete('/:email', UserController.SignOut);
 /**
  * @swagger
  * paths:
- *  /user/signout:
+ *  /user/{email}:
  *   delete:
  *    tags: [User]
  *    summary: 회원탈퇴
  *    parameters:
- *    - in: body
+ *    - in: path
  *      name: email
  *      schema:
- *         type: object
- *         properties:
- *           email:
- *              type: string
+ *         type: string
  *    responses:
  *      200:
  *       description: 회원탈퇴 성공
