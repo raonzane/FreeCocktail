@@ -16,7 +16,6 @@ import {
   TopButtonSection,
 } from './RecipeList.style';
 import { TopButton } from '../../Components/TopButton';
-import IntersectionObserver from '../../Components/IntersectionObserver';
 
 axios.defaults.withCredentials = true;
 
@@ -269,7 +268,10 @@ const RecipeListPage = function RecipeList() {
             );
           })}
         </RecipeLists>
-        <IntersectionObserver></IntersectionObserver>
+        <div style={{ fontSize: '20px', border: '1px solid red' }}>
+          IntersectionObserver
+        </div>
+        <IntersectionObserver />
         <TopButtonSection>
           <TopButton
             onClick={() => {
