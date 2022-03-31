@@ -27,19 +27,19 @@ const INITIAL_STATE: RecipeState = {
   instructions: '',
 };
 
-export const recipeCardsAsnyc = createAsyncThunk(
-  'RECIPE_DATA',
-  async (URI: ExtraURI): Promise<any> => {
-    const recipeCardData = axios
-      .get(`http://localhost:3001/recipe/${URI.categoryURI}${URI.filteringURI}`)
-      .then((recipeInfo: any) => {
-        const recipeList = recipeInfo.data.data;
-        console.log('recipeInfo', recipeList);
-      })
-      .catch((err: any) => console.log(err));
-    return recipeCardData;
-  }
-);
+// export const recipeCardsAsnyc = createAsyncThunk(
+//   'RECIPE_DATA',
+//   async (URI: ExtraURI): Promise<any> => {
+//     const recipeCardData = axios
+//       .get(`http://localhost:3001/recipe/${URI.categoryURI}${URI.filteringURI}`)
+//       .then((recipeInfo: any) => {
+//         const recipeList = recipeInfo.data.data;
+//         console.log('recipeInfo', recipeList);
+//       })
+//       .catch((err: any) => console.log(err));
+//     return recipeCardData;
+//   }
+// );
 
 // https://bit.ly/3FQtXug
 const recipeSlice = createSlice({
