@@ -7,6 +7,7 @@ import {
   FindLikeRecipe,
   FindIdRecipe,
   AddRecipe,
+  FindPageNation,
 } from '../Services/RecipeService';
 
 const RecipeSerchTag = async (req: Request, res: Response) => {
@@ -74,4 +75,24 @@ const RecipeAdd = async (req: Request, res: Response) => {
   }
 };
 
-export default { RecipeSerchTag, RecipeFindAll, RecipeFindLike, RecipeFindId, RecipeAdd };
+const RecipePageNation = async (req: Request, res: Response) => {
+  try {
+    const lastRecipeId = req.query.lastRecipeId;
+    const size = req.query.size;
+
+    const drinkInfo = await FindPageNation(lastRecipeId, size);
+
+    res.status(200).send({ data: drinkInfo, message: 'Success' });
+  } catch (err) {
+    return res.status(500).send({ message: 'Internal Server Error', err: err });
+  }
+};
+
+export default {
+  RecipeSerchTag,
+  RecipeFindAll,
+  RecipeFindLike,
+  RecipeFindId,
+  RecipeAdd,
+  RecipePageNation,
+};
