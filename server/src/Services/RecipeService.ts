@@ -38,6 +38,15 @@ export const AddRecipe = (drinkInfo) => {
   return Drink.save(drink);
 };
 
+export const FindPageNation = (lastRecipeId, size) => {
+  return getRepository(Drink)
+    .createQueryBuilder('drink')
+    .where('drink.id > :lastRecipeId', { lastRecipeId })
+    .limit(size)
+    .orderBy('id', 'ASC')
+    .getMany();
+};
+
 const StringToArray = (itme) => {
   return [itme];
 };

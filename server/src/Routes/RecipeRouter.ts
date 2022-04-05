@@ -60,28 +60,6 @@ recipeRouter.get('/like', RecipeController.RecipeFindLike);
  *         $ref: '#/components/schemas/RecipeReturn'
  */
 
-recipeRouter.get('/:id', RecipeController.RecipeFindId);
-/**
- * @swagger
- * paths:
- *  /recipe/{id}:
- *   get:
- *    tags: [Recipe]
- *    summary: ID로 레시피 조회
- *    parameters:
- *    - in: path
- *      name: id
- *      schema:
- *       type: string
- *    responses:
- *     200:
- *      description: 레시피 조회 성공
- *      content:
- *       application/json:
- *        schema:
- *         $ref: '#/components/schemas/RecipeReturn'
- */
-
 recipeRouter.post('/', upload.single('image'), RecipeController.RecipeAdd);
 /**
  * @swagger
@@ -115,4 +93,52 @@ recipeRouter.post('/', upload.single('image'), RecipeController.RecipeAdd);
  *     404:
  *      description: 잘못된 레시피 데이터
  */
+recipeRouter.get('/page', RecipeController.RecipePageNation);
+/**
+ * @swagger
+ * paths:
+ *  /recipe/page:
+ *   get:
+ *    tags: [Recipe]
+ *    summary: 원하는 범위에 레시피 조회
+ *    parameters:
+ *     - in: query
+ *       name: lastRecipeId
+ *       schema:
+ *        type: integer
+ *     - in: query
+ *       name: size
+ *       schema:
+ *        type: integer
+ *
+ *    responses:
+ *     200:
+ *      description: 레시피 조회 성공
+ *      content:
+ *       application/json:
+ *        schema:
+ *         $ref: '#/components/schemas/RecipeReturn'
+ */
+recipeRouter.get('/:id', RecipeController.RecipeFindId);
+/**
+ * @swagger
+ * paths:
+ *  /recipe/{id}:
+ *   get:
+ *    tags: [Recipe]
+ *    summary: ID로 레시피 조회
+ *    parameters:
+ *    - in: path
+ *      name: id
+ *      schema:
+ *       type: string
+ *    responses:
+ *     200:
+ *      description: 레시피 조회 성공
+ *      content:
+ *       application/json:
+ *        schema:
+ *         $ref: '#/components/schemas/RecipeReturn'
+ */
+
 export default recipeRouter;
