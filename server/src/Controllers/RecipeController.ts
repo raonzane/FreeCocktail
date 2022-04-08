@@ -12,9 +12,9 @@ import {
 
 const RecipeSerchTag = async (req: Request, res: Response) => {
   try {
-    const tag = req.query.tag;
+    const { tag, skip, size } = req.query;
 
-    const drinkInfo = await FindTagRecipe(tag);
+    const drinkInfo = await FindTagRecipe(tag, skip, size);
 
     res.status(200).send({ data: drinkInfo, message: 'Success' });
   } catch (err) {
@@ -34,7 +34,8 @@ const RecipeFindAll = async (req: Request, res: Response) => {
 
 const RecipeFindLike = async (req: Request, res: Response) => {
   try {
-    const drinkInfo = await FindLikeRecipe();
+    const { skip, size } = req.query;
+    const drinkInfo = await FindLikeRecipe(skip, size);
 
     res.status(200).send({ data: drinkInfo, message: 'Success' });
   } catch (err) {
@@ -77,10 +78,8 @@ const RecipeAdd = async (req: Request, res: Response) => {
 
 const RecipePageNation = async (req: Request, res: Response) => {
   try {
-    const lastRecipeId = req.query.lastRecipeId;
-    const size = req.query.size;
-
-    const drinkInfo = await FindPageNation(lastRecipeId, size);
+    const { skip, size } = req.query;
+    const drinkInfo = await FindPageNation(skip, size);
 
     res.status(200).send({ data: drinkInfo, message: 'Success' });
   } catch (err) {
