@@ -33,6 +33,14 @@ recipeRouter.get('/tag', RecipeController.RecipeSerchTag);
  *       name: tag
  *       schema:
  *         type: string
+ *     - in: query
+ *       name: lastRecipeId
+ *       schema:
+ *        type: integer
+ *     - in: query
+ *       name: size
+ *       schema:
+ *        type: integer
  *
  *    responses:
  *     200:
@@ -51,6 +59,15 @@ recipeRouter.get('/like', RecipeController.RecipeFindLike);
  *   get:
  *    tags: [Recipe]
  *    summary: 좋아요 순으로 레시피 조회
+ *    parameters:
+ *     - in: query
+ *       name: lastRecipeId
+ *       schema:
+ *        type: integer
+ *     - in: query
+ *       name: size
+ *       schema:
+ *        type: integer
  *    responses:
  *     200:
  *      description: 레시피 조회 성공
