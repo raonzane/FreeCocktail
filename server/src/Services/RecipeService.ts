@@ -26,7 +26,6 @@ export const FindLikeRecipe = (skip, size) => {
     .orderBy('Drink.likeCount', 'DESC')
     .addOrderBy('Drink.id', 'ASC')
     .getMany();
-  //return Drink.find({ order: { likeCount: 'DESC' } });
 };
 
 export const FindIdRecipe = (id) => {
