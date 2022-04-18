@@ -1,25 +1,70 @@
 import React, { useState } from 'react';
 import './MyPage.style.ts';
 import Withdrawal from 'Components/Withdrawal/Withdrawal';
-
-import { Body } from './MyPage.style';
+import {
+  Body,
+  UserProfileContainer,
+  UserImg,
+  UserInfoEdit,
+  UserInfoGreeting,
+  UserInfoButtons,
+  UserInfoEditButton,
+  SignOutButton,
+  Tab,
+  TabMenu,
+} from './MyPage.style';
+import { RecipeLists, RecipeCards } from '../RecipePage/RecipeList.style';
+import { store } from '../../_store/store';
 
 const MyPage = function MyPage() {
+  console.log('마이 페이지에서 확인한 state', store.getState());
+
   const [isWithdrawal, setIsWithdrawal] = useState(false);
   return (
     <Body>
-      {isWithdrawal ? (
-        <Withdrawal />
-      ) : (
-        <div
-          onClick={() => {
-            setIsWithdrawal(true);
-          }}
-          aria-hidden="true"
-        >
-          회원 탈퇴 하기
-        </div>
-      )}
+      <UserProfileContainer>
+        <UserImg />
+        <UserInfoEdit>
+          <UserInfoGreeting> 김두식님, 반갑습니다! </UserInfoGreeting>
+          <UserInfoButtons>
+            <UserInfoEditButton>회원 정보 수정</UserInfoEditButton>
+            {isWithdrawal ? (
+              <Withdrawal />
+            ) : (
+              <SignOutButton
+                onClick={() => {
+                  setIsWithdrawal(true);
+                }}
+                aria-hidden="true"
+              >
+                회원 탈퇴 하기
+              </SignOutButton>
+            )}
+          </UserInfoButtons>
+        </UserInfoEdit>
+      </UserProfileContainer>
+      <Tab>
+        <TabMenu>
+          <div>작성글</div>
+        </TabMenu>
+        <TabMenu>
+          <div>관심글</div>
+        </TabMenu>
+      </Tab>
+      {/* <SectionDivider section /> */}
+      <RecipeLists>
+        <RecipeCards>리스트1</RecipeCards>
+        <RecipeCards>리스트1</RecipeCards>
+        <RecipeCards>리스트1</RecipeCards>
+        <RecipeCards>리스트1</RecipeCards>
+        <RecipeCards>리스트1</RecipeCards>
+        <RecipeCards>리스트1</RecipeCards>
+        <RecipeCards>리스트1</RecipeCards>
+        <RecipeCards>리스트1</RecipeCards>
+        <RecipeCards>리스트1</RecipeCards>
+        <RecipeCards>리스트1</RecipeCards>
+        <RecipeCards>리스트1</RecipeCards>
+      </RecipeLists>
     </Body>
     // <svg
     //   viewBox="0 0 100 100"
