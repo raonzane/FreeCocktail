@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 // import { recipeCardsAsnyc } from '_slices/recipeSlice';
 import axios from 'axios';
@@ -16,6 +16,7 @@ import {
   TopButtonSection,
 } from './RecipeList.style';
 import { TopButton } from '../../Components/TopButton';
+import { store } from '../../_store/store';
 
 axios.defaults.withCredentials = true;
 
@@ -44,44 +45,120 @@ interface RecipeListDataType {
   description: string;
 }
 
-interface ExtraURI {
-  categoryURI: string;
-  filteringURI: string;
-}
+// interface URI {
+// requestType: string;
+// categoryURI: string;
+// filteringURI: string;
+// }
 
 //! 레시피 리스트 페이지
 // console.log('브라우저 너비', document.body.offsetWidth);
 const RecipeListPage = function RecipeList() {
+  console.log('레시피 페이지에서 확인한 state', store.getState());
+
   const [categoryBtn, setCategoryBtn] = useState<RecipeListDataType>({
-    requestedCategoryBtn: '/',
+    requestedCategoryBtn: 'page?',
     isFilterOpened: '',
     description: '저희 서비스의 모든 칵테일 레시피를 조회할 수 있습니다.',
   });
   const [nowRecipeListResult, setNowRecipeListResult] = useState<any>([]);
   const [isClickedTags, setIsClickedTags] = useState<any>([]);
+  const [skipID, setSkipID] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
   // console.log('아무것도 선택 안 했을 때', isClickedTags);
+
+  // useCallback(async () => {
+  //   try {
+  //     recipeResult();
+  //   } catch (err) {
+  //     console.log('useCallback에러', err);
+  //   }
+  // }, [categoryBtn.requestedCategoryBtn]);
+
   useEffect(() => {
-    recipeResult();
+    recipeResult('filtering');
   }, [categoryBtn.requestedCategoryBtn]);
+
   const dispatch = useDispatch();
 
+  //! 무한스크롤에 필요한 함수
+  const infinityScrollPoint = useRef(null);
+
+  // const IOhandler = useCallback(
+  //   async (entries) => {
+  //     // console.log('entries', entries);
+  //     try {
+  //       const eventTarget = entries[0];
+  //       if (eventTarget.isIntersecting) {
+  //         setIsLoading(true);
+  //         recipeResult(skipID);
+  //       }
+  //     } catch (err) {
+  //       console.log(err);
+  //     }
+  //   },
+  //   [isLoading]
+  // );
+
+  const IOhandler = function (entries: any) {
+    const eventTarget = entries[0];
+    if (eventTarget.isIntersecting && !isLoading)
+      recipeResult('infinityScroll', skipID);
+  };
+
+  useEffect(() => {
+    const options = {
+      root: null,
+      rootMargin: '500px',
+      threshold: 0,
+    };
+
+    const IO = new IntersectionObserver(IOhandler, options);
+    if (infinityScrollPoint.current) IO.observe(infinityScrollPoint.current);
+
+    return () => {
+      IO.disconnect();
+    };
+  }, [IOhandler]);
+
   //! RecipeList 기본 렌더: 전체보기 조회
-  const recipeResult = async function (): Promise<any> {
-    const strClickedTags = isClickedTags.join('&tag=');
+  const recipeResult = async function (
+    requestType?: string,
+    skipID = 0
+  ): Promise<any> {
+    // console.log('isClickedTags', isClickedTags);
+    const clickedTags = isClickedTags.join('&tag=').concat('&');
+
+    const url = `http://localhost:3001/recipe/${categoryBtn.requestedCategoryBtn}${clickedTags}skip=${skipID}&size=16`;
+
+    // console.log('url', url);
+
     await axios
-      .get(
-        `http://localhost:3001/recipe/${categoryBtn.requestedCategoryBtn}${strClickedTags}`
-      )
+      .get(url)
       .then((info) => {
         //! Recipe 카드 TAG 갯수 3개로 제한
         const result = info.data.data;
-        // console.log('result', result);
+        // console.log('result', result)
         for (let i = 0; i < result.length; i += 1) {
           if (result[i].tags.length >= 3) {
             result[i].tags = result[i].tags.splice(0, 3);
           }
         }
-        setNowRecipeListResult(result);
+
+        // console.log('result', result);
+        if (requestType === 'filtering') {
+          setNowRecipeListResult([...result]);
+          setSkipID(result.length);
+        } else if (requestType === 'infinityScroll') {
+          setNowRecipeListResult([...nowRecipeListResult, ...result]);
+          setSkipID(nowRecipeListResult.length + result.length);
+        }
+
+        if (result.length < 16) {
+          setIsLoading(true);
+        } else {
+          setIsLoading(false);
+        }
       })
       .catch((err) => {
         console.log('에러', err);
@@ -127,21 +204,27 @@ const RecipeListPage = function RecipeList() {
         e.target.textContent = '✨'.concat(nowPicked).concat('✨');
         e.target.style.background = '#94FDD7';
 
+        setIsClickedTags([]);
+        setNowRecipeListResult([]);
+
         if (nowPicked === '전체보기') {
+          setSkipID(0);
           setCategoryBtn({
-            requestedCategoryBtn: '',
+            requestedCategoryBtn: 'page?',
             isFilterOpened: '',
             description:
               '저희 서비스의 모든 칵테일 레시피를 조회할 수 있습니다.',
           });
         } else if (nowPicked === '인기순') {
+          setSkipID(0);
           setCategoryBtn({
-            requestedCategoryBtn: 'like',
+            requestedCategoryBtn: 'like?',
             isFilterOpened: '',
             description:
               '현재 시간 가장 인기 많은 칵테일부터 조회할 수 있습니다.',
           });
         } else if (nowPicked === '해시태그') {
+          setSkipID(0);
           setCategoryBtn({
             requestedCategoryBtn: 'tag?tag=',
             isFilterOpened: `${nowPicked}`,
@@ -149,6 +232,7 @@ const RecipeListPage = function RecipeList() {
               '칵테일이 처음이라면, 원하는 태그를 통해 가장 잘 맞는 칵테일을 찾아보세요',
           });
         } else if (nowPicked === '베이스 드링크') {
+          setSkipID(0);
           setCategoryBtn({
             requestedCategoryBtn: 'tag?tag=',
             isFilterOpened: `${nowPicked}`,
@@ -158,7 +242,13 @@ const RecipeListPage = function RecipeList() {
         }
       } else if (nowPicked.includes('✨')) {
         e.target.textContent = nowPicked.slice(1, -1);
-        e.target.style.background = '#ffffff';
+
+        if (prePicked === e.target.textContent) {
+          e.target.style.background = '#94FDD7';
+          e.target.textContent = nowPicked;
+        } else {
+          e.target.style.background = '#ffffff';
+        }
       }
     };
 
@@ -189,6 +279,9 @@ const RecipeListPage = function RecipeList() {
     const setFilterBtns = function (e: any): any {
       const pickedFilterName = e.target.innerHTML;
 
+      setNowRecipeListResult([]);
+      setSkipID(0);
+
       if (!pickedFilterName.includes('💛')) {
         e.target.textContent = '💛'.concat(pickedFilterName);
         e.target.style.background = '#CB77FF';
@@ -208,7 +301,8 @@ const RecipeListPage = function RecipeList() {
       }
 
       setIsClickedTags(isPickedFilterName);
-      recipeResult();
+      // console.log('isPickedFilterName', isPickedFilterName);
+      recipeResult('filtering');
     };
     return subFilterNameList.map(function (el: string, index: number): any {
       return (
@@ -243,6 +337,7 @@ const RecipeListPage = function RecipeList() {
         <SectionDivider section />
         <RecipeLists>
           {nowRecipeListResult.map(function (el: any) {
+            // console.log('el', el);
             return (
               <RecipeCards key={el.id}>
                 <img alt={el.name} src={el.image} />
@@ -256,8 +351,9 @@ const RecipeListPage = function RecipeList() {
                   </div>
                   <div className="RcipeTags">
                     {el.tags.map(function (tag: string) {
+                      // console.log('String(el.id) + tag', String(el.id) + tag);
                       return (
-                        <button key={tag} type="button">
+                        <button key={String(el.id) + tag} type="button">
                           {'#'.concat(tag)}
                         </button>
                       );
@@ -267,11 +363,8 @@ const RecipeListPage = function RecipeList() {
               </RecipeCards>
             );
           })}
+          <div ref={infinityScrollPoint} />
         </RecipeLists>
-        <div style={{ fontSize: '20px', border: '1px solid red' }}>
-          IntersectionObserver
-        </div>
-        <IntersectionObserver />
         <TopButtonSection>
           <TopButton
             onClick={() => {
