@@ -17,8 +17,6 @@ import { RecipeLists, RecipeCards } from '../RecipePage/RecipeList.style';
 import { store } from '../../_store/store';
 
 const MyPage = function MyPage() {
-  console.log('마이 페이지에서 확인한 state', store.getState());
-
   const [isWithdrawal, setIsWithdrawal] = useState(false);
   return (
     <Body>
