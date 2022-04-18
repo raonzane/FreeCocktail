@@ -54,7 +54,7 @@ interface RecipeListDataType {
 //! 레시피 리스트 페이지
 // console.log('브라우저 너비', document.body.offsetWidth);
 const RecipeListPage = function RecipeList() {
-  console.log('레시피 페이지에서 확인한 state', store.getState());
+  // console.log('레시피 페이지에서 확인한 state', store.getState());
 
   const [categoryBtn, setCategoryBtn] = useState<RecipeListDataType>({
     requestedCategoryBtn: 'page?',
