@@ -3,6 +3,7 @@ import { IUserInput, loginType } from '../Interfaces/IUser';
 import * as bcrypt from 'bcrypt';
 import { TokensCreate } from '../Modules/token';
 import { CreateUser, DeleteUser, EditUser, FindUserInfo } from '../Services/UserService';
+import { FindByIdLike } from '../Services/LikeServices';
 
 const SignUp = async (req: Request, res: Response) => {
   try {
@@ -83,7 +84,8 @@ const LogIn = async (req: Request, res: Response) => {
     secure: true,
   });
 
-  res.status(200).send({ data: userInfo, accessToken, message: 'Success' });
+  const likeInfo = await FindByIdLike(userInfo.id);
+  res.status(200).send({ data: userInfo, likeInfo, accessToken, message: 'Success' });
 };
 
 const LogOut = async (req: Request, res: Response) => {
