@@ -46,21 +46,21 @@ const userSlice = createSlice({
   name: 'user',
   initialState: INITIAL_STATE,
   reducers: {
-    signup: (userState, action: PayloadAction<UserState>) => {
-      const { id, nickname, email, password, pwdCheck, image, OAuth, submit } =
-        action.payload;
-      userState = {
-        id,
-        nickname,
-        email,
-        password,
-        pwdCheck,
-        image,
-        OAuth,
-        submit,
-      };
-      return userState;
-    },
+    // signup: (userState, action: PayloadAction<UserState>) => {
+    //   const { id, nickname, email, password, pwdCheck, image, OAuth, submit } =
+    //     action.payload;
+    //   userState = {
+    //     id,
+    //     nickname,
+    //     email,
+    //     password,
+    //     pwdCheck,
+    //     image,
+    //     OAuth,
+    //     submit,
+    //   };
+    //   return userState;
+    // },
   },
   extraReducers: (builder) => {
     builder.addCase(socialUserAsnyc.pending, (INITIAL_STATE, action) => {
@@ -77,5 +77,5 @@ const userSlice = createSlice({
 
 // export const userData = (state: RootState) => state.userInfo;
 export const userData = (state: RootState) => state.persistedReducer.userInfo;
-export const { signup } = userSlice.actions;
+// export const { signup } = userSlice.actions;
 export default userSlice.reducer;
