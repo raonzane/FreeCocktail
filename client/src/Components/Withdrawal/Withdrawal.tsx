@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { store } from '_store/store';
 
 import {
   Container,
@@ -24,7 +25,8 @@ const Withdrawal = function Withdrawal() {
   const email: any = 'asda@asd.com';
   const ButtonClicked = () => {
     if (isAgreed) {
-      alert('회원 탈퇴를 완료했습니다.\n서비스를 이용해 주셔서 감사합니다.');
+      alert(`회원 탈퇴를 완료했습니다.
+서비스를 이용해 주셔서 감사합니다.`);
       axios.delete(`http://localhost:3001/user/${email}`);
       navigate('/');
     } else if (!isAgreed) {

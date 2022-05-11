@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import './MyPage.style.ts';
-import Withdrawal from 'Components/Withdrawal/Withdrawal';
+import Modal from '../../Components/_Modal/Modal';
+import Withdrawal from '../../Components/Withdrawal/Withdrawal';
 import {
   Body,
   UserProfileContainer,
@@ -23,20 +24,19 @@ const MyPage = function MyPage() {
       <UserProfileContainer>
         <UserImg />
         <UserInfoEdit>
-          <UserInfoGreeting> 김두식님, 반갑습니다! </UserInfoGreeting>
+          <UserInfoGreeting> 김덕배님, 반갑습니다! </UserInfoGreeting>
           <UserInfoButtons>
             <UserInfoEditButton>회원 정보 수정</UserInfoEditButton>
-            {isWithdrawal ? (
-              <Withdrawal />
-            ) : (
-              <SignOutButton
-                onClick={() => {
-                  setIsWithdrawal(true);
-                }}
-                aria-hidden="true"
-              >
-                회원 탈퇴 하기
-              </SignOutButton>
+            <SignOutButton
+              onClick={() => {
+                setIsWithdrawal(true);
+              }}
+              aria-hidden="true"
+            >
+              회원 탈퇴 하기
+            </SignOutButton>
+            {isWithdrawal && (
+              <Modal data={<Withdrawal />} close={setIsWithdrawal} />
             )}
           </UserInfoButtons>
         </UserInfoEdit>
