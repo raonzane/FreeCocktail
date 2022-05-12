@@ -5,10 +5,10 @@ export enum loginType {
   none = '일반',
 }
 
-export interface IUserInput {
+export interface IUser {
   nickname: string;
   password: string;
-  image: string;
+  image?: string;
   email: string;
   type: loginType;
 }

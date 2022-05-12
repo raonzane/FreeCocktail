@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { IUserInput, loginType } from '../Interfaces/IUser';
+import { IUser, loginType } from '../Interfaces/IUser';
 import { OAuth2Client } from 'google-auth-library';
 import 'dotenv/config';
 import axios from 'axios';

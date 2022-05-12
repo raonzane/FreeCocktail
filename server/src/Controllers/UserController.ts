@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { IUserInput, loginType } from '../Interfaces/IUser';
+import { IUser, loginType } from '../Interfaces/IUser';
 import * as bcrypt from 'bcrypt';
 import { TokensCreate } from '../Modules/token';
 import { CreateUser, DeleteUser, EditUser, FindUserInfo } from '../Services/UserService';
@@ -7,8 +7,7 @@ import { FindByIdLike } from '../Services/LikeServices';
 
 const SignUp = async (req: Request, res: Response) => {
   try {
-    //image 작업필요
-    const { nickname, password, image, email }: IUserInput = req.body;
+    const { nickname, password, email }: IUser = req.body;
     const findUser = await FindUserInfo(email);
     if (findUser) {
       return res.status(409).send({ message: `${email} Already Exists` });
@@ -18,7 +17,6 @@ const SignUp = async (req: Request, res: Response) => {
     const userInfo = await CreateUser({
       nickname,
       password: hashPassword,
-      image,
       email,
       type: loginType.none,
     });
@@ -49,18 +47,20 @@ const SignOut = async (req: Request, res: Response) => {
 };
 
 const Edit = async (req: Request, res: Response) => {
-  //image 작업필요
-  const { nickname, password, image }: IUserInput = req.body;
+  const { nickname, password }: Partial<IUser> = req.body;
   const { email }: any = req.params;
   let userInfo = await FindUserInfo(email);
 
   if (!userInfo) {
     return res.status(404).send({ message: 'Resource Not Found' });
   }
-  ///image 코드 확인
+
+  if (!!req.file) {
+    userInfo.image = req.file['location'];
+  }
+
   userInfo.nickname = nickname || userInfo.nickname;
   userInfo.password = password || userInfo.password;
-  userInfo.password = image || userInfo.image;
 
   const editUserInfo = await EditUser(userInfo);
 
@@ -68,7 +68,7 @@ const Edit = async (req: Request, res: Response) => {
 };
 
 const LogIn = async (req: Request, res: Response) => {
-  const { password, email }: IUserInput = req.body;
+  const { password, email }: Partial<IUser> = req.body;
   const userInfo = await FindUserInfo(email);
   const hash = await bcrypt.compare(password, userInfo.password);
 
