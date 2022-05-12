@@ -1,9 +1,9 @@
 import { Router } from 'express';
-import { upload } from '../Modules/multer';
+import { Upload } from '../Modules/multer';
 import UserController from '../Controllers/UserController';
 const userRouter = Router();
 
-userRouter.post('/signup', upload.single('image'), UserController.SignUp);
+userRouter.post('/signup', UserController.SignUp);
 /**
  * @swagger
  * paths:
@@ -118,7 +118,7 @@ userRouter.get('/:email', UserController.UserInfo);
  *       description: 잘못된 회원 정보
  */
 
-userRouter.patch('/:email', upload.single('image'), UserController.Edit);
+userRouter.patch('/:email', Upload.single('image'), UserController.Edit);
 /**
  * @swagger
  * paths:

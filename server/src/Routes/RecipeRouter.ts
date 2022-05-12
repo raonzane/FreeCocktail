@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { upload } from '../Modules/multer';
+import { Upload } from '../Modules/multer';
 import RecipeController from '../Controllers/RecipeController';
 const recipeRouter = Router();
 
@@ -77,7 +77,7 @@ recipeRouter.get('/like', RecipeController.RecipeFindLike);
  *         $ref: '#/components/schemas/RecipeReturn'
  */
 
-recipeRouter.post('/', upload.single('image'), RecipeController.RecipeAdd);
+recipeRouter.post('/', Upload.single('image'), RecipeController.RecipeAdd);
 /**
  * @swagger
  * paths:

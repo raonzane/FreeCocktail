@@ -1,13 +1,12 @@
-import { IUserInput } from '../Interfaces/IUser';
+import { IUser } from '../Interfaces/IUser';
 import { User } from '../Entity/User';
 
-export const CreateUser = (data: IUserInput) => {
+export const CreateUser = (data: IUser) => {
   const userInfo = User.create(data);
   return User.save(userInfo);
 };
 
 export const FindUserInfo = (data: string) => {
-  //const email = data;
   return User.findOne({ email: data });
 };
 
