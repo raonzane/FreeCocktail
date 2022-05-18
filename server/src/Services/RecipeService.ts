@@ -41,7 +41,7 @@ export const AddRecipe = (drinkInfo) => {
     drinkInfo.Ingredient = StringToArray(drinkInfo.Ingredient);
   }
   if (typeof drinkInfo.measure === 'string') {
-    drinkInfo.Ingredient = StringToArray(drinkInfo.Ingredient);
+    drinkInfo.measure = StringToArray(drinkInfo.measure);
   }
   const drink = Drink.create(drinkInfo);
   return Drink.save(drink);
