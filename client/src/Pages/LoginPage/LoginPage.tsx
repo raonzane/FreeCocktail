@@ -20,6 +20,7 @@ import {
   SocialLoginBtn2,
   SignupBtn,
 } from './LoginPage.style';
+import { userLoginAsync } from '../../_slices/userSlice';
 import { store } from '../../_store/store';
 
 const LoginPage = function LoginPage() {
@@ -40,7 +41,12 @@ const LoginPage = function LoginPage() {
 
   // dispatch로 setAuth에 서버에 로그인 요청
   const handleLogin = (email: string, password: string) => {
-    dispatch(setAuth({ email, password }));
+    // dispatch(setAuth({ email, password }));
+    const SIGNININ_ARG = {
+      email,
+      password,
+    };
+    dispatch(userLoginAsync(SIGNININ_ARG));
   };
 
   const handleKeyPress = (
