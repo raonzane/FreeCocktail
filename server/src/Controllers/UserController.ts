@@ -21,16 +21,7 @@ const SignUp = async (req: Request, res: Response) => {
       type: loginType.none,
     });
 
-    const { accessToken, refreshToken } = await TokensCreate(userInfo);
-
-    res.cookie('refreshToken', refreshToken, {
-      maxAge: 60 * 60 * 24 * 3,
-      sameSite: 'none',
-      httpOnly: true,
-      secure: true,
-    });
-
-    res.status(201).send({ data: userInfo, accessToken, message: 'Success' });
+    res.status(201).send({ data: userInfo, message: 'Success' });
   } catch (err) {
     return res.status(500).send({ message: 'Internal Server Error', err: err });
   }
