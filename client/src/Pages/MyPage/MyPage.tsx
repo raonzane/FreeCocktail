@@ -19,14 +19,17 @@ import { store } from '../../_store/store';
 
 const MyPage = function MyPage() {
   const [isWithdrawal, setIsWithdrawal] = useState(false);
+  const email = store.getState().persistedReducer.userInfo;
   return (
     <Body>
       <UserProfileContainer>
         <UserImg />
         <UserInfoEdit>
-          <UserInfoGreeting> 김덕배님, 반갑습니다! </UserInfoGreeting>
+          <UserInfoGreeting>김덕배님, 반갑습니다!</UserInfoGreeting>
           <UserInfoButtons>
-            <UserInfoEditButton>회원 정보 수정</UserInfoEditButton>
+            <UserInfoEditButton onClick={() => console.log(email)}>
+              회원 정보 수정
+            </UserInfoEditButton>
             <SignOutButton
               onClick={() => {
                 setIsWithdrawal(true);
