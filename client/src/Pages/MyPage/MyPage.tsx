@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './MyPage.style.ts';
+
 import Modal from '../../Components/_Modal/Modal';
 import Withdrawal from '../../Components/Withdrawal/Withdrawal';
 import {
@@ -15,11 +16,10 @@ import {
   TabMenu,
 } from './MyPage.style';
 import { RecipeLists, RecipeCards } from '../RecipePage/RecipeList.style';
-import { store } from '../../_store/store';
 
 const MyPage = function MyPage() {
   const [isWithdrawal, setIsWithdrawal] = useState(false);
-  const email = store.getState().persistedReducer.userInfo;
+
   return (
     <Body>
       <UserProfileContainer>
@@ -27,9 +27,7 @@ const MyPage = function MyPage() {
         <UserInfoEdit>
           <UserInfoGreeting>김덕배님, 반갑습니다!</UserInfoGreeting>
           <UserInfoButtons>
-            <UserInfoEditButton onClick={() => console.log(email)}>
-              회원 정보 수정
-            </UserInfoEditButton>
+            <UserInfoEditButton>회원 정보 수정</UserInfoEditButton>
             <SignOutButton
               onClick={() => {
                 setIsWithdrawal(true);

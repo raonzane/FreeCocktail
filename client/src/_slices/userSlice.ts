@@ -56,7 +56,7 @@ export const socialUserAsnyc = createAsyncThunk(
         idToken: `${arg.accessToken}`,
       })
       .then((userInfo) => userInfo.data.data)
-      .catch((err: any) => console.log(err));
+      .catch((err) => console.log(err));
     return socialLoginUserData;
   }
 );
@@ -81,7 +81,7 @@ export const userLoginAsync = createAsyncThunk(
         console.log('로그인 유저의 INITIAL_STATE', INITIAL_STATE);
         return INITIAL_STATE;
       })
-      .catch((err: any) => console.log(err));
+      .catch((err) => console.log(err));
     return loginUserData;
   }
 );
