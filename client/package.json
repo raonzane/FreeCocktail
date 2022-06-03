@@ -42,7 +42,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "postinstall": "semantic-ui-css-patch",
-    "preinstall": "npx npm-force-resolutions"
+    "preinstall": "npx force-resolutions"
   },
   "eslintConfig": {
     "extends": [

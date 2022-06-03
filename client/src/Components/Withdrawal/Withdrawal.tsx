@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { userData } from '_slices/userSlice';
 import axios from 'axios';
-import { store } from '_store/store';
 
 import {
   Container,
@@ -18,11 +19,11 @@ import {
 
 const Withdrawal = function Withdrawal() {
   const navigate = useNavigate();
+  const userInfo: any = useSelector(userData);
   const [isAgreed, setIsAgreed] = useState(false);
 
   //* 회원 탙퇴 요청
-  //! email 값은 수정해야함!
-  const email: any = 'asda@asd.com';
+  const { email } = userInfo.data;
   const ButtonClicked = () => {
     if (isAgreed) {
       alert(`회원 탈퇴를 완료했습니다.
