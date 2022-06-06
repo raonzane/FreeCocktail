@@ -16,12 +16,12 @@ export const HeaderContainer = styled.div`
 `;
 
 export const FooterContainer = styled.div`
-  height: 11.313rem;
-  background: linear-gradient(0deg, #fdfbfe, #fdfbfe), #fbfbfb;
+  width: 100%;
+  /* background: linear-gradient(0deg, #fdfbfe, #fdfbfe), #fbfbfb;
   border-top: 0.063rem solid #e0dde1;
   margin-top: auto;
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 3.5;
+  z-index: 3.5; */
 `;
