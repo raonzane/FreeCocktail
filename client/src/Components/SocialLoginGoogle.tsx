@@ -20,6 +20,7 @@ const SocialLoginGoogle = function SocialLoginGoogle() {
   const dispatch = useDispatch();
 
   function handleCredentialResponse(response: any) {
+    // console.log('ID 토큰 ', response.credential); //* ID 토큰
     const accessToken = response.credential;
     const GOOGLE_DISPATCH_ARG: GoogleDispatchArg = {
       snsName: 'google',

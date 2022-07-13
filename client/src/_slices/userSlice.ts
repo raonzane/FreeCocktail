@@ -3,31 +3,29 @@ import axios from 'axios';
 import type { RootState } from '../_store/store';
 
 interface InitialStateType {
-  data: {
-    id: number;
-    nickname: string;
-    email: string;
-    password: string;
-    pwdCheck: string;
-    image: string;
-    OAuth: boolean;
-    submit: boolean;
-  };
-  likeInfo: Array<object>;
+  id: number;
+  nickname: string;
+  email: string;
+  password: string;
+  pwdCheck: string;
+  image: string;
+  likes: Array<any>;
+  recipes: Array<any>;
+  OAuth: boolean;
+  submit: boolean;
 }
 
-let INITIAL_STATE: InitialStateType = {
-  data: {
-    id: 0,
-    nickname: '',
-    email: '',
-    password: '',
-    pwdCheck: '',
-    image: '',
-    OAuth: false,
-    submit: false,
-  },
-  likeInfo: [],
+const INITIAL_STATE: InitialStateType = {
+  id: 0,
+  nickname: '',
+  email: '',
+  password: '',
+  pwdCheck: '',
+  image: '',
+  likes: [],
+  recipes: [],
+  OAuth: false,
+  submit: false,
 };
 
 interface SIGNIN_ARG {
@@ -51,11 +49,13 @@ interface SignUpARG {
 export const socialUserAsnyc = createAsyncThunk(
   'SNS_LOGIN',
   async (arg: SocialLoginARG): Promise<any> => {
-    const socialLoginUserData = axios
-      .post(`http://localhost:3001/oauth/${arg.snsName}`, {
+    const socialLoginUserData = await axios
+      .post(`http://localhost:3001/user/${arg.snsName}`, {
         idToken: `${arg.accessToken}`,
       })
-      .then((userInfo) => userInfo.data.data)
+      .then((userInfo) => {
+        return userInfo.data;
+      })
       .catch((err) => console.log(err));
     return socialLoginUserData;
   }
@@ -71,15 +71,11 @@ export const userLoginAsync = createAsyncThunk(
         { withCredentials: true }
       )
       .then((userInfo) => {
-        const userLikesDrinks = userInfo.data.likeInfo.map((el: any) => {
-          return el.drinkId;
+        const userLikesData = userInfo.data.likes.map((el: any) => {
+          return el.drink;
         });
-        INITIAL_STATE = {
-          data: { ...userInfo.data.data },
-          likeInfo: [...userLikesDrinks],
-        };
-        console.log('로그인 유저의 INITIAL_STATE', INITIAL_STATE);
-        return INITIAL_STATE;
+        userInfo.data.likes = [...userLikesData];
+        return userInfo.data;
       })
       .catch((err) => console.log(err));
     return loginUserData;
@@ -90,20 +86,41 @@ const userSlice: any = createSlice({
   name: 'user',
   initialState: INITIAL_STATE,
   reducers: {
-    signup: (
-      INITIAL_STATE,
-      action: PayloadAction<InitialStateType['data']>
-    ) => {
-      console.log('action', action);
-      console.log('action.payload', action.payload);
-
-      const { id, nickname, email, password, pwdCheck, image, OAuth, submit } =
-        action.payload;
+    signup: (INITIAL_STATE, action: PayloadAction<InitialStateType>) => {
+      const {
+        id,
+        nickname,
+        email,
+        password,
+        pwdCheck,
+        image,
+        likes,
+        recipes,
+        OAuth,
+        submit,
+      } = action.payload;
 
       INITIAL_STATE = {
-        data: { id, nickname, email, password, pwdCheck, image, OAuth, submit },
-        likeInfo: [],
+        id,
+        nickname,
+        email,
+        password,
+        pwdCheck,
+        image,
+        likes,
+        recipes,
+        OAuth,
+        submit,
       };
+      return INITIAL_STATE;
+    },
+
+    userBookmarkEdit: (
+      INITIAL_STATE: InitialStateType,
+      action: PayloadAction<InitialStateType>
+    ) => {
+      INITIAL_STATE = { ...action.payload };
+
       return INITIAL_STATE;
     },
   },
@@ -113,7 +130,6 @@ const userSlice: any = createSlice({
       return INITIAL_STATE;
     });
     builder.addCase(socialUserAsnyc.fulfilled, (INITIAL_STATE, action) => {
-      console.log('action.payload', action.payload);
       return { ...action.payload };
     });
     builder.addCase(socialUserAsnyc.rejected, (INITIAL_STATE, action) => {
@@ -133,9 +149,6 @@ const userSlice: any = createSlice({
   },
 });
 
-// export const userData = (state: RootState) => state.userInfo;
-
 export const userData = (state: RootState) => state.persistedReducer.userInfo;
-export const { signup, userAddBookmark, userRemoveBookmark } =
-  userSlice.actions;
+export const { signup, userBookmarkEdit } = userSlice.actions;
 export default userSlice.reducer;
