@@ -7,15 +7,18 @@ import {
   FindLikeRecipe,
   FindIdRecipe,
   AddRecipe,
+  FindPageNation,
+  AddLikeRecipe,
+  DeleteLikeRecipe,
 } from '../Services/RecipeService';
 
 const RecipeSerchTag = async (req: Request, res: Response) => {
   try {
-    const tag = req.query.tag;
+    const { tag, skip, size } = req.query;
 
-    const drinkInfo = await FindTagRecipe(tag);
+    const recipeInfo = await FindTagRecipe(tag, skip, size);
 
-    res.status(200).send({ data: drinkInfo, message: 'Success' });
+    res.status(200).send({ data: recipeInfo, message: 'Success' });
   } catch (err) {
     return res.status(500).send({ message: 'Internal Server Error', err: err });
   }
@@ -23,9 +26,9 @@ const RecipeSerchTag = async (req: Request, res: Response) => {
 
 const RecipeFindAll = async (req: Request, res: Response) => {
   try {
-    const drinkInfo = await FindAllRecipe();
+    const recipeInfo = await FindAllRecipe();
 
-    res.status(200).send({ data: drinkInfo, message: 'Success' });
+    res.status(200).send({ data: recipeInfo, message: 'Success' });
   } catch (err) {
     return res.status(500).send({ message: 'Internal Server Error', err: err });
   }
@@ -33,9 +36,10 @@ const RecipeFindAll = async (req: Request, res: Response) => {
 
 const RecipeFindLike = async (req: Request, res: Response) => {
   try {
-    const drinkInfo = await FindLikeRecipe();
+    const { skip, size } = req.query;
+    const recipeInfo = await FindLikeRecipe(skip, size);
 
-    res.status(200).send({ data: drinkInfo, message: 'Success' });
+    res.status(200).send({ data: recipeInfo, message: 'Success' });
   } catch (err) {
     return res.status(500).send({ message: 'Internal Server Error', err: err });
   }
@@ -44,13 +48,13 @@ const RecipeFindLike = async (req: Request, res: Response) => {
 const RecipeFindId = async (req: Request, res: Response) => {
   try {
     const recipeId = req.params.id;
-    const drinkInfo = await FindIdRecipe(recipeId);
+    const recipeInfo = await FindIdRecipe(recipeId);
 
-    if (!drinkInfo) {
+    if (!recipeInfo) {
       return res.status(404).send({ message: 'Resource Not Found' });
     }
 
-    res.status(200).send({ data: drinkInfo, message: 'Success' });
+    res.status(200).send({ data: recipeInfo, message: 'Success' });
   } catch (err) {
     return res.status(500).send({ message: 'Internal Server Error', err: err });
   }
@@ -59,19 +63,55 @@ const RecipeFindId = async (req: Request, res: Response) => {
 const RecipeAdd = async (req: Request, res: Response) => {
   try {
     const { name, image, Ingredient, measure, Instructions, tags } = req.body;
-    const drinkData = { name, image, Ingredient, measure, Instructions, tags };
+    const recipeData = { name, image, Ingredient, measure, Instructions, tags };
     if (!!req.file) {
-      drinkData.image = req.file['location'];
+      recipeData.image = req.file['location'];
     }
-    const drinkInfo = await AddRecipe(drinkData);
+    const recipeInfo = await AddRecipe(recipeData);
 
-    if (!drinkData) {
+    if (!recipeData) {
       return res.status(404).send({ message: 'Wrong Recipe Data' });
     }
-    res.status(201).send({ data: drinkInfo, message: 'Success' });
+    res.status(201).send({ data: recipeInfo, message: 'Success' });
   } catch (err) {
     return res.status(500).send({ message: 'Internal Server Error', err: err });
   }
 };
 
-export default { RecipeSerchTag, RecipeFindAll, RecipeFindLike, RecipeFindId, RecipeAdd };
+const RecipePageNation = async (req: Request, res: Response) => {
+  try {
+    const { skip, size } = req.query;
+    const recipeInfo = await FindPageNation(skip, size);
+
+    res.status(200).send({ data: recipeInfo, message: 'Success' });
+  } catch (err) {
+    return res.status(500).send({ message: 'Internal Server Error', err: err });
+  }
+};
+
+const RecipeLike = async (req: Request, res: Response) => {
+  try {
+    const { userId, recipeId, likeCheck } = req.body;
+    let likeInfo;
+
+    if (likeCheck) {
+      likeInfo = await AddLikeRecipe({ userId, drinkId: recipeId });
+    } else {
+      likeInfo = await DeleteLikeRecipe({ userId, drinkId: recipeId });
+    }
+
+    res.status(200).send({ data: likeInfo, message: 'Success' });
+  } catch (err) {
+    return res.status(500).send({ message: 'Internal Server Error', err: err });
+  }
+};
+
+export default {
+  RecipeSerchTag,
+  RecipeFindAll,
+  RecipeFindLike,
+  RecipeFindId,
+  RecipeAdd,
+  RecipePageNation,
+  RecipeLike,
+};

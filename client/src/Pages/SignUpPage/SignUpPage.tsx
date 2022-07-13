@@ -1,11 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Waves from 'Components/Waves';
-import Withdrawal from 'Components/Withdrawal/Withdrawal';
-
 import { Link, useNavigate } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
-import { userData, signup } from '../../_slices/userSlice';
 import Nickname from './_Nickname';
 import Email from './_Email';
 import Password from './_Password';
@@ -26,27 +22,37 @@ import {
   Br2,
 } from './SignUpPage.style';
 
+export type UserData = {
+  nickname: string;
+  email: string;
+  password: string;
+  pwdCheck: string;
+  submit: boolean;
+};
+
 const SignUpPage = function SignUpPage() {
-  const user = useSelector(userData);
-  const dispatch = useDispatch();
+  const [user, setUser] = useState({
+    nickname: '',
+    email: '',
+    password: '',
+    pwdCheck: '',
+    submit: false,
+  });
   const navigate = useNavigate();
   const [isValid, setIsValid] = useState({ state: false, tag: <>tag</> });
 
   const clickedSubmit = () => {
-    dispatch(
-      signup({
-        ...user,
-        submit: true,
-      })
-    );
+    setUser({
+      ...user,
+      submit: true,
+    });
 
     //* isValid 상태에 따라 모든 정보 입력 확인 후 서버로 전송
-    if (isValid) {
+    if (isValid.state) {
       const body = {
         nickname: user.nickname,
         password: user.password,
         email: user.email,
-        image: '',
       };
       axios
         .post(`http://localhost:3001/user/signup`, body)
@@ -88,14 +94,14 @@ const SignUpPage = function SignUpPage() {
           <Container>
             {/* 회원가입 Form */}
             <ContentContainer>
-              {/* <TitleWrapper>
-                <Title>회원가입</Title>
+              <TitleWrapper>
+                <Title onClick={() => console.log(user)}>회원가입</Title>
               </TitleWrapper>
 
-              <Nickname />
-              <Email />
-              <Password />
-              <PasswordCheck />
+              <Nickname user={user} setUser={setUser} />
+              <Email user={user} setUser={setUser} />
+              <Password user={user} setUser={setUser} />
+              <PasswordCheck user={user} setUser={setUser} />
 
               {user.submit ? isValid.tag : <Br2 />}
               <SignupBtn onClick={clickedSubmit}>회원가입</SignupBtn>
@@ -104,8 +110,7 @@ const SignUpPage = function SignUpPage() {
                 <p>
                   <Link to="/loginPage">로그인 하기</Link>
                 </p>
-              </LoginBtn> */}
-              <Withdrawal />
+              </LoginBtn>
             </ContentContainer>
             <ImgContainer>이미지 자리</ImgContainer>
           </Container>

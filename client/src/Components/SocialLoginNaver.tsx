@@ -1,22 +1,33 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { useDispatch, useSelector } from 'react-redux';
+import { userData } from '../_slices/userSlice';
+import { socialUserAsnyc } from '../_slices/userSlice';
 
 axios.defaults.withCredentials = true;
 
-//! 참조: https://bit.ly/35ESTsd
 const SocialLoginNaver = function () {
   useEffect(() => {
-    naverButton();
+    makeNaverButton();
   }, []);
 
-  const { naver } = window;
+  interface NaverDispatchArg {
+    snsName: string;
+    accessToken: string;
+  }
 
-  function naverButton() {
+  const { naver } = window;
+  const userInfo: any = useSelector(userData);
+  const dispatch = useDispatch();
+  const [isDispatch, setIsDispatch] = useState(false);
+
+  function makeNaverButton() {
     const { REACT_APP_NAVER_CLIENT_ID, REACT_APP_REDIRECT_URI } = process.env;
     const naverLogin = new naver.LoginWithNaverId({
       clientId: REACT_APP_NAVER_CLIENT_ID,
       callbackUrl: REACT_APP_REDIRECT_URI,
       callbackHandle: true,
+      loginStatus: true,
       loginButton: {
         color: 'white',
         type: 1,
@@ -25,19 +36,26 @@ const SocialLoginNaver = function () {
     });
     naverLogin.init();
 
-    if (window.location.href.includes('#')) {
-      const location = window.location.href.split('=')[1];
-      const accessToken = location.split('&')[0];
-      // console.log('토큰', accessToken);
-      axios
-        .post('http://localhost:3001/oauth/naver', { idToken: accessToken })
-        .then(function (res: any) {
-          console.log('응답', res);
-        })
-        .catch(function (err: any) {
-          console.log('에러', err);
-        });
+    if (naverLogin) {
+      setIsDispatch(true);
+    } else {
+      naverLogin.reprompt();
     }
+  }
+
+  if (window.location.href.includes('#') && isDispatch) {
+    const location = window.location.href.split('=')[1];
+    const accessToken = location.split('&')[0];
+    const NAVER_DISPATCH_ARG: NaverDispatchArg = {
+      snsName: 'naver',
+      accessToken,
+    };
+    dispatch(socialUserAsnyc(NAVER_DISPATCH_ARG));
+    setIsDispatch(false);
+  }
+
+  if (userInfo.type === '네이버') {
+    window.location.href = '/';
   }
 
   return <div id="naverIdLogin" />;

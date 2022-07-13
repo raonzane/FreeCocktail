@@ -1,11 +1,23 @@
 import React, { useState, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { userData, signup } from '../../_slices/userSlice';
 import { InputTitle, InputField, MsgContainer, Br } from './SignUpPage.style';
 
-const PasswordCheck = function PasswordCheck() {
-  const user = useSelector(userData);
-  const dispatch = useDispatch();
+type UserData = {
+  nickname: string;
+  email: string;
+  password: string;
+  pwdCheck: string;
+  submit: boolean;
+};
+
+type Props = {
+  user: UserData;
+  setUser(data: UserData): void;
+};
+
+const PasswordCheck: React.FC<Props> = function PasswordCheck({
+  user,
+  setUser,
+}) {
   const [errMsg, setErrMsg] = useState('');
 
   useEffect(() => {
@@ -26,12 +38,10 @@ const PasswordCheck = function PasswordCheck() {
       <InputField
         type="password"
         onChange={(e) => {
-          dispatch(
-            signup({
-              ...user,
-              pwdCheck: e.target.value,
-            })
-          );
+          setUser({
+            ...user,
+            pwdCheck: e.target.value,
+          });
         }}
       />
       {user.submit ? <MsgContainer>{errMsg}</MsgContainer> : <Br />}

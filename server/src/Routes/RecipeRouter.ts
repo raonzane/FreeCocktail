@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { upload } from '../Modules/multer';
+import { Upload } from '../Modules/multer';
 import RecipeController from '../Controllers/RecipeController';
 const recipeRouter = Router();
 
@@ -33,6 +33,14 @@ recipeRouter.get('/tag', RecipeController.RecipeSerchTag);
  *       name: tag
  *       schema:
  *         type: string
+ *     - in: query
+ *       name: lastRecipeId
+ *       schema:
+ *        type: integer
+ *     - in: query
+ *       name: size
+ *       schema:
+ *        type: integer
  *
  *    responses:
  *     200:
@@ -51,28 +59,15 @@ recipeRouter.get('/like', RecipeController.RecipeFindLike);
  *   get:
  *    tags: [Recipe]
  *    summary: 좋아요 순으로 레시피 조회
- *    responses:
- *     200:
- *      description: 레시피 조회 성공
- *      content:
- *       application/json:
- *        schema:
- *         $ref: '#/components/schemas/RecipeReturn'
- */
-
-recipeRouter.get('/:id', RecipeController.RecipeFindId);
-/**
- * @swagger
- * paths:
- *  /recipe/{id}:
- *   get:
- *    tags: [Recipe]
- *    summary: ID로 레시피 조회
  *    parameters:
- *    - in: path
- *      name: id
- *      schema:
- *       type: string
+ *     - in: query
+ *       name: lastRecipeId
+ *       schema:
+ *        type: integer
+ *     - in: query
+ *       name: size
+ *       schema:
+ *        type: integer
  *    responses:
  *     200:
  *      description: 레시피 조회 성공
@@ -82,7 +77,7 @@ recipeRouter.get('/:id', RecipeController.RecipeFindId);
  *         $ref: '#/components/schemas/RecipeReturn'
  */
 
-recipeRouter.post('/', upload.single('image'), RecipeController.RecipeAdd);
+recipeRouter.post('/', Upload.single('image'), RecipeController.RecipeAdd);
 /**
  * @swagger
  * paths:
@@ -115,4 +110,83 @@ recipeRouter.post('/', upload.single('image'), RecipeController.RecipeAdd);
  *     404:
  *      description: 잘못된 레시피 데이터
  */
+recipeRouter.get('/page', RecipeController.RecipePageNation);
+/**
+ * @swagger
+ * paths:
+ *  /recipe/page:
+ *   get:
+ *    tags: [Recipe]
+ *    summary: 원하는 범위에 레시피 조회
+ *    parameters:
+ *     - in: query
+ *       name: lastRecipeId
+ *       schema:
+ *        type: integer
+ *     - in: query
+ *       name: size
+ *       schema:
+ *        type: integer
+ *
+ *    responses:
+ *     200:
+ *      description: 레시피 조회 성공
+ *      content:
+ *       application/json:
+ *        schema:
+ *         $ref: '#/components/schemas/RecipeReturn'
+ */
+
+recipeRouter.post('/like', RecipeController.RecipeLike);
+/**
+ * @swagger
+ * paths:
+ *  /recipe/like:
+ *   post:
+ *    tags: [Recipe]
+ *    summary: 좋아요 추가 및 취소
+ *    parameters:
+ *    - in: body
+ *      name: body
+ *      schema:
+ *       type: object
+ *       properties:
+ *        userId:
+ *         type: integer
+ *        recipeId:
+ *         type: integer
+ *        likeCheck:
+ *         type: boolean
+ *    responses:
+ *     200:
+ *      description: 좋아요 반영 성공
+ *      content:
+ *       application/json:
+ *        schema:
+ *         $ref: '#/components/schemas/RecipeReturn'
+ *
+ */
+
+recipeRouter.get('/:id', RecipeController.RecipeFindId);
+/**
+ * @swagger
+ * paths:
+ *  /recipe/{id}:
+ *   get:
+ *    tags: [Recipe]
+ *    summary: ID로 레시피 조회
+ *    parameters:
+ *    - in: path
+ *      name: id
+ *      schema:
+ *       type: string
+ *    responses:
+ *     200:
+ *      description: 레시피 조회 성공
+ *      content:
+ *       application/json:
+ *        schema:
+ *         $ref: '#/components/schemas/RecipeReturn'
+ */
+
 export default recipeRouter;

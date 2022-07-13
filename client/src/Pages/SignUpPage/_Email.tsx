@@ -1,11 +1,20 @@
 import React, { useState, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { userData, signup } from '../../_slices/userSlice';
 import { InputTitle, InputField, MsgContainer, Br } from './SignUpPage.style';
 
-const Email = function Email() {
-  const user = useSelector(userData);
-  const dispatch = useDispatch();
+type UserData = {
+  nickname: string;
+  email: string;
+  password: string;
+  pwdCheck: string;
+  submit: boolean;
+};
+
+type Props = {
+  user: UserData;
+  setUser(data: UserData): void;
+};
+
+const Email: React.FC<Props> = function Email({ user, setUser }) {
   const [errMsg, setErrMsg] = useState('');
 
   useEffect(() => {
@@ -26,12 +35,10 @@ const Email = function Email() {
       <InputField
         type="email"
         onChange={(e) => {
-          dispatch(
-            signup({
-              ...user,
-              email: e.target.value,
-            })
-          );
+          setUser({
+            ...user,
+            email: e.target.value,
+          });
         }}
       />
       {user.submit ? <MsgContainer>{errMsg}</MsgContainer> : <Br />}
