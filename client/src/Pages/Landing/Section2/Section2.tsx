@@ -24,6 +24,7 @@ const Section2 = function Section2({ startPoint }: any) {
       delay: 1,
       scrollTrigger: {
         trigger: 'top',
+        // markers: true,
         start: 'top top',
         end: 'center top',
         pin: true,
