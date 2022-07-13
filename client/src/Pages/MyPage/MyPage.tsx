@@ -1,6 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import './MyPage.style.ts';
-
+import { useSelector } from 'react-redux';
+import RecipeLists2 from 'Components/RecipeLists/RecipeLists';
 import Modal from '../../Components/_Modal/Modal';
 import Withdrawal from '../../Components/Withdrawal/Withdrawal';
 import {
@@ -14,18 +16,135 @@ import {
   SignOutButton,
   Tab,
   TabMenu,
+  PageButtonSection,
+  PageButton,
 } from './MyPage.style';
-import { RecipeLists, RecipeCards } from '../RecipePage/RecipeList.style';
+import { store } from '../../_store/store';
+import { userData } from '../../_slices/userSlice';
 
 const MyPage = function MyPage() {
+  useEffect(() => {
+    getAllRecipe();
+  }, []);
+
   const [isWithdrawal, setIsWithdrawal] = useState(false);
+  const [checkMyList, setCheckMyList] = useState('작성글');
+
+  const userInfo: any = useSelector(userData);
+
+  const [allBookmarkRecipes, setAllBookmarkRecipe] = useState<any>([]);
+  const tapMenuName = ['작성글', '관심글'];
+  const [myBookmarkList, setMyBookmarkList] = useState<any>([]);
+  const [pageNum, setPageNum]: Array<any> = useState([]);
+  const [bookmarkSkipID, setBookmarkSkipID] = useState(0);
+  const [prePageNum, setPrePageNum] = useState('1');
+
+  const getAllRecipe = async function (myListName?: string) {
+    let allRecipeResult: Array<any> = [];
+
+    if (myListName === '작성글') {
+      allRecipeResult = userInfo.recipes;
+    } else if (myListName === '관심글') {
+      allRecipeResult = userInfo.likes;
+    }
+
+    allRecipeResult.forEach((el: any) => {
+      if (el.tags.length >= 3) {
+        el.tags = el.tags.splice(0, 3);
+      }
+    });
+
+    setAllBookmarkRecipe([...allRecipeResult]);
+  };
+
+  const setTabMenu = function (clickedMenu: any) {
+    clickedMenu.target.style.background = '#f876de';
+    clickedMenu.target.style.color = '#ffffff';
+
+    const prePickedMenu = document.getElementById(checkMyList);
+
+    if (checkMyList !== clickedMenu.target.innerHTML) {
+      prePickedMenu!.style.background = '#ffffff';
+      prePickedMenu!.style.color = '#494949';
+    }
+
+    getAllRecipe(clickedMenu.target.innerHTML);
+    makePageButton(clickedMenu.target.innerHTML);
+    setCheckMyList(clickedMenu.target.innerHTML);
+  };
+
+  const makePageButton = function (myListName?: string) {
+    // ! 버튼 갯수
+
+    let number = 0;
+    const tempNumArr = [];
+    let allRecipeResult: Array<any> = [];
+
+    if (myListName === '작성글') {
+      allRecipeResult = userInfo.recipes;
+    } else if (myListName === '관심글') {
+      allRecipeResult = userInfo.likes.map((el: any) => {
+        return el.drink;
+      });
+    }
+
+    if (allRecipeResult.length / 16) {
+      number = allRecipeResult.length / 16 + 1;
+    } else {
+      number = allRecipeResult.length / 16;
+    }
+    for (let i = 1; i <= number; i += 1) {
+      tempNumArr.push(i);
+    }
+
+    setPageNum([...tempNumArr]);
+    return pageNum;
+  };
+
+  // ! 버튼 UI
+  const setPageButton = function (e: any) {
+    const nowPageNum = e.target;
+
+    if (prePageNum !== nowPageNum) {
+      const prePageNumBtn = document.getElementById(prePageNum);
+      prePageNumBtn!.style.background = '#ffffff';
+      prePageNumBtn!.style.color = '#494949';
+      setPrePageNum(nowPageNum.innerHTML);
+    }
+
+    nowPageNum.style.background = '#f876de';
+    nowPageNum.style.color = '#ffffff';
+  };
+
+  // ! 숫자 버튼 onClick에서 작동하는 함수
+  const getMyBookmarkList = function () {
+    if (allBookmarkRecipes[bookmarkSkipID + 16]) {
+      setMyBookmarkList([
+        ...allBookmarkRecipes.slice(bookmarkSkipID, bookmarkSkipID + 16),
+      ]);
+    } else if (allBookmarkRecipes[bookmarkSkipID + 16] === undefined) {
+      setMyBookmarkList([...allBookmarkRecipes.slice(bookmarkSkipID)]);
+    }
+  };
+
+  //! 숫자 onMouseEnter시 실행되는 함수
+  const makeSkipID = function (e: any) {
+    const newSkipID = userInfo.likes.indexOf(
+      userInfo.likes[(Number(e.target.innerHTML) - 1) * 16]
+    );
+
+    setBookmarkSkipID(newSkipID);
+  };
 
   return (
     <Body>
       <UserProfileContainer>
         <UserImg />
         <UserInfoEdit>
-          <UserInfoGreeting>김덕배님, 반갑습니다!</UserInfoGreeting>
+          <UserInfoGreeting>
+            {userInfo.nickname ? userInfo.nickname : '안녕하세요 사용자'}
+            님, 반갑습니다!
+          </UserInfoGreeting>
           <UserInfoButtons>
             <UserInfoEditButton>회원 정보 수정</UserInfoEditButton>
             <SignOutButton
@@ -43,28 +162,62 @@ const MyPage = function MyPage() {
         </UserInfoEdit>
       </UserProfileContainer>
       <Tab>
-        <TabMenu>
-          <div>작성글</div>
-        </TabMenu>
-        <TabMenu>
-          <div>관심글</div>
-        </TabMenu>
+        {tapMenuName.map((el: string) => {
+          return (
+            <TabMenu
+              key={el}
+              style={
+                el === '작성글'
+                  ? { background: '#f876de', color: '#ffffff' }
+                  : { background: '#ffffff' }
+              }
+              id={el}
+              role="button"
+              tabIndex={0}
+              onClick={(e: any) => {
+                setTabMenu(e);
+              }}
+              onKeyDown={(): void => {
+                console.log();
+              }}
+            >
+              {el}
+            </TabMenu>
+          );
+        })}
       </Tab>
-      {/* <SectionDivider section /> */}
-      <RecipeLists>
-        <RecipeCards>리스트1</RecipeCards>
-        <RecipeCards>리스트1</RecipeCards>
-        <RecipeCards>리스트1</RecipeCards>
-        <RecipeCards>리스트1</RecipeCards>
-        <RecipeCards>리스트1</RecipeCards>
-        <RecipeCards>리스트1</RecipeCards>
-        <RecipeCards>리스트1</RecipeCards>
-        <RecipeCards>리스트1</RecipeCards>
-        <RecipeCards>리스트1</RecipeCards>
-        <RecipeCards>리스트1</RecipeCards>
-        <RecipeCards>리스트1</RecipeCards>
-      </RecipeLists>
+      {allBookmarkRecipes.length ? (
+        <RecipeLists2 nowRecipeListResult={myBookmarkList} />
+      ) : (
+        '레시피 정보가 없습니다.'
+      )}
+
+      <PageButtonSection>
+        {pageNum.map((el: number) => {
+          return (
+            <PageButton
+              id={String(el)}
+              key={el}
+              style={
+                el === 1
+                  ? { background: '#f876de', color: '#ffffff' }
+                  : { background: '#ffffff' }
+              }
+              onMouseEnter={(el: number) => {
+                makeSkipID(el);
+              }}
+              onClick={(el: number) => {
+                setPageButton(el);
+                getMyBookmarkList();
+              }}
+            >
+              {el}
+            </PageButton>
+          );
+        })}
+      </PageButtonSection>
     </Body>
+
     // <svg
     //   viewBox="0 0 100 100"
     //   preserveAspectRatio="xMidYMid slice"

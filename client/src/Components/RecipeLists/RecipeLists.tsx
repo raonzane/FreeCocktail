@@ -36,8 +36,6 @@ function RecipeLists2({
     }
   };
 
-  console.log('nowRecipeListResult', nowRecipeListResult);
-
   return (
     <RecipeLists defaultValue={pageName}>
       {nowRecipeListResult.map(function (el: any) {
