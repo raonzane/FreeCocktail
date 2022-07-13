@@ -3,7 +3,6 @@ import { Button, Menu } from 'semantic-ui-react';
 import { theme } from '../../styles/theme';
 
 const Body = styled.div`
-  /* border: 1px solid red; */
   min-height: 90vh;
   margin-top: 6.938rem;
   justify-content: center;
@@ -20,7 +19,6 @@ const Body = styled.div`
 `;
 
 const UserProfileContainer = styled.div`
-  /* border: 1px solid blue; */
   display: flex;
   width: 60rem;
   height: 20rem;
@@ -63,7 +61,6 @@ const UserImg = styled.div`
 `;
 
 const UserInfoEdit = styled.div`
-  /* background: orange; */
   flex: 0.7 1 auto;
   margin-left: 2rem;
 
@@ -78,7 +75,6 @@ const UserInfoEdit = styled.div`
 `;
 
 const UserInfoGreeting = styled.div`
-  /* border: 1px solid black; */
   height: 3rem;
   margin: 6.5rem auto 2rem auto;
   text-align: center;
@@ -95,7 +91,6 @@ const UserInfoGreeting = styled.div`
 `;
 
 const UserInfoButtons = styled.div`
-  /* border: 1px solid black; */
   display: flex;
   width: 90%;
   margin: auto;
@@ -145,7 +140,6 @@ const SignOutButton = styled(Button)({
 });
 
 const Tab = styled.div`
-  /* border: 1px solid green; */
   width: 67rem;
   height: 5rem;
   margin: auto;
@@ -181,6 +175,35 @@ const TabMenu = styled(Menu)({
   },
 });
 
+const PageButtonSection = styled.div`
+  width: 100%;
+  height: 5rem;
+  margin-top: 2rem;
+  text-align: center;
+`;
+
+const PageButton = styled(Button)({
+  'width': '1.3rem',
+  'height': '1.3rem',
+  'margin': '1rem',
+  'font-family': 'Gmarket Sans TTF',
+
+  '&&&': {
+    'textAlign': 'center',
+    'paddingLeft': '16px',
+    'lineHeight': '0px',
+    'fontSize': '1rem',
+    'backgroundColor': '#ffffff',
+    'color': '#494949',
+    'borderRadius': '50px',
+
+    '&:hover': {
+      background: '#F876DE',
+      color: '#FFFFFF',
+    },
+  },
+});
+
 export {
   Body,
   UserProfileContainer,
@@ -192,4 +215,6 @@ export {
   SignOutButton,
   Tab,
   TabMenu,
+  PageButtonSection,
+  PageButton,
 };
