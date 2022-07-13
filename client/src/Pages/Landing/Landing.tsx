@@ -26,21 +26,6 @@ const Landing = function Landing() {
   };
 
   const startPoint: any = useRef();
-  useEffect(() => {
-    gsap.to(startPoint.current, {
-      scrollTrigger: {
-        trigger: startPoint.current,
-        // markers: true,
-        start: 'top center',
-        end: 'bottom bottom',
-        scrub: true,
-        pin: true,
-      },
-      y: 200,
-      duration: 4,
-    });
-  }, []);
-
   return (
     <Container>
       {isAdult ? (

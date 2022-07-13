@@ -35,6 +35,7 @@ export const LadingModal = styled.div`
   background-position: center;
   background-repeat: no-repeat;
   animation: ${move} 3s 1s 1;
+  z-index: 9999;
 
   @media ${theme.tablet} {
     width: 30rem;
@@ -60,6 +61,7 @@ export const LandingNotice = styled.div`
   font-size: 1.3rem;
   text-align: center;
   line-height: 2;
+  z-index: 9999;
 
   @media ${theme.tablet} {
     margin: 6.5rem auto -0.7rem 1rem;
@@ -79,6 +81,7 @@ export const LandingBtnSection = styled.div`
   height: 5rem;
   margin: 0px auto;
   display: flex;
+  z-index: 9999;
 `;
 
 export const AgeCheckButton = styled.button`
@@ -89,6 +92,7 @@ export const AgeCheckButton = styled.button`
   font-family: Gmarket Sans TTF;
   background-color: #f8ffb5;
   border-radius: 50px;
+  z-index: 9999;
 
   &:hover {
     cursor: pointer;
@@ -117,6 +121,7 @@ export const PointingHand = styled.img`
   width: 35rem;
   height: 50rem;
   animation: ${move} 3s 1s 1;
+  z-index: 9999;
 
   @media ${theme.tablet} {
     width: 15rem;
