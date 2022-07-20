@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-
 import axios from 'axios';
 import { LoginModal } from 'Components/LoginModal';
 import RecipeLists2 from 'Components/RecipeLists/RecipeLists';
@@ -16,7 +15,6 @@ import {
   CreatBtn,
 } from './RecipeListPage.style';
 import TopButton from '../../Components/TopButton';
-import { userData } from '../../_slices/userSlice';
 import Waves from '../../Components/Waves';
 
 axios.defaults.withCredentials = true;
@@ -291,7 +289,7 @@ const RecipeListPage = function RecipeList(): any {
           getRecipeList={() => {
             getRecipeList();
           }}
-          isModalOpen={isModalOpen}
+          setIsModalOpen={setIsModalOpen}
           infinityScrollPoint={infinityScrollPoint}
         />
 
