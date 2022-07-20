@@ -173,7 +173,6 @@ const SectionDivider = styled(Divider)({
 });
 
 const CreatBtnSection = styled.div`
-  /* border: 1px solid orange; */
   position: fixed;
   width: 5rem;
   height: 5rem;

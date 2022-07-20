@@ -1,14 +1,14 @@
 import React from 'react';
 import { LoginModalBackground } from './LoginModal.style';
 
-export const LoginModal = function ({ setModalOpen }: any) {
-  console.log(setModalOpen);
+export const LoginModal = function ({ setIsModalOpen }: any) {
+  // console.log(setModalOpen);
   return (
     <LoginModalBackground>
       <button
         type="button"
         onClick={() => {
-          setModalOpen(false);
+          setIsModalOpen(false);
         }}
       >
         &times;
