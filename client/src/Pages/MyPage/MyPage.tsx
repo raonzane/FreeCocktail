@@ -23,8 +23,10 @@ import { store } from '../../_store/store';
 import { userData } from '../../_slices/userSlice';
 
 const MyPage = function MyPage() {
+  // console.log('마이 페이지에서 확인한 state', store.getState());
+
   useEffect(() => {
-    getAllRecipe();
+    getMypageRecipeList(tapMenuName[0]);
   }, []);
 
   const [isWithdrawal, setIsWithdrawal] = useState(false);
@@ -39,7 +41,23 @@ const MyPage = function MyPage() {
   const [bookmarkSkipID, setBookmarkSkipID] = useState(0);
   const [prePageNum, setPrePageNum] = useState('1');
 
-  const getAllRecipe = async function (myListName?: string) {
+  const setTabMenu = function (clickedMenu: any) {
+    clickedMenu.target.style.background = '#f876de';
+    clickedMenu.target.style.color = '#ffffff';
+
+    const prePickedMenu = document.getElementById(checkMyList);
+
+    if (checkMyList !== clickedMenu.target.innerHTML) {
+      prePickedMenu!.style.background = '#ffffff';
+      prePickedMenu!.style.color = '#494949';
+    }
+
+    makePageButton(clickedMenu.target.innerHTML);
+    setCheckMyList(clickedMenu.target.innerHTML);
+    getMypageRecipeList(clickedMenu.target.innerHTML);
+  };
+
+  const getMypageRecipeList = function (myListName?: string) {
     let allRecipeResult: Array<any> = [];
 
     if (myListName === '작성글') {
@@ -55,22 +73,7 @@ const MyPage = function MyPage() {
     });
 
     setAllBookmarkRecipe([...allRecipeResult]);
-  };
-
-  const setTabMenu = function (clickedMenu: any) {
-    clickedMenu.target.style.background = '#f876de';
-    clickedMenu.target.style.color = '#ffffff';
-
-    const prePickedMenu = document.getElementById(checkMyList);
-
-    if (checkMyList !== clickedMenu.target.innerHTML) {
-      prePickedMenu!.style.background = '#ffffff';
-      prePickedMenu!.style.color = '#494949';
-    }
-
-    getAllRecipe(clickedMenu.target.innerHTML);
-    makePageButton(clickedMenu.target.innerHTML);
-    setCheckMyList(clickedMenu.target.innerHTML);
+    getMyBookmarkList([...allRecipeResult]);
   };
 
   const makePageButton = function (myListName?: string) {
@@ -83,9 +86,7 @@ const MyPage = function MyPage() {
     if (myListName === '작성글') {
       allRecipeResult = userInfo.recipes;
     } else if (myListName === '관심글') {
-      allRecipeResult = userInfo.likes.map((el: any) => {
-        return el.drink;
-      });
+      allRecipeResult = userInfo.likes;
     }
 
     if (allRecipeResult.length / 16) {
@@ -116,17 +117,6 @@ const MyPage = function MyPage() {
     nowPageNum.style.color = '#ffffff';
   };
 
-  // ! 숫자 버튼 onClick에서 작동하는 함수
-  const getMyBookmarkList = function () {
-    if (allBookmarkRecipes[bookmarkSkipID + 16]) {
-      setMyBookmarkList([
-        ...allBookmarkRecipes.slice(bookmarkSkipID, bookmarkSkipID + 16),
-      ]);
-    } else if (allBookmarkRecipes[bookmarkSkipID + 16] === undefined) {
-      setMyBookmarkList([...allBookmarkRecipes.slice(bookmarkSkipID)]);
-    }
-  };
-
   //! 숫자 onMouseEnter시 실행되는 함수
   const makeSkipID = function (e: any) {
     const newSkipID = userInfo.likes.indexOf(
@@ -134,6 +124,19 @@ const MyPage = function MyPage() {
     );
 
     setBookmarkSkipID(newSkipID);
+  };
+
+  // ! 숫자 버튼 onClick에서 작동하는 함수
+  const getMyBookmarkList = function (allBookmarkRecipe?: any) {
+    console.log('allBookmarkRecipe', allBookmarkRecipe);
+
+    if (allBookmarkRecipe[bookmarkSkipID + 16]) {
+      setMyBookmarkList([
+        ...allBookmarkRecipe.slice(bookmarkSkipID, bookmarkSkipID + 16),
+      ]);
+    } else if (allBookmarkRecipe[bookmarkSkipID + 16] === undefined) {
+      setMyBookmarkList([...allBookmarkRecipe.slice(bookmarkSkipID)]);
+    }
   };
 
   return (
@@ -208,7 +211,7 @@ const MyPage = function MyPage() {
               }}
               onClick={(el: number) => {
                 setPageButton(el);
-                getMyBookmarkList();
+                getMyBookmarkList(allBookmarkRecipes);
               }}
             >
               {el}
