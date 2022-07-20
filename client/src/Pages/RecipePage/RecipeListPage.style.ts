@@ -172,23 +172,42 @@ const SectionDivider = styled(Divider)({
   },
 });
 
-const TopButtonSection = styled.div`
+const CreatBtnSection = styled.div`
+  /* border: 1px solid orange; */
   position: fixed;
   width: 5rem;
   height: 5rem;
-  top: 80rem;
-  right: 8rem;
-  text-align: right;
+  top: 40rem;
+  right: 5rem;
+
   @media ${theme.tablet} {
     right: 0.5rem;
-    top: 80rem;
+    top: 20rem;
   }
   @media ${theme.mobile} {
-    width: 5rem;
-    height: 5rem;
-    top: 50rem;
+    width: 3rem;
+    height: 3rem;
+    top: 20rem;
     right: 9.7rem;
     font-size: 10px;
+  }
+`;
+const CreatBtn = styled.button`
+  width: 3rem;
+  height: 3rem;
+  margin: 1rem;
+  border: 1px solid #494949;
+  border-radius: 100px;
+  background-color: #dbfd7d;
+  font-size: 2rem;
+  font-family: Gmarket Sans TTF;
+  color: #ffffff;
+  -webkit-text-stroke: 1px #494949;
+
+  &:hover {
+    cursor: pointer;
+    color: #ffffff;
+    background-color: #cb77ff;
   }
 `;
 
@@ -200,5 +219,6 @@ export {
   Filter,
   FilterButtons,
   SectionDivider,
-  TopButtonSection,
+  CreatBtnSection,
+  CreatBtn,
 };
