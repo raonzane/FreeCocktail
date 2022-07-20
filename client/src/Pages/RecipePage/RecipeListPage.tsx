@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { userBookmarkEdit } from '_slices/userSlice';
+
 import axios from 'axios';
 import { LoginModal } from 'Components/LoginModal';
 import RecipeLists2 from 'Components/RecipeLists/RecipeLists';
@@ -12,10 +12,10 @@ import {
   Filter,
   FilterButtons,
   SectionDivider,
-  TopButtonSection,
+  CreatBtnSection,
+  CreatBtn,
 } from './RecipeListPage.style';
-import { TopButton } from '../../Components/TopButton';
-import { store } from '../../_store/store';
+import TopButton from '../../Components/TopButton';
 import { userData } from '../../_slices/userSlice';
 import Waves from '../../Components/Waves';
 
@@ -46,12 +46,6 @@ interface RecipeListDataType {
   description: string;
 }
 
-interface RecipeLikeDataType {
-  userId: number;
-  recipeId: number;
-  likeCheck: boolean;
-}
-
 interface ExtraURI {
   requestType: string;
   categoryURI: string;
@@ -60,36 +54,20 @@ interface ExtraURI {
 
 //! 레시피 리스트 페이지
 const RecipeListPage = function RecipeList(): any {
-  let userInfo: any = useSelector(userData);
-  const userLikesDrinks: any = userInfo.likes;
-  const isBookmarked: any = userLikesDrinks.map((el: any, idx: number) => {
-    let arr = [];
-    arr = userLikesDrinks[idx].id;
-    return arr;
-  });
-
   const [categoryBtn, setCategoryBtn] = useState<RecipeListDataType>({
-    requestedCategoryBtn: 'page?',
+    requestedCategoryBtn: '?',
     isFilterOpened: '',
     description: '저희 서비스의 모든 칵테일 레시피를 조회할 수 있습니다.',
   });
   const [isClickedTags, setIsClickedTags] = useState<any>([]);
-  const [bookmark, setBookmark]: any = useState<RecipeLikeDataType>({
-    userId: 0,
-    recipeId: 0,
-    likeCheck: false,
-  });
-
   const [nowRecipeListResult, setNowRecipeListResult] = useState<any>([]);
   const [skipID, setSkipID] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
-  const [modalOpen, setModalOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     getRecipeList('filtering');
   }, [categoryBtn.requestedCategoryBtn]);
-
-  const dispatch = useDispatch();
 
   //! 무한스크롤에 필요한 함수
   const infinityScrollPoint = useRef(null);
@@ -122,80 +100,37 @@ const RecipeListPage = function RecipeList(): any {
   ): Promise<any> {
     const clickedTags = isClickedTags.join('&tag=').concat('&');
 
-    let url = `http://localhost:3001/recipe/${categoryBtn.requestedCategoryBtn}${clickedTags}skip=${skipID}&size=16`;
+    const url = `http://localhost:3001/recipe/${categoryBtn.requestedCategoryBtn}${clickedTags}skip=${skipID}&size=16`;
 
-    if (requestType === 'bookmarking' && userInfo.id) {
-      url = `http://localhost:3001/recipe/like`;
+    await axios
+      .get(url)
+      .then((info) => {
+        //! Recipe 카드 TAG 갯수 3개로 제한
+        const result = info.data;
 
-      userLikesDrinks.forEach((recipes: any) => {
-        if (!(recipes.id === bookmark.recipeId) && bookmark.likeCheck) {
-          setBookmark({
-            userId: userInfo.id,
-            recipeId: bookmark.recipeId,
-            likeCheck: false,
-          });
-        } else if (recipes.id === bookmark.recipeId && !bookmark.likeCheck) {
-          setBookmark({
-            userId: userInfo.id,
-            recipeId: bookmark.recipeId,
-            likeCheck: true,
-          });
+        for (let i = 0; i < result.length; i += 1) {
+          if (result[i].tags.length >= 3) {
+            result[i].tags = result[i].tags.splice(0, 3);
+          }
         }
+
+        if (requestType === 'filtering') {
+          setNowRecipeListResult([...result]);
+          setSkipID(result.length);
+        } else if (requestType === 'infinityScroll') {
+          setNowRecipeListResult([...nowRecipeListResult, ...result]);
+          setSkipID(nowRecipeListResult.length + result.length);
+        }
+
+        if (result.length < 16) {
+          setIsLoading(true);
+        } else {
+          setIsLoading(false);
+        }
+      })
+      .catch((err) => {
+        console.log('에러', err);
       });
-
-      await axios
-        .post(url, bookmark)
-        .then((res: any) => {
-          if (!isBookmarked.includes(bookmark.recipeId)) {
-            userInfo = {
-              ...userInfo,
-              likes: [...userLikesDrinks, res.data],
-            };
-          } else if (isBookmarked.includes(bookmark.recipeId)) {
-            const userRemoveBookmared = userLikesDrinks.filter((el: any) => {
-              return el.id !== res.data.id;
-            });
-            userInfo = {
-              ...userInfo,
-              likes: [...userRemoveBookmared],
-            };
-          }
-          dispatch(userBookmarkEdit(userInfo));
-        })
-        .catch((err) => console.log(err));
-    } else if (requestType === 'bookmarking' && bookmark.userId === 0) {
-      setModalOpen(true);
-    } else {
-      await axios
-        .get(url)
-        .then((info) => {
-          //! Recipe 카드 TAG 갯수 3개로 제한
-          const result = info.data;
-
-          for (let i = 0; i < result.length; i += 1) {
-            if (result[i].tags.length >= 3) {
-              result[i].tags = result[i].tags.splice(0, 3);
-            }
-          }
-
-          if (requestType === 'filtering') {
-            setNowRecipeListResult([...result]);
-            setSkipID(result.length);
-          } else if (requestType === 'infinityScroll') {
-            setNowRecipeListResult([...nowRecipeListResult, ...result]);
-            setSkipID(nowRecipeListResult.length + result.length);
-          }
-
-          if (result.length < 16) {
-            setIsLoading(true);
-          } else {
-            setIsLoading(false);
-          }
-        })
-        .catch((err) => {
-          console.log('에러', err);
-        });
-    }
 
     const URI: ExtraURI = {
       requestType: 'bookmarking',
@@ -228,7 +163,7 @@ const RecipeListPage = function RecipeList(): any {
         if (nowPicked === '전체보기') {
           setSkipID(0);
           setCategoryBtn({
-            requestedCategoryBtn: 'page?',
+            requestedCategoryBtn: '?',
             isFilterOpened: '',
             description:
               '저희 서비스의 모든 칵테일 레시피를 조회할 수 있습니다.',
@@ -333,15 +268,11 @@ const RecipeListPage = function RecipeList(): any {
     });
   };
 
-  const moveToTheTop = function () {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
-
   return (
     <>
       <Waves />
       <Body>
-        {modalOpen ? <LoginModal setModalOpen={setModalOpen} /> : ''}
+        {isModalOpen ? <LoginModal setIsModalOpen={setIsModalOpen} /> : ''}
         <Category>{makeCategoryBtn(categoryName)}</Category>
         <CategoryDescription>{categoryBtn.description}</CategoryDescription>
         <Filter>
@@ -352,24 +283,19 @@ const RecipeListPage = function RecipeList(): any {
             : ''}
         </Filter>
         <SectionDivider section />
+        <CreatBtnSection>
+          <CreatBtn> + </CreatBtn>
+        </CreatBtnSection>
         <RecipeLists2
           nowRecipeListResult={nowRecipeListResult}
-          bookmark={bookmark}
-          setBookmark={setBookmark}
           getRecipeList={() => {
-            getRecipeList('bookmarking');
+            getRecipeList();
           }}
+          isModalOpen={isModalOpen}
           infinityScrollPoint={infinityScrollPoint}
         />
-        <TopButtonSection>
-          <TopButton
-            onClick={() => {
-              moveToTheTop();
-            }}
-          >
-            UP
-          </TopButton>
-        </TopButtonSection>
+
+        <TopButton />
       </Body>
     </>
   );
