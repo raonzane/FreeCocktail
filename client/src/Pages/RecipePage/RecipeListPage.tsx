@@ -16,7 +16,6 @@ import {
   CreatBtn,
 } from './RecipeListPage.style';
 import TopButton from '../../Components/TopButton';
-import { store } from '../../_store/store';
 import { userData } from '../../_slices/userSlice';
 import Waves from '../../Components/Waves';
 
@@ -55,11 +54,6 @@ interface ExtraURI {
 
 //! 레시피 리스트 페이지
 const RecipeListPage = function RecipeList(): any {
-  console.log('레시피 페이지에서 확인한 state', store.getState());
-
-  const userInfo: any = useSelector(userData);
-  const userLikesDrinks: any = userInfo.likes;
-
   const [categoryBtn, setCategoryBtn] = useState<RecipeListDataType>({
     requestedCategoryBtn: '?',
     isFilterOpened: '',
@@ -74,8 +68,6 @@ const RecipeListPage = function RecipeList(): any {
   useEffect(() => {
     getRecipeList('filtering');
   }, [categoryBtn.requestedCategoryBtn]);
-
-  const dispatch = useDispatch();
 
   //! 무한스크롤에 필요한 함수
   const infinityScrollPoint = useRef(null);
@@ -115,7 +107,6 @@ const RecipeListPage = function RecipeList(): any {
       .then((info) => {
         //! Recipe 카드 TAG 갯수 3개로 제한
         const result = info.data;
-        // console.log('result', result);
 
         for (let i = 0; i < result.length; i += 1) {
           if (result[i].tags.length >= 3) {
@@ -140,7 +131,6 @@ const RecipeListPage = function RecipeList(): any {
       .catch((err) => {
         console.log('에러', err);
       });
-    // }
 
     const URI: ExtraURI = {
       requestType: 'bookmarking',

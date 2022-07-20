@@ -11,7 +11,6 @@ const TopBtnSection = styled.div`
   text-align: right;
 
   @media ${theme.tablet} {
-    /* width: 55rem; */
     right: 0.5rem;
     top: 80rem;
   }
