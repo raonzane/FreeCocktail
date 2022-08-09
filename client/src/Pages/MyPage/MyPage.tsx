@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import React, { useState } from 'react';
 import './MyPage.style.ts';
 import { useSelector } from 'react-redux';
 import RecipeLists2 from 'Components/RecipeLists/RecipeLists';
@@ -25,63 +24,38 @@ import { userData } from '../../_slices/userSlice';
 const MyPage = function MyPage() {
   // console.log('마이 페이지에서 확인한 state', store.getState());
 
-  useEffect(() => {
-    getMypageRecipeList(tapMenuName[0]);
-  }, []);
-
   const [isWithdrawal, setIsWithdrawal] = useState(false);
-  const [checkMyList, setCheckMyList] = useState('작성글');
+  const tabManuName = ['작성글', '관심글'];
+  const [preClickedTab, setPreClickedTab] = useState('');
 
   const userInfo: any = useSelector(userData);
 
-  const [allBookmarkRecipes, setAllBookmarkRecipe] = useState<any>([]);
-  const tapMenuName = ['작성글', '관심글'];
-  const [myBookmarkList, setMyBookmarkList] = useState<any>([]);
+  const [clickedMenuAllRecipes, setClickedMenuAllRecipes] = useState<any>([]);
+  const [userMyPageView, setUserMyPageView] = useState<any>([]);
   const [pageNum, setPageNum]: Array<any> = useState([]);
-  const [bookmarkSkipID, setBookmarkSkipID] = useState(0);
   const [prePageNum, setPrePageNum] = useState('1');
 
-  const setTabMenu = function (clickedMenu: any) {
-    clickedMenu.target.style.background = '#f876de';
-    clickedMenu.target.style.color = '#ffffff';
+  const isClickedTab = function (nowClickedTab: any) {
+    nowClickedTab.target.style.background = '#f876de';
+    nowClickedTab.target.style.color = '#ffffff';
 
-    const prePickedMenu = document.getElementById(checkMyList);
-
-    if (checkMyList !== clickedMenu.target.innerHTML) {
-      prePickedMenu!.style.background = '#ffffff';
-      prePickedMenu!.style.color = '#494949';
+    if (
+      preClickedTab !== '' &&
+      preClickedTab !== nowClickedTab.target.innerHTML
+    ) {
+      const preClickedTabMenu = document.getElementById(preClickedTab);
+      preClickedTabMenu!.style.background = '#ffffff';
+      preClickedTabMenu!.style.color = '#494949';
     }
 
-    makePageButton(clickedMenu.target.innerHTML);
-    setCheckMyList(clickedMenu.target.innerHTML);
-    getMypageRecipeList(clickedMenu.target.innerHTML);
+    setPreClickedTab(nowClickedTab.target.innerHTML);
+    makePageNumBtn(nowClickedTab.target.innerHTML);
+    getClickedMenuResult(nowClickedTab.target.innerHTML);
   };
 
-  const getMypageRecipeList = function (myListName?: string) {
+  const makePageNumBtn = function (myListName?: string) {
     let allRecipeResult: Array<any> = [];
-
-    if (myListName === '작성글') {
-      allRecipeResult = userInfo.recipes;
-    } else if (myListName === '관심글') {
-      allRecipeResult = userInfo.likes;
-    }
-
-    allRecipeResult.forEach((el: any) => {
-      if (el.tags.length >= 3) {
-        el.tags = el.tags.splice(0, 3);
-      }
-    });
-
-    setAllBookmarkRecipe([...allRecipeResult]);
-    getMyBookmarkList([...allRecipeResult]);
-  };
-
-  const makePageButton = function (myListName?: string) {
-    // ! 버튼 갯수
-
-    let number = 0;
-    const tempNumArr = [];
-    let allRecipeResult: Array<any> = [];
+    let tempCount = 0;
 
     if (myListName === '작성글') {
       allRecipeResult = userInfo.recipes;
@@ -90,20 +64,17 @@ const MyPage = function MyPage() {
     }
 
     if (allRecipeResult.length / 16) {
-      number = allRecipeResult.length / 16 + 1;
+      tempCount = allRecipeResult.length / 16 + 1;
     } else {
-      number = allRecipeResult.length / 16;
-    }
-    for (let i = 1; i <= number; i += 1) {
-      tempNumArr.push(i);
+      tempCount = allRecipeResult.length / 16;
     }
 
-    setPageNum([...tempNumArr]);
-    return pageNum;
+    const pageCount = Array.from({ length: tempCount }, (el, idx) => idx + 1);
+
+    setPageNum([...pageCount]);
   };
 
-  // ! 버튼 UI
-  const setPageButton = function (e: any) {
+  const setPageNumBtnStyling = function (e: any) {
     const nowPageNum = e.target;
 
     if (prePageNum !== nowPageNum) {
@@ -117,25 +88,30 @@ const MyPage = function MyPage() {
     nowPageNum.style.color = '#ffffff';
   };
 
-  //! 숫자 onMouseEnter시 실행되는 함수
-  const makeSkipID = function (e: any) {
-    const newSkipID = userInfo.likes.indexOf(
-      userInfo.likes[(Number(e.target.innerHTML) - 1) * 16]
-    );
+  const getClickedMenuResult = function (myListName?: string) {
+    let allRecipeResult: Array<any> = [];
 
-    setBookmarkSkipID(newSkipID);
+    if (myListName === '작성글') {
+      allRecipeResult = userInfo.recipes;
+    } else if (myListName === '관심글') {
+      allRecipeResult = userInfo.likes;
+    }
+
+    allRecipeResult.forEach((recipe: any) => {
+      if (recipe.tags.length > 3) {
+        recipe.tags = recipe.tags.splice(0, 3);
+      }
+    });
+
+    setClickedMenuAllRecipes([...allRecipeResult]);
+    makeRecipesPageNation([...allRecipeResult]);
   };
 
-  // ! 숫자 버튼 onClick에서 작동하는 함수
-  const getMyBookmarkList = function (allBookmarkRecipe?: any) {
-    console.log('allBookmarkRecipe', allBookmarkRecipe);
-
-    if (allBookmarkRecipe[bookmarkSkipID + 16]) {
-      setMyBookmarkList([
-        ...allBookmarkRecipe.slice(bookmarkSkipID, bookmarkSkipID + 16),
-      ]);
-    } else if (allBookmarkRecipe[bookmarkSkipID + 16] === undefined) {
-      setMyBookmarkList([...allBookmarkRecipe.slice(bookmarkSkipID)]);
+  const makeRecipesPageNation = function (allBookmarkRecipe: any, skipID = 0) {
+    if (allBookmarkRecipe[skipID + 16]) {
+      setUserMyPageView([...allBookmarkRecipe.slice(skipID, skipID + 16)]);
+    } else if (allBookmarkRecipe[skipID + 16] === undefined) {
+      setUserMyPageView([...allBookmarkRecipe.slice(skipID)]);
     }
   };
 
@@ -165,20 +141,15 @@ const MyPage = function MyPage() {
         </UserInfoEdit>
       </UserProfileContainer>
       <Tab>
-        {tapMenuName.map((el: string) => {
+        {tabManuName.map((el: string) => {
           return (
             <TabMenu
               key={el}
-              style={
-                el === '작성글'
-                  ? { background: '#f876de', color: '#ffffff' }
-                  : { background: '#ffffff' }
-              }
               id={el}
               role="button"
               tabIndex={0}
               onClick={(e: any) => {
-                setTabMenu(e);
+                isClickedTab(e);
               }}
               onKeyDown={(): void => {
                 console.log();
@@ -189,8 +160,8 @@ const MyPage = function MyPage() {
           );
         })}
       </Tab>
-      {allBookmarkRecipes.length ? (
-        <RecipeLists2 nowRecipeListResult={myBookmarkList} />
+      {clickedMenuAllRecipes.length ? (
+        <RecipeLists2 nowRecipeListResult={userMyPageView} />
       ) : (
         '레시피 정보가 없습니다.'
       )}
@@ -206,12 +177,12 @@ const MyPage = function MyPage() {
                   ? { background: '#f876de', color: '#ffffff' }
                   : { background: '#ffffff' }
               }
-              onMouseEnter={(el: number) => {
-                makeSkipID(el);
-              }}
-              onClick={(el: number) => {
-                setPageButton(el);
-                getMyBookmarkList(allBookmarkRecipes);
+              onClick={(el: any) => {
+                const newSkipID = userInfo.likes.indexOf(
+                  userInfo.likes[(Number(el.target.innerHTML) - 1) * 16]
+                );
+                setPageNumBtnStyling(el);
+                makeRecipesPageNation(clickedMenuAllRecipes, newSkipID);
               }}
             >
               {el}

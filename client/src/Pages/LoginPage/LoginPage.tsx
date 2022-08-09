@@ -25,8 +25,6 @@ import { store } from '../../_store/store';
 
 const LoginPage = function LoginPage() {
   const dispatch = useDispatch();
-
-  // 스토어 값 가져오기
   const { isLoggedIn, isInValid } = useSelector(ILoginData);
 
   const [email, setEmail] = useState('');

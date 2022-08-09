@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
 import { LoginModal } from 'Components/LoginModal';
 import RecipeLists2 from 'Components/RecipeLists/RecipeLists';
@@ -44,13 +43,6 @@ interface RecipeListDataType {
   description: string;
 }
 
-interface ExtraURI {
-  requestType: string;
-  categoryURI: string;
-  filteringURI: string;
-}
-
-//! 레시피 리스트 페이지
 const RecipeListPage = function RecipeList(): any {
   const [categoryBtn, setCategoryBtn] = useState<RecipeListDataType>({
     requestedCategoryBtn: '?',
@@ -91,7 +83,6 @@ const RecipeListPage = function RecipeList(): any {
     };
   }, [IOhandler]);
 
-  //! RecipeList 기본 렌더: 전체보기 조회
   const getRecipeList = async function (
     requestType?: string,
     skipID = 0
@@ -103,24 +94,21 @@ const RecipeListPage = function RecipeList(): any {
     await axios
       .get(url)
       .then((info) => {
-        //! Recipe 카드 TAG 갯수 3개로 제한
-        const result = info.data;
-
-        for (let i = 0; i < result.length; i += 1) {
-          if (result[i].tags.length >= 3) {
-            result[i].tags = result[i].tags.splice(0, 3);
+        info.data.forEach((recipe: any) => {
+          if (recipe.tags.length > 3) {
+            recipe.tags = recipe.tags.splice(0, 3);
           }
-        }
+        });
 
         if (requestType === 'filtering') {
-          setNowRecipeListResult([...result]);
-          setSkipID(result.length);
+          setNowRecipeListResult([...info.data]);
+          setSkipID(info.data.length);
         } else if (requestType === 'infinityScroll') {
-          setNowRecipeListResult([...nowRecipeListResult, ...result]);
-          setSkipID(nowRecipeListResult.length + result.length);
+          setNowRecipeListResult([...nowRecipeListResult, ...info.data]);
+          setSkipID(nowRecipeListResult.length + info.data.length);
         }
 
-        if (result.length < 16) {
+        if (info.data.length < 16) {
           setIsLoading(true);
         } else {
           setIsLoading(false);
@@ -129,19 +117,11 @@ const RecipeListPage = function RecipeList(): any {
       .catch((err) => {
         console.log('에러', err);
       });
-
-    const URI: ExtraURI = {
-      requestType: 'bookmarking',
-      categoryURI: `${categoryBtn.requestedCategoryBtn}`,
-      filteringURI: `${isClickedTags}`,
-    };
   };
 
-  //! 카테고리 버튼 만드는 함수
   const makeCategoryBtn = function (categoryName: any): any {
     const [prePicked, setPrePicked] = useState('전체보기');
 
-    //! 카테고리 버튼 작동 함수
     const setCategoryBtns = function (e: any): any {
       const nowPicked = e.target.innerHTML;
 
@@ -222,7 +202,6 @@ const RecipeListPage = function RecipeList(): any {
     });
   };
 
-  //! 필터 버튼 만드는 함수
   const makeFilterBtn = function (subFilterNameList: Array<string>): any {
     const isPickedFilterName = isClickedTags;
 
@@ -284,14 +263,25 @@ const RecipeListPage = function RecipeList(): any {
         <CreatBtnSection>
           <CreatBtn> + </CreatBtn>
         </CreatBtnSection>
-        <RecipeLists2
-          nowRecipeListResult={nowRecipeListResult}
-          getRecipeList={() => {
-            getRecipeList();
-          }}
-          setIsModalOpen={setIsModalOpen}
-          infinityScrollPoint={infinityScrollPoint}
-        />
+        {nowRecipeListResult.length !== 0 ? (
+          <RecipeLists2
+            nowRecipeListResult={nowRecipeListResult}
+            setIsModalOpen={setIsModalOpen}
+            infinityScrollPoint={infinityScrollPoint}
+          />
+        ) : (
+          <div
+            style={{
+              fontSize: '1.8vw',
+              margin: '10vw auto 10vw auto',
+              textAlign: 'center',
+              lineHeight: '1.7rem',
+            }}
+          >
+            아쉽게도 결과가 존재하지 않습니다. 😇 <br />
+            다른 조합으로 검색해보세요.
+          </div>
+        )}
 
         <TopButton />
       </Body>

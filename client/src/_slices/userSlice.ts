@@ -28,7 +28,7 @@ const INITIAL_STATE: InitialStateType = {
   submit: false,
 };
 
-interface SIGNIN_ARG {
+interface LOGIN_INPUT {
   email: string;
   password: string;
 }
@@ -63,11 +63,11 @@ export const socialUserAsnyc = createAsyncThunk(
 
 export const userLoginAsync = createAsyncThunk(
   'USER_LOGIN',
-  async (arg: SIGNIN_ARG): Promise<any> => {
+  async (LoginInput: LOGIN_INPUT): Promise<any> => {
     const loginUserData = axios
       .post(
         `http://localhost:3001/user/login`,
-        { email: arg.email, password: arg.password },
+        { email: LoginInput.email, password: LoginInput.password },
         { withCredentials: true }
       )
       .then((userInfo) => {
@@ -115,12 +115,11 @@ const userSlice: any = createSlice({
       return INITIAL_STATE;
     },
 
-    userBookmarkEdit: (
+    editUserBookmark: (
       INITIAL_STATE: InitialStateType,
       action: PayloadAction<InitialStateType>
     ) => {
       INITIAL_STATE = { ...action.payload };
-
       return INITIAL_STATE;
     },
   },
@@ -150,5 +149,5 @@ const userSlice: any = createSlice({
 });
 
 export const userData = (state: RootState) => state.persistedReducer.userInfo;
-export const { signup, userBookmarkEdit } = userSlice.actions;
+export const { signup, editUserBookmark } = userSlice.actions;
 export default userSlice.reducer;

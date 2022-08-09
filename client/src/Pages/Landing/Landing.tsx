@@ -6,7 +6,6 @@ import Section2 from './Section2/Section2';
 import Section3 from './Section3/Section3';
 import pointingHand from '../../images/pointingHand.png';
 import Main from '../../images/Main.png';
-import { store } from '../../_store/store';
 import {
   Container,
   Section,
@@ -26,6 +25,7 @@ const Landing = function Landing() {
   };
 
   const startPoint: any = useRef();
+
   return (
     <Container>
       {isAdult ? (

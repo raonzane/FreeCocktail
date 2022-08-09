@@ -47,16 +47,7 @@ const Section2 = function Section2({ startPoint }: any) {
   return (
     <Container ref={startPoint}>
       <Comment ref={lines} />
-      <RecipeList2
-        pageName="Landing"
-        nowRecipeListResult={nowTopRecipe}
-        // bookmark={bookmark}
-        // setBookmark={setBookmark}
-        // getRecipeList={() => {
-        //   getRecipeList('bookmarking');
-        // }}
-        // infinityScrollPoint={infinityScrollPoint}
-      />
+      <RecipeList2 pageName="Landing" nowRecipeListResult={nowTopRecipe} />
     </Container>
   );
 };
