@@ -59,6 +59,7 @@ export const ContentWrapper = styled.div`
 export const ContentTitle = styled.div`
   font-weight: 300;
   font-size: 1rem;
+  margin-top: 0.5rem;
   transition: 0.5s all;
 
   @media ${theme.tablet} {
@@ -79,6 +80,7 @@ export const Content = styled.div`
   color: #2d2d2d;
   margin: 0.5rem 0.5rem;
   line-height: 1.2rem;
+  word-break: keep-all;
   @media ${theme.tablet} {
     font-size: 0.8rem;
     transition: 0.5s all;
@@ -95,6 +97,8 @@ export const Label = styled.label`
   font-weight: 300;
   font-size: 1rem;
   transition: 0.5s all;
+  word-break: keep-all;
+  min-width: 285px;
 
   @media ${theme.tablet} {
     font-size: 0.9rem;
@@ -103,6 +107,7 @@ export const Label = styled.label`
   @media ${theme.mobile} {
     font-size: 0.8rem;
     transition: 0.5s all;
+    min-width: 260px;
   }
 `;
 
@@ -143,8 +148,8 @@ export const Button = styled.button`
   font-family: 'Gmarket Sans TTF';
   font-weight: 300;
   color: #f876de;
-  height: 2.6rem;
-  width: 30%;
+  height: 40px;
+  width: 160px;
   cursor: pointer;
   transition: 0.5s all;
   &:hover {
@@ -156,12 +161,16 @@ export const Button = styled.button`
     color: #ffffff;
     box-shadow: 0 0 10px #3d3d3d;
   }
-  @media ${theme.mobile} {
-    font-size: 0.8rem;
-    transition: 0.5s all;
-  }
   @media ${theme.tablet} {
     font-size: 0.9rem;
     transition: 0.5s all;
+    height: 40px;
+    width: 140px;
+  }
+  @media ${theme.mobile} {
+    font-size: 0.8rem;
+    transition: 0.5s all;
+    height: 40px;
+    width: 120px;
   }
 `;

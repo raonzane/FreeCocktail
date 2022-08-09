@@ -1,5 +1,6 @@
 import { Drink } from '../Entity/Drink';
-import { getRepository, In } from 'typeorm';
+import { Connection, getRepository, In } from 'typeorm';
+import { Like } from '../Entity/Like';
 
 export const FindAllRecipe = () => {
   return Drink.find({ order: { id: 'ASC' } });
@@ -40,7 +41,7 @@ export const AddRecipe = (drinkInfo) => {
     drinkInfo.Ingredient = StringToArray(drinkInfo.Ingredient);
   }
   if (typeof drinkInfo.measure === 'string') {
-    drinkInfo.Ingredient = StringToArray(drinkInfo.Ingredient);
+    drinkInfo.measure = StringToArray(drinkInfo.measure);
   }
   const drink = Drink.create(drinkInfo);
   return Drink.save(drink);
@@ -53,6 +54,35 @@ export const FindPageNation = (skip, size) => {
     .limit(size)
     .orderBy('id', 'ASC')
     .getMany();
+};
+
+export const AddLikeRecipe = async (likeData) => {
+  const likeInfo = Like.create(likeData);
+  Like.save(likeInfo);
+
+  const recipeInfo = await FindIdRecipe(likeData.drinkId);
+
+  recipeInfo.likeCount = recipeInfo.likeCount + 1;
+
+  return Drink.save(recipeInfo);
+};
+
+export const DeleteLikeRecipe = async (likeData) => {
+  const likeInfo = await Like.find({
+    where: {
+      userId: likeData.userId,
+      drinkId: likeData.drinkId,
+    },
+  });
+  Like.remove(likeInfo);
+
+  const recipeInfo = await FindIdRecipe(likeData.drinkId);
+
+  if (recipeInfo.likeCount > 0) {
+    recipeInfo.likeCount = recipeInfo.likeCount - 1;
+  }
+
+  return Drink.save(recipeInfo);
 };
 
 const StringToArray = (itme) => {

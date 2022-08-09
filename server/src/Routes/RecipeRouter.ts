@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { upload } from '../Modules/multer';
+import { Upload } from '../Modules/multer';
 import RecipeController from '../Controllers/RecipeController';
 const recipeRouter = Router();
 
@@ -77,7 +77,7 @@ recipeRouter.get('/like', RecipeController.RecipeFindLike);
  *         $ref: '#/components/schemas/RecipeReturn'
  */
 
-recipeRouter.post('/', upload.single('image'), RecipeController.RecipeAdd);
+recipeRouter.post('/', Upload.single('image'), RecipeController.RecipeAdd);
 /**
  * @swagger
  * paths:
@@ -136,6 +136,37 @@ recipeRouter.get('/page', RecipeController.RecipePageNation);
  *        schema:
  *         $ref: '#/components/schemas/RecipeReturn'
  */
+
+recipeRouter.post('/like', RecipeController.RecipeLike);
+/**
+ * @swagger
+ * paths:
+ *  /recipe/like:
+ *   post:
+ *    tags: [Recipe]
+ *    summary: 좋아요 추가 및 취소
+ *    parameters:
+ *    - in: body
+ *      name: body
+ *      schema:
+ *       type: object
+ *       properties:
+ *        userId:
+ *         type: integer
+ *        recipeId:
+ *         type: integer
+ *        likeCheck:
+ *         type: boolean
+ *    responses:
+ *     200:
+ *      description: 좋아요 반영 성공
+ *      content:
+ *       application/json:
+ *        schema:
+ *         $ref: '#/components/schemas/RecipeReturn'
+ *
+ */
+
 recipeRouter.get('/:id', RecipeController.RecipeFindId);
 /**
  * @swagger

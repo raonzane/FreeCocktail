@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import './MyPage.style.ts';
-import Withdrawal from 'Components/Withdrawal/Withdrawal';
+import { useSelector } from 'react-redux';
+import RecipeLists2 from 'Components/RecipeLists/RecipeLists';
+import Modal from '../../Components/_Modal/Modal';
+import Withdrawal from '../../Components/Withdrawal/Withdrawal';
 import {
   Body,
   UserProfileContainer,
@@ -12,60 +15,183 @@ import {
   SignOutButton,
   Tab,
   TabMenu,
+  PageButtonSection,
+  PageButton,
 } from './MyPage.style';
-import { RecipeLists, RecipeCards } from '../RecipePage/RecipeList.style';
 import { store } from '../../_store/store';
+import { userData } from '../../_slices/userSlice';
 
 const MyPage = function MyPage() {
   // console.log('마이 페이지에서 확인한 state', store.getState());
 
   const [isWithdrawal, setIsWithdrawal] = useState(false);
+  const tabManuName = ['작성글', '관심글'];
+  const [preClickedTab, setPreClickedTab] = useState('');
+
+  const userInfo: any = useSelector(userData);
+
+  const [clickedMenuAllRecipes, setClickedMenuAllRecipes] = useState<any>([]);
+  const [userMyPageView, setUserMyPageView] = useState<any>([]);
+  const [pageNum, setPageNum]: Array<any> = useState([]);
+  const [prePageNum, setPrePageNum] = useState('1');
+
+  const isClickedTab = function (nowClickedTab: any) {
+    nowClickedTab.target.style.background = '#f876de';
+    nowClickedTab.target.style.color = '#ffffff';
+
+    if (
+      preClickedTab !== '' &&
+      preClickedTab !== nowClickedTab.target.innerHTML
+    ) {
+      const preClickedTabMenu = document.getElementById(preClickedTab);
+      preClickedTabMenu!.style.background = '#ffffff';
+      preClickedTabMenu!.style.color = '#494949';
+    }
+
+    setPreClickedTab(nowClickedTab.target.innerHTML);
+    makePageNumBtn(nowClickedTab.target.innerHTML);
+    getClickedMenuResult(nowClickedTab.target.innerHTML);
+  };
+
+  const makePageNumBtn = function (myListName?: string) {
+    let allRecipeResult: Array<any> = [];
+    let tempCount = 0;
+
+    if (myListName === '작성글') {
+      allRecipeResult = userInfo.recipes;
+    } else if (myListName === '관심글') {
+      allRecipeResult = userInfo.likes;
+    }
+
+    if (allRecipeResult.length / 16) {
+      tempCount = allRecipeResult.length / 16 + 1;
+    } else {
+      tempCount = allRecipeResult.length / 16;
+    }
+
+    const pageCount = Array.from({ length: tempCount }, (el, idx) => idx + 1);
+
+    setPageNum([...pageCount]);
+  };
+
+  const setPageNumBtnStyling = function (e: any) {
+    const nowPageNum = e.target;
+
+    if (prePageNum !== nowPageNum) {
+      const prePageNumBtn = document.getElementById(prePageNum);
+      prePageNumBtn!.style.background = '#ffffff';
+      prePageNumBtn!.style.color = '#494949';
+      setPrePageNum(nowPageNum.innerHTML);
+    }
+
+    nowPageNum.style.background = '#f876de';
+    nowPageNum.style.color = '#ffffff';
+  };
+
+  const getClickedMenuResult = function (myListName?: string) {
+    let allRecipeResult: Array<any> = [];
+
+    if (myListName === '작성글') {
+      allRecipeResult = userInfo.recipes;
+    } else if (myListName === '관심글') {
+      allRecipeResult = userInfo.likes;
+    }
+
+    allRecipeResult.forEach((recipe: any) => {
+      if (recipe.tags.length > 3) {
+        recipe.tags = recipe.tags.splice(0, 3);
+      }
+    });
+
+    setClickedMenuAllRecipes([...allRecipeResult]);
+    makeRecipesPageNation([...allRecipeResult]);
+  };
+
+  const makeRecipesPageNation = function (allBookmarkRecipe: any, skipID = 0) {
+    if (allBookmarkRecipe[skipID + 16]) {
+      setUserMyPageView([...allBookmarkRecipe.slice(skipID, skipID + 16)]);
+    } else if (allBookmarkRecipe[skipID + 16] === undefined) {
+      setUserMyPageView([...allBookmarkRecipe.slice(skipID)]);
+    }
+  };
+
   return (
     <Body>
       <UserProfileContainer>
         <UserImg />
         <UserInfoEdit>
-          <UserInfoGreeting> 김두식님, 반갑습니다! </UserInfoGreeting>
+          <UserInfoGreeting>
+            {userInfo.nickname ? userInfo.nickname : '안녕하세요 사용자'}
+            님, 반갑습니다!
+          </UserInfoGreeting>
           <UserInfoButtons>
             <UserInfoEditButton>회원 정보 수정</UserInfoEditButton>
-            {isWithdrawal ? (
-              <Withdrawal />
-            ) : (
-              <SignOutButton
-                onClick={() => {
-                  setIsWithdrawal(true);
-                }}
-                aria-hidden="true"
-              >
-                회원 탈퇴 하기
-              </SignOutButton>
+            <SignOutButton
+              onClick={() => {
+                setIsWithdrawal(true);
+              }}
+              aria-hidden="true"
+            >
+              회원 탈퇴 하기
+            </SignOutButton>
+            {isWithdrawal && (
+              <Modal data={<Withdrawal />} close={setIsWithdrawal} />
             )}
           </UserInfoButtons>
         </UserInfoEdit>
       </UserProfileContainer>
       <Tab>
-        <TabMenu>
-          <div>작성글</div>
-        </TabMenu>
-        <TabMenu>
-          <div>관심글</div>
-        </TabMenu>
+        {tabManuName.map((el: string) => {
+          return (
+            <TabMenu
+              key={el}
+              id={el}
+              role="button"
+              tabIndex={0}
+              onClick={(e: any) => {
+                isClickedTab(e);
+              }}
+              onKeyDown={(): void => {
+                console.log();
+              }}
+            >
+              {el}
+            </TabMenu>
+          );
+        })}
       </Tab>
-      {/* <SectionDivider section /> */}
-      <RecipeLists>
-        <RecipeCards>리스트1</RecipeCards>
-        <RecipeCards>리스트1</RecipeCards>
-        <RecipeCards>리스트1</RecipeCards>
-        <RecipeCards>리스트1</RecipeCards>
-        <RecipeCards>리스트1</RecipeCards>
-        <RecipeCards>리스트1</RecipeCards>
-        <RecipeCards>리스트1</RecipeCards>
-        <RecipeCards>리스트1</RecipeCards>
-        <RecipeCards>리스트1</RecipeCards>
-        <RecipeCards>리스트1</RecipeCards>
-        <RecipeCards>리스트1</RecipeCards>
-      </RecipeLists>
+      {clickedMenuAllRecipes.length ? (
+        <RecipeLists2 nowRecipeListResult={userMyPageView} />
+      ) : (
+        '레시피 정보가 없습니다.'
+      )}
+
+      <PageButtonSection>
+        {pageNum.map((el: number) => {
+          return (
+            <PageButton
+              id={String(el)}
+              key={el}
+              style={
+                el === 1
+                  ? { background: '#f876de', color: '#ffffff' }
+                  : { background: '#ffffff' }
+              }
+              onClick={(el: any) => {
+                const newSkipID = userInfo.likes.indexOf(
+                  userInfo.likes[(Number(el.target.innerHTML) - 1) * 16]
+                );
+                setPageNumBtnStyling(el);
+                makeRecipesPageNation(clickedMenuAllRecipes, newSkipID);
+              }}
+            >
+              {el}
+            </PageButton>
+          );
+        })}
+      </PageButtonSection>
     </Body>
+
     // <svg
     //   viewBox="0 0 100 100"
     //   preserveAspectRatio="xMidYMid slice"
