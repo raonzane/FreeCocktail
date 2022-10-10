@@ -1,8 +1,12 @@
 import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
+import { userData } from '_slices/userSlice';
 import './MyPage.style.ts';
 
-import Modal from '../../Components/_Modal/Modal';
+import UpdateUser from 'Components/UpdateUser/UpdateUser';
 import Withdrawal from '../../Components/Withdrawal/Withdrawal';
+import Modal from '../../Components/_Modal/Modal';
+
 import {
   Body,
   UserProfileContainer,
@@ -18,27 +22,28 @@ import {
 import { RecipeLists, RecipeCards } from '../RecipePage/RecipeList.style';
 
 const MyPage = function MyPage() {
-  const [isWithdrawal, setIsWithdrawal] = useState(false);
+  const persistUser: any = useSelector(userData);
+
+  const [isUpdate, setIsUpdate] = useState(false);
 
   return (
     <Body>
       <UserProfileContainer>
-        <UserImg />
+        <UserImg src={persistUser.data.image} alt="user-profile-image" />
         <UserInfoEdit>
-          <UserInfoGreeting>김덕배님, 반갑습니다!</UserInfoGreeting>
+          <UserInfoGreeting>
+            {persistUser.data.nickname}님, 반갑습니다!
+          </UserInfoGreeting>
           <UserInfoButtons>
-            <UserInfoEditButton>회원 정보 수정</UserInfoEditButton>
-            <SignOutButton
+            <UserInfoEditButton
               onClick={() => {
-                setIsWithdrawal(true);
+                setIsUpdate(true);
               }}
               aria-hidden="true"
             >
-              회원 탈퇴 하기
-            </SignOutButton>
-            {isWithdrawal && (
-              <Modal data={<Withdrawal />} close={setIsWithdrawal} />
-            )}
+              회원 정보 수정
+            </UserInfoEditButton>
+            {isUpdate && <Modal data={<UpdateUser />} close={setIsUpdate} />}
           </UserInfoButtons>
         </UserInfoEdit>
       </UserProfileContainer>

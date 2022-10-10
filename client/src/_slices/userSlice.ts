@@ -71,12 +71,14 @@ export const userLoginAsync = createAsyncThunk(
         { withCredentials: true }
       )
       .then((userInfo) => {
-        const userLikesDrinks = userInfo.data.likeInfo.map((el: any) => {
-          return el.drinkId;
-        });
+        console.log(userInfo);
+        // const userLikesDrinks = userInfo.likeInfo.map((el: any) => {
+        //   return el.drinkId;
+        // });
         INITIAL_STATE = {
-          data: { ...userInfo.data.data },
-          likeInfo: [...userLikesDrinks],
+          ...INITIAL_STATE,
+          data: { ...userInfo.data },
+          // likeInfo: [...userLikesDrinks],
         };
         console.log('로그인 유저의 INITIAL_STATE', INITIAL_STATE);
         return INITIAL_STATE;

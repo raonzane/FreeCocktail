@@ -3,6 +3,7 @@ import { InputTitle, InputField, MsgContainer, Br } from './SignUpPage.style';
 
 type UserData = {
   nickname: string;
+  image: string;
   email: string;
   password: string;
   pwdCheck: string;

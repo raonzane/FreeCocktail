@@ -2,7 +2,10 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 // import { recipeCardsAsnyc } from '_slices/recipeSlice';
 import axios from 'axios';
+import RecipeCreate from 'Components/RecipeCreate/RecipeCreate';
+import Modal from 'Components/_Modal/Modal';
 import Waves from '../../Components/Waves';
+
 import {
   Body,
   Category,
