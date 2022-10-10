@@ -1,9 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Button, Card, Divider } from 'semantic-ui-react';
+import { Button, Divider } from 'semantic-ui-react';
 import { theme } from '../../styles/theme';
 
 const Body = styled.div`
+  scroll-behavior: smooth;
   min-height: 90vh;
   margin-top: 6.938rem;
   justify-content: center;
@@ -75,6 +76,7 @@ const CategoryDescription = styled.div`
   font-size: 18px;
   font-weight: 200;
   white-space: nowrap;
+
   @media ${theme.tablet} {
     width: 37rem;
   }
@@ -94,6 +96,7 @@ const Filter = styled.div`
   grid-template-columns: repeat(3, 1fr);
   gap: 0.5rem;
   margin: 3rem auto 5rem auto;
+
   @media ${theme.tablet} {
     width: 27rem;
     height: 3rem;
@@ -157,143 +160,53 @@ const FilterButtons = styled(Button)({
 const SectionDivider = styled(Divider)({
   'backgroundColor': '#C4C4C4',
   '&&&': {
-    margin: '3rem auto auto auto',
-  },
-});
-
-const RecipeLists = styled.div`
-  /* border: 1px solid red; */
-  width: 60rem;
-  height: 70rem;
-  margin: 5rem auto 1rem auto;
-  grid-gap: 1.1rem;
-  display: grid;
-  align-content: stretch;
-  justify-content: center;
-  grid-template-columns: repeat(4, 1fr);
-  @media ${theme.tablet} {
-    width: 45rem;
-    grid-template-columns: repeat(3, 1fr);
-  }
-  @media ${theme.mobile} {
-    width: 22rem;
-    margin: 3rem auto auto auto;
-    grid-template-columns: repeat(2, 1fr);
-    grid-gap: 1rem;
-    row-gap: 0.2rem;
-  }
-`;
-
-const RecipeCards = styled(Card)({
-  'height': '20rem',
-  '>img': {
-    width: '80%',
-    height: '70%',
-    margin: '1rem auto 0.25rem auto',
-  },
-
-  '&&&': {
-    // ? Recipe card
-    'width': '14rem',
-    'marginTop': '0rem', //* 첫번째 카드만을 위한 속성
-    '@media (max-width: 479px)': {
-      width: '11rem',
-      height: '15.71rem',
-    },
-  },
-
-  //* RecipeDescription
-  '>div': {
-    'width': '80%',
-    'height': '20%',
-    'margin': '0.25rem auto 1rem auto',
-
-    //* RecipeName & RecipeLikes
-    '>div:nth-child(1)': {
-      'display': 'grid',
-      'height': '2rem',
-      'gridTemplateColumns': '75% 25%',
-      'margin': '0.5rem auto 0rem auto',
-      'padding': '0.25rem',
-      'color': 'black',
-      'fontFamily': 'Gmarket Sans TTF',
-      'fontSize': '0.9rem',
-
-      '@media (max-width: 479px)': {
-        fontSize: '0.8rem',
-        margin: '0.15rem auto',
-      },
-
-      '&:hover': {
-        cursor: 'pointer',
-      },
-
-      //* heart icon & likes
-      '>div:nth-child(2)': {
-        'color': 'white',
-        'fontSize': '0.8rem',
-        'WebkitTextStroke': '0.7px black',
-
-        '@media (max-width: 479px)': {
-          fontSize: '0.5rem',
-          margin: '0.05rem auto',
-        },
-
-        '&:hover': {
-          color: '#CB77FF',
-          cursor: 'pointer',
-        },
-      },
-    },
-
-    //* RecipeTags
-    '>div:nth-child(2)': {
-      'display': 'flex',
-      'height': '40%',
-      'margin': '0.25rem auto 1rem auto',
-
-      //* Tags
-      '>button': {
-        'flex': '1 1 1',
-        'margin': 'auto 0.14rem',
-        'padding': '0.29rem',
-        'borderRadius': '50px',
-        'border': '1px solid #FFB000',
-        'backgroundColor': '#FFDF00',
-        'fontSize': '0.69rem',
-
-        '@media (max-width: 479px)': {
-          fontSize: '0.25rem',
-          margin: 'auto 0.05rem',
-          padding: '0.12rem',
-        },
-
-        '&: hover': {
-          cursor: 'pointer',
-          fontWeight: '600',
-        },
+    'margin': 'auto',
+    '@media (min-width: 1024px)': {
+      'width': '70rem',
+      'fontSize': '13px',
+      'whiteSpace': 'nowrap',
+      '&&&:nth-child(4)': {
+        fontSize: '11.5px',
       },
     },
   },
 });
 
-const TopButtonSection = styled.div`
+const CreatBtnSection = styled.div`
   position: fixed;
   width: 5rem;
   height: 5rem;
-  top: 80rem;
-  right: 8rem;
-  text-align: right;
+  top: 40rem;
+  right: 5rem;
+
   @media ${theme.tablet} {
     right: 0.5rem;
-    top: 80rem;
+    top: 20rem;
   }
   @media ${theme.mobile} {
-    width: 5rem;
-    height: 5rem;
-    top: 50rem;
+    width: 3rem;
+    height: 3rem;
+    top: 20rem;
     right: 9.7rem;
     font-size: 10px;
+  }
+`;
+const CreatBtn = styled.button`
+  width: 3rem;
+  height: 3rem;
+  margin: 1rem;
+  border: 1px solid #494949;
+  border-radius: 100px;
+  background-color: #dbfd7d;
+  font-size: 2rem;
+  font-family: Gmarket Sans TTF;
+  color: #ffffff;
+  -webkit-text-stroke: 1px #494949;
+
+  &:hover {
+    cursor: pointer;
+    color: #ffffff;
+    background-color: #cb77ff;
   }
 `;
 
@@ -305,7 +218,6 @@ export {
   Filter,
   FilterButtons,
   SectionDivider,
-  RecipeLists,
-  RecipeCards,
-  TopButtonSection,
+  CreatBtnSection,
+  CreatBtn,
 };
