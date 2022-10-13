@@ -1,6 +1,6 @@
 import styled, { keyframes } from 'styled-components';
-import Main from '../../images/Main.png';
 import { theme } from '../../styles/theme';
+import Main from '../../images/Main.webp';
 
 const move = keyframes`
   0% {
@@ -128,7 +128,6 @@ export const PointingHand = styled.img`
     height: 25rem;
     top: 5rem;
     left: -2rem;
-
     transform: rotate(90deg);
   }
 

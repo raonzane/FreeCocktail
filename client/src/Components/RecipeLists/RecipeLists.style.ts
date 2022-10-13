@@ -1,13 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Card } from 'semantic-ui-react';
-import LandingSectionCardShape from '../../images/LandingSectionCardShape.png';
 import { theme } from '../../styles/theme';
+import LandingSectionCardShape from '../../images/LandingSectionCardShape.webp';
 
 const RecipeLists = styled.div`
-  /* border: 1px solid red; */
   width: 60rem;
-  margin: 5rem auto 1rem auto;
+  margin: 3rem auto;
   display: grid;
   align-content: stretch;
   justify-content: center;
@@ -15,7 +14,7 @@ const RecipeLists = styled.div`
   grid-template-columns: repeat(4, 1fr);
 
   ${(props) => {
-    return props.defaultValue
+    return props.defaultValue === 'Landing'
       ? `
       @media ${theme.tablet} {
         width: 18vw;
@@ -26,14 +25,14 @@ const RecipeLists = styled.div`
       @media ${theme.tablet} {
         width: 18vw;
         grid-template-columns: repeat(3, 1fr);
-        margin: 5rem auto 1rem auto;
+        margin: 3rem auto 1rem auto;
       }
       `;
   }}
 
   @media ${theme.mobile} {
     width: 20vw;
-    margin: 3rem auto auto auto;
+    margin: 2rem auto auto auto;
     grid-template-columns: repeat(2, 1fr);
     grid-gap: 1rem;
     row-gap: 0.2rem;
@@ -47,9 +46,10 @@ const RecipeCards = styled(Card)`
     height: 18.5rem;
     display: flex;
     margin-top: 0rem; //* 첫번째 카드만을 위한 속성
+    /* margin: center auto; */
 
     ${(props) => {
-      return props.defaultValue
+      return props.defaultValue === 'Landing'
         ? `
         flex-direction: column-reverse;
         box-shadow: none;
@@ -85,7 +85,7 @@ const RecipeCards = styled(Card)`
 
   > img {
     ${(props) => {
-      return props.defaultValue
+      return props.defaultValue === 'Landing'
         ? `width: 12rem; 
         height: 12.5rem; 
         margin: 0.5rem auto;
@@ -119,7 +119,7 @@ const RecipeCards = styled(Card)`
     width: 100%;
 
     ${(props) => {
-      return props.defaultValue
+      return props.defaultValue === 'Landing'
         ? `height: 1.85rem; 
         margin-left: 1.3rem; 
         text-align: center;
@@ -149,7 +149,7 @@ const RecipeCards = styled(Card)`
     //* RecipeName & RecipeLikes
     > div:nth-child(1) {
       ${(props) =>
-        props.defaultValue
+        props.defaultValue === 'Landing'
           ? `width: 100%;
           font-size: 1rem;
 
@@ -192,7 +192,7 @@ const RecipeCards = styled(Card)`
       margin: 0.3rem auto;
       padding: 0.25rem;
       color: #494949;
-      font-family: Gmarket Sans TTF;
+      font-family: 'Gmarket Sans TTF';
 
       &:hover {
         cursor: pointer;
@@ -201,7 +201,7 @@ const RecipeCards = styled(Card)`
       //* heart icon & likes
       > button:nth-child(2) {
         ${(props) => {
-          return props.defaultValue
+          return props.defaultValue === 'Landing'
             ? `
             aria-hidden: true;
             display: none;
@@ -253,7 +253,7 @@ const RecipeCards = styled(Card)`
       }
 
       ${(props) => {
-        return props.defaultValue
+        return props.defaultValue === 'Landing'
           ? `aria-hidden: true;
           display: none;
           visibility: hidden;

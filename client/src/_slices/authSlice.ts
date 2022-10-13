@@ -7,10 +7,9 @@ import type { RootState } from '../_store/store';
 const initialState: ILoginState = {
   isLoggedIn: false,
   isInValid: false,
-  accessToken: '',
+  // accessToken: '',
 };
 
-// axios.post login 요청
 export const setAuth = createAsyncThunk(
   'authSlice/setAuth',
   async ({ email, password }: ILogin) => {
@@ -28,29 +27,29 @@ export const authSlice = createSlice({
   reducers: {
     setLogOut(state) {
       state.isLoggedIn = false;
-      state.accessToken = '';
+      // state.accessToken = '';
     },
     setSocialLogin(state, action) {
       state.isLoggedIn = true;
       state.isInValid = false;
-      state.accessToken = action.payload;
+      // state.accessToken = action.payload;
     },
   },
   extraReducers: {
     [setAuth.pending.type]: (state) => {
       state.isLoggedIn = false;
       state.isInValid = false;
-      state.accessToken = '';
+      // state.accessToken = '';
     },
     [setAuth.fulfilled.type]: (state, action: ILoginPayload) => {
       state.isLoggedIn = true;
       state.isInValid = false;
-      state.accessToken = action.payload.data.accessToken;
+      // state.accessToken = action.payload.data.accessToken;
     },
     [setAuth.rejected.type]: (state) => {
       state.isLoggedIn = false;
       state.isInValid = true;
-      state.accessToken = '';
+      // state.accessToken = '';
     },
   },
 });

@@ -7,12 +7,14 @@ import RecipeList2 from '../../../Components/RecipeLists/RecipeLists';
 import { Container, Comment } from './Section2.style';
 
 axios.defaults.withCredentials = true;
+
 gsap.registerPlugin(ScrollTrigger);
 gsap.registerPlugin(TextPlugin);
 
 const Section2 = function Section2({ startPoint }: any) {
-  const [nowTopRecipe, setNowTopRecipe] = useState([]);
   const lines: any = useRef();
+  const [nowTopRecipe, setNowTopRecipe] = useState([]);
+
   useEffect(() => {
     nowSection2Recipe();
 
@@ -47,16 +49,7 @@ const Section2 = function Section2({ startPoint }: any) {
   return (
     <Container ref={startPoint}>
       <Comment ref={lines} />
-      <RecipeList2
-        pageName="Landing"
-        nowRecipeListResult={nowTopRecipe}
-        // bookmark={bookmark}
-        // setBookmark={setBookmark}
-        // getRecipeList={() => {
-        //   getRecipeList('bookmarking');
-        // }}
-        // infinityScrollPoint={infinityScrollPoint}
-      />
+      <RecipeList2 pageName="Landing" nowRecipeResult={nowTopRecipe} />
     </Container>
   );
 };

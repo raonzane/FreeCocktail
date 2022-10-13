@@ -1,9 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-
 import axios from 'axios';
 import { LoginModal } from 'Components/LoginModal';
 import RecipeLists2 from 'Components/RecipeLists/RecipeLists';
+import { RecipePage, RecipeCard, IODataType } from '../../types/types';
 import {
   Body,
   Category,
@@ -12,22 +11,21 @@ import {
   Filter,
   FilterButtons,
   SectionDivider,
-  CreatBtnSection,
-  CreatBtn,
+  CreateBtnSection,
+  CreateBtn,
 } from './RecipeListPage.style';
 import TopButton from '../../Components/TopButton';
-import { userData } from '../../_slices/userSlice';
 import Waves from '../../Components/Waves';
 
 axios.defaults.withCredentials = true;
 
-const categoryName: Array<any> = [
+const categoryName: Array<string> = [
   '전체보기',
   '인기순',
   '해시태그',
   '베이스 드링크',
 ];
-const subFilterName: Array<any> = [
+const subFilterName: Array<Array<string>> = [
   [
     '달달한',
     '청량한',
@@ -40,43 +38,31 @@ const subFilterName: Array<any> = [
   ['샴페인', '꼬냑', '진', '럼', '테낄라', '보드카', '위스키', '기타'],
 ];
 
-interface RecipeListDataType {
-  requestedCategoryBtn: string;
-  isFilterOpened: string;
-  description: string;
-}
-
-interface ExtraURI {
-  requestType: string;
-  categoryURI: string;
-  filteringURI: string;
-}
-
 //! 레시피 리스트 페이지
-const RecipeListPage = function RecipeList(): any {
-  const [categoryBtn, setCategoryBtn] = useState<RecipeListDataType>({
-    requestedCategoryBtn: '?',
-    isFilterOpened: '',
-    description: '저희 서비스의 모든 칵테일 레시피를 조회할 수 있습니다.',
-  });
-  const [isClickedTags, setIsClickedTags] = useState<any>([]);
-  const [nowRecipeListResult, setNowRecipeListResult] = useState<any>([]);
-  const [skipID, setSkipID] = useState(0);
-  const [isLoading, setIsLoading] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
-  useEffect(() => {
-    getRecipeList('filtering');
-  }, [categoryBtn.requestedCategoryBtn]);
-
+const RecipeListPage: React.FC = function () {
   //! 무한스크롤에 필요한 함수
   const infinityScrollPoint = useRef(null);
 
-  const IOhandler = function (entries: any) {
+  const IOhandler = function (entries: Array<IODataType>) {
     const eventTarget = entries[0];
     if (eventTarget.isIntersecting && !isLoading)
       getRecipeList('infinityScroll', skipID);
   };
+
+  const [skipID, setSkipID] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isClickedTags, setIsClickedTags] = useState<Array<string>>([]);
+  const [nowRecipeResult, setNowRecipeResult] = useState<Array<RecipeCard>>([]);
+  const [requestButton, setRequestButton] = useState<RecipePage>({
+    requestedCategory: '?',
+    requestedTags: '',
+    description: '저희 서비스의 모든 칵테일 레시피를 조회할 수 있습니다.',
+  });
+
+  useEffect(() => {
+    getRecipeList('filtering');
+  }, [requestButton.requestedCategory]);
 
   useEffect(() => {
     const options = {
@@ -97,32 +83,23 @@ const RecipeListPage = function RecipeList(): any {
   const getRecipeList = async function (
     requestType?: string,
     skipID = 0
-  ): Promise<any> {
+  ): Promise<void> {
     const clickedTags = isClickedTags.join('&tag=').concat('&');
 
-    const url = `http://localhost:3001/recipe/${categoryBtn.requestedCategoryBtn}${clickedTags}skip=${skipID}&size=16`;
+    const url = `http://localhost:3001/recipe/${requestButton.requestedCategory}${clickedTags}skip=${skipID}&size=16`;
 
     await axios
       .get(url)
       .then((info) => {
-        //! Recipe 카드 TAG 갯수 3개로 제한
-        const result = info.data;
-
-        for (let i = 0; i < result.length; i += 1) {
-          if (result[i].tags.length >= 3) {
-            result[i].tags = result[i].tags.splice(0, 3);
-          }
-        }
-
         if (requestType === 'filtering') {
-          setNowRecipeListResult([...result]);
-          setSkipID(result.length);
+          setNowRecipeResult([...info.data]);
+          setSkipID(info.data.length);
         } else if (requestType === 'infinityScroll') {
-          setNowRecipeListResult([...nowRecipeListResult, ...result]);
-          setSkipID(nowRecipeListResult.length + result.length);
+          setNowRecipeResult([...nowRecipeResult, ...info.data]);
+          setSkipID(nowRecipeResult.length + info.data.length);
         }
 
-        if (result.length < 16) {
+        if (info.data.length < 16) {
           setIsLoading(true);
         } else {
           setIsLoading(false);
@@ -131,20 +108,14 @@ const RecipeListPage = function RecipeList(): any {
       .catch((err) => {
         console.log('에러', err);
       });
-
-    const URI: ExtraURI = {
-      requestType: 'bookmarking',
-      categoryURI: `${categoryBtn.requestedCategoryBtn}`,
-      filteringURI: `${isClickedTags}`,
-    };
   };
 
   //! 카테고리 버튼 만드는 함수
-  const makeCategoryBtn = function (categoryName: any): any {
+  const makeCategoryBtn = function (categoryName: Array<string>): any {
     const [prePicked, setPrePicked] = useState('전체보기');
 
     //! 카테고리 버튼 작동 함수
-    const setCategoryBtns = function (e: any): any {
+    const setRequestButtons = function (e: any): void {
       const nowPicked = e.target.innerHTML;
 
       if (!nowPicked.includes('✨')) {
@@ -158,37 +129,37 @@ const RecipeListPage = function RecipeList(): any {
         e.target.style.background = '#94FDD7';
 
         setIsClickedTags([]);
-        setNowRecipeListResult([]);
+        setNowRecipeResult([]);
 
         if (nowPicked === '전체보기') {
           setSkipID(0);
-          setCategoryBtn({
-            requestedCategoryBtn: '?',
-            isFilterOpened: '',
+          setRequestButton({
+            requestedCategory: '?',
+            requestedTags: '',
             description:
               '저희 서비스의 모든 칵테일 레시피를 조회할 수 있습니다.',
           });
         } else if (nowPicked === '인기순') {
           setSkipID(0);
-          setCategoryBtn({
-            requestedCategoryBtn: 'like?',
-            isFilterOpened: '',
+          setRequestButton({
+            requestedCategory: 'like?',
+            requestedTags: '',
             description:
               '현재 시간 가장 인기 많은 칵테일부터 조회할 수 있습니다.',
           });
         } else if (nowPicked === '해시태그') {
           setSkipID(0);
-          setCategoryBtn({
-            requestedCategoryBtn: 'tag?tag=',
-            isFilterOpened: `${nowPicked}`,
+          setRequestButton({
+            requestedCategory: 'tag?tag=',
+            requestedTags: `${nowPicked}`,
             description:
               '칵테일이 처음이라면, 원하는 태그를 통해 가장 잘 맞는 칵테일을 찾아보세요',
           });
         } else if (nowPicked === '베이스 드링크') {
           setSkipID(0);
-          setCategoryBtn({
-            requestedCategoryBtn: 'tag?tag=',
-            isFilterOpened: `${nowPicked}`,
+          setRequestButton({
+            requestedCategory: 'tag?tag=',
+            requestedTags: `${nowPicked}`,
             description:
               '다양한 베이스 드링크를 통해 나에게 잘 맞는 칵테일을 찾아보세요',
           });
@@ -210,7 +181,7 @@ const RecipeListPage = function RecipeList(): any {
         <CategoryButtons
           id={categoryName[index]}
           key={categoryName[index]}
-          onClick={(e: any) => setCategoryBtns(e)}
+          onClick={(e: any) => setRequestButtons(e)}
           style={{
             background:
               categoryName[index] === '전체보기' ? '#94FDD7' : '#ffffff',
@@ -228,10 +199,10 @@ const RecipeListPage = function RecipeList(): any {
   const makeFilterBtn = function (subFilterNameList: Array<string>): any {
     const isPickedFilterName = isClickedTags;
 
-    const setFilterBtns = function (e: any): any {
+    const setFilterBtns = function (e: any): void {
       const pickedFilterName = e.target.innerHTML;
 
-      setNowRecipeListResult([]);
+      setNowRecipeResult([]);
       setSkipID(0);
 
       if (!pickedFilterName.includes('💛')) {
@@ -274,27 +245,37 @@ const RecipeListPage = function RecipeList(): any {
       <Body>
         {isModalOpen ? <LoginModal setIsModalOpen={setIsModalOpen} /> : ''}
         <Category>{makeCategoryBtn(categoryName)}</Category>
-        <CategoryDescription>{categoryBtn.description}</CategoryDescription>
+        <CategoryDescription>{requestButton.description}</CategoryDescription>
         <Filter>
-          {categoryBtn.isFilterOpened === '해시태그'
+          {requestButton.requestedTags === '해시태그'
             ? makeFilterBtn(subFilterName[0])
-            : categoryBtn.isFilterOpened === '베이스 드링크'
+            : requestButton.requestedTags === '베이스 드링크'
             ? makeFilterBtn(subFilterName[1])
             : ''}
         </Filter>
+        <CreateBtnSection>
+          <CreateBtn aria-label="레시피 작성">레시피 등록하기</CreateBtn>
+        </CreateBtnSection>
         <SectionDivider section />
-        <CreatBtnSection>
-          <CreatBtn> + </CreatBtn>
-        </CreatBtnSection>
-        <RecipeLists2
-          nowRecipeListResult={nowRecipeListResult}
-          getRecipeList={() => {
-            getRecipeList();
-          }}
-          isModalOpen={isModalOpen}
-          infinityScrollPoint={infinityScrollPoint}
-        />
-
+        {nowRecipeResult.length ? (
+          <RecipeLists2
+            nowRecipeResult={nowRecipeResult}
+            setIsModalOpen={setIsModalOpen}
+            infinityScrollPoint={infinityScrollPoint}
+          />
+        ) : (
+          <div
+            style={{
+              fontSize: '1.8vh',
+              margin: '10vw auto 10vw auto',
+              textAlign: 'center',
+              lineHeight: '1.7rem',
+            }}
+          >
+            아쉽게도 결과가 존재하지 않습니다. 😇 <br />
+            다른 조합으로 검색해보세요.
+          </div>
+        )}
         <TopButton />
       </Body>
     </>
