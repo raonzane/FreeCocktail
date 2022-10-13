@@ -1,11 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Card } from 'semantic-ui-react';
-import LandingSectionCardShape from '../../images/LandingSectionCardShape.png';
+import LandingSectionCardShape from '../../images/LandingSectionCardShape.webp';
 import { theme } from '../../styles/theme';
 
 const RecipeLists = styled.div`
-  /* border: 1px solid red; */
   width: 60rem;
   margin: 5rem auto 1rem auto;
   display: grid;
@@ -42,11 +41,10 @@ const RecipeLists = styled.div`
 
 const RecipeCards = styled(Card)`
   &&& {
-    // ? Recipe card
     width: 13rem;
     height: 18.5rem;
     display: flex;
-    margin-top: 0rem; //* 첫번째 카드만을 위한 속성
+    margin-top: 0rem;
 
     ${(props) => {
       return props.defaultValue

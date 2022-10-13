@@ -20,10 +20,6 @@ const Landing = function Landing() {
 
   const LazySection2 = lazy(() => import('./Section2/Section2'));
 
-  const errorFallback = () => {
-    return <div> Loading </div>;
-  };
-
   return (
     <Container>
       {isAdult ? (
@@ -69,6 +65,7 @@ const Landing = function Landing() {
       <Suspense fallback={<div> Loading </div>}>
         <LazySection2 />
       </Suspense>
+
       <Section>
         <Section3 />
       </Section>
