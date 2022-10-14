@@ -2,58 +2,51 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useSelector, useDispatch } from 'react-redux';
 import { RecipeLists, RecipeCards } from './RecipeLists.style';
+import { RecipeCard, RecipeBookmark } from '../../types/types';
 import { userData } from '../../_slices/userSlice';
 import { editUserBookmark } from '../../_slices/userSlice';
 
 function RecipeLists2({
   pageName,
-  nowRecipeListResult,
+  nowRecipeResult,
   setIsModalOpen,
   infinityScrollPoint,
 }: any) {
-  interface RecipeLikeDataType {
-    userId: number;
-    recipeId: number;
-    likeCheck: boolean;
-  }
-
-  let userLikesCount: Array<number> = nowRecipeListResult.map((el: any) => {
-    return el.likeCount;
-  });
-
-  const [likeCountView, setLikeCountView] = useState<Array<number>>([]);
-
-  useEffect(() => {
-    userLikesCount = nowRecipeListResult.map((el: any) => {
-      return el.likeCount;
-    });
-
-    setLikeCountView(userLikesCount);
-  }, [nowRecipeListResult]);
-
   let userInfo: any = useSelector(userData);
   const dispatch = useDispatch();
   const userLikesDrinks: any = userInfo.likes;
-
   const isBookmarked = userLikesDrinks.map((el: any, idx: number) => {
     let arr = [];
     arr = userLikesDrinks[idx].id;
     return arr;
   });
+  let userLikesCount: Array<number> = nowRecipeResult.map((el: RecipeCard) => {
+    return el.likeCount;
+  });
 
-  const [bookmark, setBookmark] = useState<RecipeLikeDataType>({
+  const [bookmark, setBookmark] = useState<RecipeBookmark>({
     userId: 0,
     recipeId: 0,
     likeCheck: false,
   });
+  const [likeCountView, setLikeCountView] = useState<Array<number>>([]);
 
-  const updateLikeCountView = function (cur: any, idx: number) {
+  useEffect(() => {
+    userLikesCount = nowRecipeResult.map((el: any) => {
+      return el.likeCount;
+    });
+    setLikeCountView(userLikesCount);
+  }, [nowRecipeResult]);
+
+  const updateLikeCountView = function (cur: RecipeCard, idx: number) {
+    const tempLikeCountView = likeCountView;
     if (!isBookmarked.includes(cur.id)) {
-      userLikesCount[idx] = likeCountView[idx] + 1;
+      tempLikeCountView[idx] += 1;
     } else if (isBookmarked.includes(cur.id)) {
-      userLikesCount[idx] = likeCountView[idx] - 1;
+      tempLikeCountView[idx] -= 1;
     }
-    setLikeCountView([...userLikesCount]);
+
+    setLikeCountView([...tempLikeCountView]);
   };
 
   const updateBookmark = async function (bookmarkInfo: any) {
@@ -106,7 +99,7 @@ function RecipeLists2({
 
   return (
     <RecipeLists defaultValue={pageName}>
-      {nowRecipeListResult.map(function (cur: any, idx: number) {
+      {nowRecipeResult.map(function (cur: any, idx: number) {
         return (
           <RecipeCards defaultValue={pageName} key={cur.id}>
             <img alt={cur.name} src={cur.image} />
@@ -116,7 +109,7 @@ function RecipeLists2({
                 <button
                   type="button"
                   onClick={() => {
-                    let tempBookmark: RecipeLikeDataType = {
+                    let tempBookmark: RecipeBookmark = {
                       userId: 0,
                       recipeId: 0,
                       likeCheck: false,
@@ -155,11 +148,13 @@ function RecipeLists2({
                 </button>
               </div>
               <div className="RcipeTags">
-                {cur.tags.map((tag: string) => {
-                  return (
+                {cur.tags.map((tag: string, idx: number) => {
+                  return idx < 3 ? (
                     <button key={String(cur.id) + tag} type="button">
                       {'#'.concat(tag)}
                     </button>
+                  ) : (
+                    ''
                   );
                 })}
               </div>

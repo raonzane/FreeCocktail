@@ -29,7 +29,7 @@ const Category = styled.div`
     height: 3rem;
   }
   @media ${theme.mobile} {
-    width: 22rem;
+    width: 21.5rem;
     height: 2rem;
   }
 `;
@@ -45,7 +45,7 @@ const CategoryButtons = styled(Button)({
     'border': '1.5px solid #494949',
     'color': '#494949',
     'fontSize': '16px',
-    //* Responsive (tablet - mobile)
+
     '@media (min-width: 480px) and (max-width: 1023px)': {
       'width': '8rem',
       'fontSize': '13px',
@@ -55,8 +55,8 @@ const CategoryButtons = styled(Button)({
       },
     },
     '@media (max-width: 479px)': {
-      'width': '6.5rem',
-      'fontSize': '5px',
+      'width': '6rem',
+      'fontSize': '4px',
       '&&&:nth-child(4)': {
         fontSize: '0.1px',
       },
@@ -162,46 +162,62 @@ const SectionDivider = styled(Divider)({
   '&&&': {
     'margin': 'auto',
     '@media (min-width: 1024px)': {
-      'width': '70rem',
-      'fontSize': '13px',
-      'whiteSpace': 'nowrap',
-      '&&&:nth-child(4)': {
-        fontSize: '11.5px',
-      },
+      width: '60rem',
+    },
+    '@media (max-width: 479px)': {
+      width: '21.5rem',
     },
   },
 });
 
-const CreatBtnSection = styled.div`
-  position: fixed;
-  width: 5rem;
-  height: 5rem;
-  top: 40rem;
-  right: 5rem;
+const CreateBtnSection = styled.div`
+  position: relative;
+  width: 60rem;
+  height: 4rem;
+  margin: 0.3rem auto;
 
   @media ${theme.tablet} {
-    right: 0.5rem;
-    top: 20rem;
+    width: 45rem;
+    height: 3.25rem;
   }
+
   @media ${theme.mobile} {
-    width: 3rem;
-    height: 3rem;
-    top: 20rem;
-    right: 9.7rem;
-    font-size: 10px;
+    width: 21.5rem;
+    height: 2.25rem;
   }
 `;
-const CreatBtn = styled.button`
-  width: 3rem;
-  height: 3rem;
+
+const CreateBtn = styled.button`
+  position: absolute;
+  width: 8.5rem;
+  height: 2rem;
   margin: 1rem;
+  left: 49.5rem;
+  color: #ffffff;
+  font-size: 1rem;
+  font-family: Gmarket Sans TTF;
   border: 1px solid #494949;
   border-radius: 100px;
   background-color: #dbfd7d;
-  font-size: 2rem;
-  font-family: Gmarket Sans TTF;
-  color: #ffffff;
-  -webkit-text-stroke: 1px #494949;
+  -webkit-text-stroke: 0.8px #494949;
+
+  @media ${theme.tablet} {
+    width: 7.5rem;
+    height: 2rem;
+    margin: 0.8rem;
+    left: 35.5rem;
+    color: #ffffff;
+    font-size: 0.9rem;
+  }
+
+  @media ${theme.mobile} {
+    width: 5.5rem;
+    height: 1.5rem;
+    margin: 0.5rem;
+    left: 15rem;
+    color: #ffffff;
+    font-size: 0.65rem;
+  }
 
   &:hover {
     cursor: pointer;
@@ -218,6 +234,6 @@ export {
   Filter,
   FilterButtons,
   SectionDivider,
-  CreatBtnSection,
-  CreatBtn,
+  CreateBtnSection,
+  CreateBtn,
 };
