@@ -65,7 +65,6 @@ const Landing = function Landing() {
       <Suspense fallback={<div> Loading </div>}>
         <LazySection2 />
       </Suspense>
-
       <Section>
         <Section3 />
       </Section>

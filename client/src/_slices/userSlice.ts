@@ -1,21 +1,9 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import axios from 'axios';
 import type { RootState } from '../_store/store';
+import { IUserState, ILogin, OauthLogin } from '../types/types';
 
-interface InitialStateType {
-  id: number;
-  nickname: string;
-  email: string;
-  password: string;
-  pwdCheck: string;
-  image: string;
-  likes: Array<any>;
-  recipes: Array<any>;
-  OAuth: boolean;
-  submit: boolean;
-}
-
-const INITIAL_STATE: InitialStateType = {
+const INITIAL_STATE: IUserState = {
   id: 0,
   nickname: '',
   email: '',
@@ -28,30 +16,12 @@ const INITIAL_STATE: InitialStateType = {
   submit: false,
 };
 
-interface LOGIN_INPUT {
-  email: string;
-  password: string;
-}
-
-interface SocialLoginARG {
-  snsName: string;
-  accessToken: string;
-}
-
-interface SignUpARG {
-  nickname: string;
-  email: string;
-  password: string;
-  image: string;
-  submit: boolean;
-}
-
 export const socialUserAsnyc = createAsyncThunk(
   'SNS_LOGIN',
-  async (arg: SocialLoginARG): Promise<any> => {
+  async (ARG: OauthLogin): Promise<any> => {
     const socialLoginUserData = await axios
-      .post(`http://localhost:3001/user/${arg.snsName}`, {
-        idToken: `${arg.accessToken}`,
+      .post(`http://localhost:3001/user/${ARG.snsName}`, {
+        idToken: `${ARG.accessToken}`,
       })
       .then((userInfo) => {
         return userInfo.data;
@@ -63,7 +33,7 @@ export const socialUserAsnyc = createAsyncThunk(
 
 export const userLoginAsync = createAsyncThunk(
   'USER_LOGIN',
-  async (LoginInput: LOGIN_INPUT): Promise<any> => {
+  async (LoginInput: ILogin): Promise<any> => {
     const loginUserData = axios
       .post(
         `http://localhost:3001/user/login`,
@@ -71,6 +41,7 @@ export const userLoginAsync = createAsyncThunk(
         { withCredentials: true }
       )
       .then((userInfo) => {
+        console.log('userInfo', userInfo);
         const userLikesData = userInfo.data.likes.map((el: any) => {
           return el.drink;
         });
@@ -86,7 +57,7 @@ const userSlice: any = createSlice({
   name: 'user',
   initialState: INITIAL_STATE,
   reducers: {
-    signup: (INITIAL_STATE, action: PayloadAction<InitialStateType>) => {
+    signup: (INITIAL_STATE, action: PayloadAction<IUserState>) => {
       const {
         id,
         nickname,
@@ -116,8 +87,8 @@ const userSlice: any = createSlice({
     },
 
     editUserBookmark: (
-      INITIAL_STATE: InitialStateType,
-      action: PayloadAction<InitialStateType>
+      INITIAL_STATE: IUserState,
+      action: PayloadAction<IUserState>
     ) => {
       INITIAL_STATE = { ...action.payload };
       return INITIAL_STATE;
@@ -148,6 +119,9 @@ const userSlice: any = createSlice({
   },
 });
 
+// export const userData = (state: RootState) => state.userInfo;
+
 export const userData = (state: RootState) => state.persistedReducer.userInfo;
 export const { signup, editUserBookmark } = userSlice.actions;
+
 export default userSlice.reducer;

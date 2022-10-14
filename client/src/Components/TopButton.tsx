@@ -19,9 +19,7 @@ const TopButton = function (): any {
     }
   };
 
-  window.onload = () => {
-    window.addEventListener('scroll', scrollFunc);
-  };
+  window.addEventListener('scroll', scrollFunc);
 
   return (
     <TopBtnSection id="topbtn">

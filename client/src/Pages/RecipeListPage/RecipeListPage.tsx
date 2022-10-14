@@ -85,7 +85,9 @@ const RecipeListPage: React.FC = function () {
     skipID = 0
   ): Promise<void> {
     const clickedTags = isClickedTags.join('&tag=').concat('&');
+
     const url = `http://localhost:3001/recipe/${requestButton.requestedCategory}${clickedTags}skip=${skipID}&size=16`;
+
     await axios
       .get(url)
       .then((info) => {
