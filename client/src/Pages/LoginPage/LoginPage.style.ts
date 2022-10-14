@@ -4,7 +4,7 @@ import { theme } from '../../styles/theme';
 export const Body = styled.div`
   min-height: 90vh;
   margin-top: 6.938rem;
-  /* background: linear-gradient(0deg, #fbfafc, #fbfafc); */
+  background: linear-gradient(0deg, #fbfafc, #fbfafc);
   display: flex;
   justify-content: center;
   padding: 0 30px 0 30px;
@@ -150,7 +150,6 @@ export const InvalidMessage = styled.div`
   @media ${theme.mobile} {
     font-size: 0.8rem;
     transition: 0.5s all;
-    /* margin: 5px 0 10px 0; */
   }
   @media ${theme.tablet} {
     font-size: 0.9rem;
@@ -169,7 +168,7 @@ export const LoginBtn = styled.button`
   font-size: 1rem;
   color: #f876de;
   height: 2.6rem;
-  width: 100%;
+  width: 97%;
   margin-top: 10px;
   cursor: pointer;
   transition: 0.5s all;
@@ -189,6 +188,7 @@ export const LoginBtn = styled.button`
   @media ${theme.tablet} {
     font-size: 0.9rem;
     transition: 0.5s all;
+    width: 96.5%;
   }
 `;
 
@@ -220,21 +220,19 @@ export const SignupBtn = styled.div`
   }
 `;
 
-export const SocialLoginBtn2 = styled.div`
-  /* background-color: orange; */
+export const SocialLoginBtnSection = styled.div`
   display: flex;
   flex-direction: row;
-  margin: 15px;
+  margin: 13px;
   font-weight: 200;
+
   > * {
     &:nth-child(1) {
-      /* background-color: orange; */
       flex: 2.2 1 0;
       text-align: left;
       margin: auto;
     }
     &:nth-child(2) {
-      /* background-color: red; */
       flex: 1 1 0;
       display: flex;
       > * {
@@ -249,7 +247,6 @@ export const SocialLoginBtn2 = styled.div`
     font-size: 0.9rem;
     > * {
       &:nth-child(1) {
-        /* background-color: orange; */
         flex: 1.9 1 0;
         text-align: left;
         margin: auto;
@@ -261,13 +258,11 @@ export const SocialLoginBtn2 = styled.div`
     font-size: 0.8rem;
     > * {
       &:nth-child(1) {
-        /* background-color: orange; */
         flex: 1.9 1 0;
         text-align: left;
         margin: auto;
       }
       &:nth-child(2) {
-        /* background-color: red; */
         flex: 1 1 0;
         display: flex;
         > * {
