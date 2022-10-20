@@ -1,13 +1,8 @@
 import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
-import { userData } from '_slices/userSlice';
 import './MyPage.style.ts';
-
-import UpdateUser from 'Components/UpdateUser/UpdateUser';
 import { useSelector } from 'react-redux';
 import RecipeLists2 from 'Components/RecipeLists/RecipeLists';
-import Modal from '../../Components/_Modal/Modal';
-import Withdrawal from '../../Components/Withdrawal/Withdrawal';
+import UpdateUser from 'Components/UpdateUser/UpdateUser';
 import Modal from '../../Components/_Modal/Modal';
 
 import {
@@ -30,7 +25,7 @@ import { userData } from '../../_slices/userSlice';
 const MyPage = function MyPage() {
   // console.log('마이 페이지에서 확인한 state', store.getState());
 
-  const [isWithdrawal, setIsWithdrawal] = useState(false);
+  const [isUpdate, setIsUpdate] = useState(false);
   const tabManuName = ['작성글', '관심글'];
   const [preClickedTab, setPreClickedTab] = useState('');
 
@@ -124,7 +119,7 @@ const MyPage = function MyPage() {
   return (
     <Body>
       <UserProfileContainer>
-        <UserImg src={persistUser.data.image} alt="user-profile-image" />
+        <UserImg />
         <UserInfoEdit>
           <UserInfoGreeting>
             {userInfo.nickname ? userInfo.nickname : '안녕하세요 사용자'}
@@ -135,11 +130,21 @@ const MyPage = function MyPage() {
               onClick={() => {
                 setIsUpdate(true);
               }}
-              aria-hidden="true"
             >
               회원 정보 수정
             </UserInfoEditButton>
             {isUpdate && <Modal data={<UpdateUser />} close={setIsUpdate} />}
+            {/* <SignOutButton
+              onClick={() => {
+                setIsWithdrawal(true);
+              }}
+              aria-hidden="true"
+            >
+              회원 탈퇴 하기
+            </SignOutButton>
+            {isWithdrawal && (
+              <Modal data={<Withdrawal />} close={setIsWithdrawal} />
+            )} */}
           </UserInfoButtons>
         </UserInfoEdit>
       </UserProfileContainer>

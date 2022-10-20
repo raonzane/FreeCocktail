@@ -48,11 +48,12 @@ const RecipeCreate = function RecipeCreate() {
       axios
         .post(`http://localhost:3001/recipe`, formData)
         .then((res) => {
-          alert(`${res.data.data.name} 레시피 등록이 완료되었습니다!`);
+          alert(`${res.data.name} 레시피 등록이 완료되었습니다!`);
           navigate(0);
         })
         .catch((err) => {
           if (err.response.status === 404) alert('잘못된 레시피 데이터입니다!');
+          console.log(err);
         });
     } else {
       setIsValid(false);

@@ -13,7 +13,6 @@ import { theme } from '../../styles/theme';
 export const Container = styled.div`
   display: flex;
   align-items: center;
-  border: 1px solid #000;
   border-radius: 0.3rem;
   padding: 0.5rem;
   transition: all 0.5s;

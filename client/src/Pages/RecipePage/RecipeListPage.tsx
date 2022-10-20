@@ -1,7 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
+import { useSelector } from 'react-redux';
 import { LoginModal } from 'Components/LoginModal';
 import RecipeLists2 from 'Components/RecipeLists/RecipeLists';
+import Modal from 'Components/_Modal/Modal';
+import RecipeCreate from 'Components/RecipeCreate/RecipeCreate';
 import {
   Body,
   Category,
@@ -15,6 +18,7 @@ import {
 } from './RecipeListPage.style';
 import TopButton from '../../Components/TopButton';
 import Waves from '../../Components/Waves';
+import { userData } from '../../_slices/userSlice';
 
 axios.defaults.withCredentials = true;
 
@@ -54,6 +58,8 @@ const RecipeListPage = function RecipeList(): any {
   const [skipID, setSkipID] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isCreateRecipe, setIsCreateRecipe] = useState(false);
+  const userInfo: any = useSelector(userData);
 
   useEffect(() => {
     getRecipeList('filtering');
@@ -245,6 +251,11 @@ const RecipeListPage = function RecipeList(): any {
     });
   };
 
+  const createController = () => {
+    if (userInfo.id === 0) setIsModalOpen(true);
+    else setIsCreateRecipe(true);
+  };
+
   return (
     <>
       <Waves />
@@ -261,7 +272,10 @@ const RecipeListPage = function RecipeList(): any {
         </Filter>
         <SectionDivider section />
         <CreatBtnSection>
-          <CreatBtn> + </CreatBtn>
+          <CreatBtn onClick={createController}> + </CreatBtn>
+          {isCreateRecipe && (
+            <Modal data={<RecipeCreate />} close={setIsCreateRecipe} />
+          )}
         </CreatBtnSection>
         {nowRecipeListResult.length !== 0 ? (
           <RecipeLists2

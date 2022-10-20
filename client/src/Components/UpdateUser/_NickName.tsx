@@ -50,7 +50,7 @@ const Nickname: React.FC<Props> = function Nickname({ userInfo, setUserInfo }) {
       <InputTitle>닉네임</InputTitle>
       <InputField
         type="text"
-        placeholder={persistUser.data.nickname}
+        placeholder={persistUser.nickname}
         onChange={(e) => setUserInfo({ ...userInfo, nickname: e.target.value })}
       />
       <CheckButton onClick={CheckNickname}>중복확인</CheckButton>

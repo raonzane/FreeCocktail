@@ -26,8 +26,8 @@ const UpdateUser = function UpdateUser() {
 
   const persistUser: any = useSelector(userData);
   const [userInfo, setUserInfo] = useState({
-    nickname: persistUser.data.nickname,
-    image: persistUser.data.image,
+    nickname: persistUser.nickname,
+    image: persistUser.image,
     checkPassword: '',
     newPassword: '',
   });
@@ -74,7 +74,7 @@ const UpdateUser = function UpdateUser() {
             </ButtonArea>
           </>
         ) : (
-          <Check email={persistUser.data.email} setIsChecked={setIsChecked} />
+          <Check email={persistUser.email} setIsChecked={setIsChecked} />
         )}
       </ContentWrapper>
     </Container>

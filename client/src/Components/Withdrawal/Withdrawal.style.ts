@@ -95,7 +95,7 @@ export const Label = styled.label`
   margin-top: 0.5rem;
   cursor: pointer;
   font-weight: 300;
-  font-size: 1rem;
+  font-size: 0.9rem;
   transition: 0.5s all;
   word-break: keep-all;
   min-width: 285px;
