@@ -24,6 +24,7 @@ import {
 
 export type UserData = {
   nickname: string;
+  image: string;
   email: string;
   password: string;
   pwdCheck: string;
@@ -33,6 +34,7 @@ export type UserData = {
 const SignUpPage = function SignUpPage() {
   const [user, setUser] = useState({
     nickname: '',
+    image: '',
     email: '',
     password: '',
     pwdCheck: '',

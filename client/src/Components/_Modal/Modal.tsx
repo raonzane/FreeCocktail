@@ -13,7 +13,10 @@ const Modal: React.FC<ModalProps> = function Modal({ data, close }) {
       <Container>
         <Header>
           <CloseIcon
-            onClick={() => close(false)}
+            onClick={() => {
+              close(false);
+              document.body.style.overflow = 'unset'; //* 모달 닫을 때 body 스크롤 제어 해제
+            }}
             style={{ cursor: 'pointer' }}
           />
         </Header>

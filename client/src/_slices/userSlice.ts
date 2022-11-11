@@ -86,6 +86,22 @@ const userSlice: any = createSlice({
       return INITIAL_STATE;
     },
 
+    logout: (INITIAL_STATE, action: PayloadAction<IUserState>) => {
+      INITIAL_STATE = {
+        id: 0,
+        nickname: '',
+        email: '',
+        password: '',
+        pwdCheck: '',
+        image: '',
+        likes: [],
+        recipes: [],
+        OAuth: false,
+        submit: false,
+      };
+      return INITIAL_STATE;
+    },
+
     editUserBookmark: (
       INITIAL_STATE: IUserState,
       action: PayloadAction<IUserState>
@@ -122,6 +138,6 @@ const userSlice: any = createSlice({
 // export const userData = (state: RootState) => state.userInfo;
 
 export const userData = (state: RootState) => state.persistedReducer.userInfo;
-export const { signup, editUserBookmark } = userSlice.actions;
+export const { signup, logout, editUserBookmark } = userSlice.actions;
 
 export default userSlice.reducer;

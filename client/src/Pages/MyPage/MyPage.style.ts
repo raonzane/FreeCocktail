@@ -20,6 +20,8 @@ const Body = styled.div`
 
 const UserProfileContainer = styled.div`
   display: flex;
+  align-items: center;
+  justify-content: center;
   width: 60rem;
   height: 20rem;
   margin: 5rem auto 2rem auto;
@@ -41,14 +43,17 @@ const UserProfileContainer = styled.div`
   }
 `;
 
-const UserImg = styled.div`
-  background: skyblue;
-  flex: 1 1 auto;
+const UserImg = styled.img`
+  /* flex: 1 1 auto; */
+  width: 20rem;
+  height: 20rem;
   margin: 0.25rem;
   border: 2px solid #494949;
-  border-radius: 100%;
+  border-radius: 50%;
 
   @media ${theme.tablet} {
+    width: 15rem;
+    height: 15rem;
     margin: 0.25rem;
   }
 

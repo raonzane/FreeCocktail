@@ -7,6 +7,7 @@ export const Container = styled.div`
   justify-content: center;
   cursor: pointer;
   border-radius: 0.3rem;
+  position: relative;
 
   @media ${theme.desktop} {
     transition: all 0.5s;

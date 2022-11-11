@@ -27,4 +27,5 @@ export const Container = styled.div`
 
 export const Header = styled.div`
   text-align: right;
+  height: 24px;
 `;

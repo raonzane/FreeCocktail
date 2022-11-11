@@ -10,7 +10,7 @@ export const Container = styled.div`
 export const Title = styled.div`
   font-family: 'Gmarket Sans TTF';
   font-weight: 300;
-  margin-bottom: 0.5rem;
+  margin: 0.1rem 0 0.5rem;
   width: 100%;
 
   @media ${theme.mobile} {
@@ -19,8 +19,33 @@ export const Title = styled.div`
 `;
 
 export const InputArea = styled.div`
-  display: flex;
-  gap: 5%;
+  @media ${theme.desktop} {
+    display: flex;
+    gap: 5%;
+    max-height: 66px;
+    overflow-y: auto;
+    &::-webkit-scrollbar {
+      width: 3px;
+    }
+    &::-webkit-scrollbar-thumb {
+      height: 10%;
+      background: #f876de;
+      border-radius: 10px;
+    }
+    &::-webkit-scrollbar-track {
+      background: rgba(33, 122, 244, 0.1);
+    }
+  }
+
+  @media ${theme.tablet} {
+    display: flex;
+    gap: 5%;
+  }
+
+  @media ${theme.mobile} {
+    display: flex;
+    gap: 5%;
+  }
 `;
 
 export const IngredientArea = styled.div`
@@ -86,6 +111,7 @@ export const CenterArea = styled.div`
   justify-content: center;
   align-items: center;
   gap: 0.5rem;
+  margin-top: 0.1rem;
 `;
 
 export const PMBtn = styled.button`

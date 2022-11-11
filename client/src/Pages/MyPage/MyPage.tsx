@@ -2,9 +2,10 @@ import React, { useState, useEffect } from 'react';
 import './MyPage.style.ts';
 import { useSelector } from 'react-redux';
 import RecipeLists2 from 'Components/RecipeLists/RecipeLists';
+import UpdateUser from 'Components/UpdateUser/UpdateUser';
 import { RecipeCard } from '../../types/types';
 import Modal from '../../Components/_Modal/Modal';
-import Withdrawal from '../../Components/Withdrawal/Withdrawal';
+
 import {
   Body,
   UserProfileContainer,
@@ -25,6 +26,7 @@ import { userData } from '../../_slices/userSlice';
 const MyPage = function MyPage() {
   // console.log('마이 페이지에서 확인한 state', store.getState());
 
+  const [isUpdate, setIsUpdate] = useState(false);
   const tabManuName = ['작성글', '관심글'];
   const userInfo: any = useSelector(userData);
   const [pageNum, setPageNum]: Array<any> = useState([]);
@@ -202,8 +204,15 @@ const MyPage = function MyPage() {
             님, 반갑습니다!
           </UserInfoGreeting>
           <UserInfoButtons>
-            <UserInfoEditButton>회원 정보 수정</UserInfoEditButton>
-            <SignOutButton
+            <UserInfoEditButton
+              onClick={() => {
+                setIsUpdate(true);
+              }}
+            >
+              회원 정보 수정
+            </UserInfoEditButton>
+            {isUpdate && <Modal data={<UpdateUser />} close={setIsUpdate} />}
+            {/* <SignOutButton
               onClick={() => {
                 setIsWithdrawal(true);
               }}
@@ -213,7 +222,7 @@ const MyPage = function MyPage() {
             </SignOutButton>
             {isWithdrawal && (
               <Modal data={<Withdrawal />} close={setIsWithdrawal} />
-            )}
+            )} */}
           </UserInfoButtons>
         </UserInfoEdit>
       </UserProfileContainer>

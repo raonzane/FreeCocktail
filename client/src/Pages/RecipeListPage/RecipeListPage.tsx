@@ -1,7 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
+import { useSelector } from 'react-redux';
 import { LoginModal } from 'Components/LoginModal';
 import RecipeLists2 from 'Components/RecipeLists/RecipeLists';
+import Modal from 'Components/_Modal/Modal';
+import RecipeCreate from 'Components/RecipeCreate/RecipeCreate';
 import { RecipePage, RecipeCard, IODataType } from '../../types/types';
 import {
   Body,
@@ -16,6 +19,7 @@ import {
 } from './RecipeListPage.style';
 import TopButton from '../../Components/TopButton';
 import Waves from '../../Components/Waves';
+import { userData } from '../../_slices/userSlice';
 
 axios.defaults.withCredentials = true;
 
@@ -51,7 +55,7 @@ const RecipeListPage: React.FC = function () {
 
   const [skipID, setSkipID] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(0);
   const [isClickedTags, setIsClickedTags] = useState<Array<string>>([]);
   const [nowRecipeResult, setNowRecipeResult] = useState<Array<RecipeCard>>([]);
   const [requestButton, setRequestButton] = useState<RecipePage>({
@@ -59,6 +63,10 @@ const RecipeListPage: React.FC = function () {
     requestedTags: '',
     description: '저희 서비스의 모든 칵테일 레시피를 조회할 수 있습니다.',
   });
+
+  //! 레시피 생성 관련
+  const [isCreateClick, setIsCreateClick] = useState(false);
+  const userInfo: any = useSelector(userData);
 
   useEffect(() => {
     getRecipeList('filtering');
@@ -243,7 +251,14 @@ const RecipeListPage: React.FC = function () {
     <>
       <Waves />
       <Body>
-        {isModalOpen ? <LoginModal setIsModalOpen={setIsModalOpen} /> : ''}
+        {isModalOpen ? (
+          <LoginModal
+            setIsModalOpen={setIsModalOpen}
+            isModalOpen={isModalOpen}
+          />
+        ) : (
+          ''
+        )}
         <Category>{makeCategoryBtn(categoryName)}</Category>
         <CategoryDescription>{requestButton.description}</CategoryDescription>
         <Filter>
@@ -254,7 +269,17 @@ const RecipeListPage: React.FC = function () {
             : ''}
         </Filter>
         <CreateBtnSection>
-          <CreateBtn aria-label="레시피 작성">레시피 등록하기</CreateBtn>
+          <CreateBtn
+            aria-label="레시피 작성"
+            onClick={() =>
+              userInfo.id ? setIsCreateClick(true) : setIsModalOpen(1)
+            }
+          >
+            레시피 등록하기
+          </CreateBtn>
+          {isCreateClick && (
+            <Modal data={<RecipeCreate />} close={setIsCreateClick} />
+          )}
         </CreateBtnSection>
         <SectionDivider section />
         {nowRecipeResult.length ? (
