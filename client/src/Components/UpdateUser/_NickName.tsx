@@ -1,5 +1,5 @@
 //! 닉네임 중복일 경우 errMsg
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
 import { userData } from '_slices/userSlice';
@@ -24,9 +24,14 @@ type UserInfo = {
 type Props = {
   userInfo: UserInfo;
   setUserInfo(data: UserInfo): void;
+  setNickCheck(data: boolean): void;
 };
 
-const Nickname: React.FC<Props> = function Nickname({ userInfo, setUserInfo }) {
+const Nickname: React.FC<Props> = function Nickname({
+  userInfo,
+  setUserInfo,
+  setNickCheck,
+}) {
   const persistUser: any = useSelector(userData);
   const [errMsg, setErrMsg] = useState('');
   const [sucMsg, setSucMsg] = useState('');
@@ -34,7 +39,9 @@ const Nickname: React.FC<Props> = function Nickname({ userInfo, setUserInfo }) {
   const CheckNickname = () => {
     //* 닉네임 중복 = true, 사용가능 false
     axios
-      .get(`http://localhost:3001/user/check-name/${userInfo.nickname}`)
+      .get(
+        `${process.env.REACT_APP_SERVER}user/check-name/${userInfo.nickname}`
+      )
       .then((res) => {
         if (res.data === true) setErrMsg(`이미 사용 중인 닉네임입니다.`);
         else {
@@ -44,6 +51,14 @@ const Nickname: React.FC<Props> = function Nickname({ userInfo, setUserInfo }) {
         }
       });
   };
+
+  useEffect(() => {
+    if (userInfo.nickname === persistUser.nickname) {
+      setNickCheck(true);
+    } else if (sucMsg === '사용 가능한 닉네임입니다.') {
+      setNickCheck(true);
+    }
+  }, [sucMsg, userInfo.nickname]);
 
   return (
     <InputArea>

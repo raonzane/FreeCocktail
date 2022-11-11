@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import { userData } from '_slices/userSlice';
+import { useSelector, useDispatch } from 'react-redux';
+import { userData, logout } from '_slices/userSlice';
 import axios from 'axios';
 
 import {
@@ -18,6 +18,7 @@ import {
 } from './Withdrawal.style';
 
 const Withdrawal = function Withdrawal() {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const userInfo: any = useSelector(userData);
   const [isAgreed, setIsAgreed] = useState(false);
@@ -25,10 +26,15 @@ const Withdrawal = function Withdrawal() {
   //* 회원 탙퇴 요청
   const ButtonClicked = () => {
     if (isAgreed) {
-      alert(`회원 탈퇴를 완료했습니다.
-    서비스를 이용해 주셔서 감사합니다.`);
-      axios.delete(`http://localhost:3001/user/${userInfo.email}`);
-      navigate('/');
+      axios
+        .delete(`${process.env.REACT_APP_SERVER}user/${userInfo.email}`)
+        .then((res) => {
+          console.log(res);
+          alert(`회원 탈퇴를 완료했습니다.
+서비스를 이용해 주셔서 감사합니다.`);
+          dispatch(logout());
+          // navigate('/');
+        });
     } else if (!isAgreed) {
       alert('주의사항에 동의한 후 회원 탈퇴가 가능합니다!');
     }

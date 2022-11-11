@@ -20,11 +20,37 @@ export const Container = styled.div`
   @media ${theme.tablet} {
     flex-direction: column;
     transition: all 0.5s;
+    max-height: 85vh;
+    overflow-y: auto;
+    &::-webkit-scrollbar {
+      width: 3px;
+    }
+    &::-webkit-scrollbar-thumb {
+      height: 10%;
+      background: #f876de;
+      border-radius: 10px;
+    }
+    &::-webkit-scrollbar-track {
+      background: rgba(33, 122, 244, 0.1);
+    }
   }
 
   @media ${theme.mobile} {
     flex-direction: column;
     transition: all 0.5s;
+    max-height: 85vh;
+    overflow-y: auto;
+    &::-webkit-scrollbar {
+      width: 3px;
+    }
+    &::-webkit-scrollbar-thumb {
+      height: 10%;
+      background: #f876de;
+      border-radius: 10px;
+    }
+    &::-webkit-scrollbar-track {
+      background: rgba(33, 122, 244, 0.1);
+    }
   }
 `;
 

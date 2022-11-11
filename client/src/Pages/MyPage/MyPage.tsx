@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './MyPage.style.ts';
 import { useSelector } from 'react-redux';
 import RecipeLists2 from 'Components/RecipeLists/RecipeLists';
 import UpdateUser from 'Components/UpdateUser/UpdateUser';
+import { RecipeCard } from '../../types/types';
 import Modal from '../../Components/_Modal/Modal';
 
 import {
@@ -27,14 +28,20 @@ const MyPage = function MyPage() {
 
   const [isUpdate, setIsUpdate] = useState(false);
   const tabManuName = ['작성글', '관심글'];
-  const [preClickedTab, setPreClickedTab] = useState('');
-
   const userInfo: any = useSelector(userData);
-
-  const [clickedMenuAllRecipes, setClickedMenuAllRecipes] = useState<any>([]);
-  const [userMyPageView, setUserMyPageView] = useState<any>([]);
   const [pageNum, setPageNum]: Array<any> = useState([]);
-  const [prePageNum, setPrePageNum] = useState('1');
+  const [pageDivision, setPageDivision] = useState({
+    divisionNum: 1,
+    type: '',
+  });
+  const [preClickedTab, setPreClickedTab] = useState('');
+  const [isWithdrawal, setIsWithdrawal] = useState(false);
+  const [clickedMyList, setClickedMyList] = useState<Array<RecipeCard>>([]);
+  const [userMyPageView, setUserMyPageView] = useState<Array<RecipeCard>>([]);
+
+  useEffect(() => {
+    makePagenationBtnStyling('angle');
+  }, [pageDivision]);
 
   const isClickedTab = function (nowClickedTab: any) {
     nowClickedTab.target.style.background = '#f876de';
@@ -51,46 +58,12 @@ const MyPage = function MyPage() {
 
     setPreClickedTab(nowClickedTab.target.innerHTML);
     makePageNumBtn(nowClickedTab.target.innerHTML);
+    makePagenationBtnStyling('angle');
     getClickedMenuResult(nowClickedTab.target.innerHTML);
   };
 
-  const makePageNumBtn = function (myListName?: string) {
-    let allRecipeResult: Array<any> = [];
-    let tempCount = 0;
-
-    if (myListName === '작성글') {
-      allRecipeResult = userInfo.recipes;
-    } else if (myListName === '관심글') {
-      allRecipeResult = userInfo.likes;
-    }
-
-    if (allRecipeResult.length / 16) {
-      tempCount = allRecipeResult.length / 16 + 1;
-    } else {
-      tempCount = allRecipeResult.length / 16;
-    }
-
-    const pageCount = Array.from({ length: tempCount }, (el, idx) => idx + 1);
-
-    setPageNum([...pageCount]);
-  };
-
-  const setPageNumBtnStyling = function (e: any) {
-    const nowPageNum = e.target;
-
-    if (prePageNum !== nowPageNum) {
-      const prePageNumBtn = document.getElementById(prePageNum);
-      prePageNumBtn!.style.background = '#ffffff';
-      prePageNumBtn!.style.color = '#494949';
-      setPrePageNum(nowPageNum.innerHTML);
-    }
-
-    nowPageNum.style.background = '#f876de';
-    nowPageNum.style.color = '#ffffff';
-  };
-
   const getClickedMenuResult = function (myListName?: string) {
-    let allRecipeResult: Array<any> = [];
+    let allRecipeResult: Array<RecipeCard> = [];
 
     if (myListName === '작성글') {
       allRecipeResult = userInfo.recipes;
@@ -98,21 +71,126 @@ const MyPage = function MyPage() {
       allRecipeResult = userInfo.likes;
     }
 
-    allRecipeResult.forEach((recipe: any) => {
-      if (recipe.tags.length > 3) {
-        recipe.tags = recipe.tags.splice(0, 3);
-      }
-    });
-
-    setClickedMenuAllRecipes([...allRecipeResult]);
+    setClickedMyList([...allRecipeResult]);
     makeRecipesPageNation([...allRecipeResult]);
   };
 
-  const makeRecipesPageNation = function (allBookmarkRecipe: any, skipID = 0) {
+  const makePageNumBtn = function (myListName: string, angleType = '') {
+    let allRecipeResult: Array<any> = [];
+
+    if (myListName === '작성글') {
+      allRecipeResult = userInfo.recipes;
+    } else if (myListName === '관심글') {
+      allRecipeResult = userInfo.likes;
+    }
+
+    const pageBtnLength = Math.ceil(allRecipeResult.length / 16);
+    const pageBtn: Array<number> = [];
+    const tempDivision = pageDivision;
+
+    if (angleType === '<<') {
+      tempDivision.divisionNum = 1;
+      tempDivision.type = '<<';
+    } else if (angleType === '<') {
+      tempDivision.divisionNum -= 1;
+      tempDivision.type = '<';
+    } else if (angleType === '>') {
+      tempDivision.divisionNum += 1;
+      tempDivision.type = '>';
+    } else if (angleType === '>>') {
+      tempDivision.divisionNum = Math.ceil(pageBtnLength / 5);
+      tempDivision.type = '>>';
+    }
+
+    for (let i = 1; i <= pageBtnLength; i += 1) {
+      if (
+        tempDivision.divisionNum * 5 - (5 - i) <=
+          tempDivision.divisionNum * 5 &&
+        tempDivision.divisionNum * 5 - (5 - i) <= pageBtnLength
+      ) {
+        pageBtn.push(tempDivision.divisionNum * 5 - (5 - i));
+      }
+    }
+
+    setPageNum([...pageBtn]);
+    setPageDivision({ ...tempDivision });
+  };
+
+  const makePagenationBtnStyling = function (uiType: string, e?: any) {
+    const allPageantionBtn: NodeListOf<HTMLElement> =
+      document.querySelectorAll('.selected');
+
+    if (allPageantionBtn !== null && allPageantionBtn !== undefined) {
+      for (let i = 0; i < allPageantionBtn.length; i += 1) {
+        allPageantionBtn[i].style.background = '#ffffff';
+        allPageantionBtn[i].style.color = '#494949';
+      }
+
+      if (uiType === 'num') {
+        const nowPageNum = e.target;
+        nowPageNum.style.background = '#f876de';
+        nowPageNum.style.color = '#ffffff';
+      } else if (uiType === 'angle') {
+        const firstElement = document.getElementById(
+          `${pageNum[0]}`
+        ) as HTMLElement;
+
+        const lastElement = document.getElementById(
+          `${pageNum[1]}`
+        ) as HTMLElement;
+
+        if (firstElement !== null && lastElement !== null) {
+          if (pageDivision.type === '>>') {
+            lastElement.style.backgroundColor = '#f876de';
+            lastElement.style.color = '#ffffff';
+          } else {
+            firstElement.style.backgroundColor = '#f876de';
+            firstElement.style.color = '#ffffff';
+          }
+        }
+      }
+    }
+  };
+
+  const makeRecipesPageNation = function (
+    allBookmarkRecipe: Array<RecipeCard>,
+    skipID = 0
+  ) {
     if (allBookmarkRecipe[skipID + 16]) {
       setUserMyPageView([...allBookmarkRecipe.slice(skipID, skipID + 16)]);
     } else if (allBookmarkRecipe[skipID + 16] === undefined) {
       setUserMyPageView([...allBookmarkRecipe.slice(skipID)]);
+    }
+  };
+
+  const isClickedAngle = function (angleType: string) {
+    if (angleType === '<<') {
+      const doubleLeftAngle = document!.getElementById('1');
+      makePageNumBtn(preClickedTab, '<<');
+      makePagenationBtnStyling('angle', doubleLeftAngle);
+      makeRecipesPageNation(clickedMyList, 0);
+    } else if (angleType === '>>') {
+      const endPageSkipID = userInfo.likes.indexOf(
+        userInfo.likes[(Math.ceil(clickedMyList.length / 16) - 1) * 16]
+      );
+      const doubleRightAngle = document!.getElementById(
+        `${Math.ceil(clickedMyList.length / 16)}`
+      );
+      makePageNumBtn(preClickedTab, '>>');
+      makePagenationBtnStyling('angle', doubleRightAngle);
+      makeRecipesPageNation(clickedMyList, endPageSkipID);
+    } else if (angleType === '<') {
+      const prePageSkipID = userInfo.likes.indexOf(
+        userInfo.likes[(pageNum[0] - 6) * 16]
+      );
+      makePageNumBtn(preClickedTab, '<');
+      makeRecipesPageNation(clickedMyList, prePageSkipID);
+    } else if (angleType === '>') {
+      const nextPageSkipID = userInfo.likes.indexOf(
+        userInfo.likes[(pageNum[0] + 4) * 16]
+      );
+      makePageNumBtn(preClickedTab, '>');
+      makeRecipesPageNation(clickedMyList, nextPageSkipID);
     }
   };
 
@@ -159,44 +237,95 @@ const MyPage = function MyPage() {
               onClick={(e: any) => {
                 isClickedTab(e);
               }}
-              onKeyDown={(): void => {
-                console.log();
-              }}
             >
               {el}
             </TabMenu>
           );
         })}
       </Tab>
-      {clickedMenuAllRecipes.length ? (
-        <RecipeLists2 nowRecipeListResult={userMyPageView} />
+      {clickedMyList.length ? (
+        <RecipeLists2 nowRecipeResult={userMyPageView} />
       ) : (
         '레시피 정보가 없습니다.'
       )}
 
       <PageButtonSection>
+        <i
+          className="angle double left icon"
+          role="button"
+          tabIndex={0}
+          onKeyPress={(): void => {
+            console.log('next');
+          }}
+          style={{ cursor: 'pointer' }}
+          onClick={() => {
+            isClickedAngle('<<');
+          }}
+        />
+        <i
+          role="button"
+          tabIndex={0}
+          className="angle left icon"
+          onKeyPress={(): void => {
+            console.log('next');
+          }}
+          style={{ cursor: 'pointer' }}
+          onClick={() => {
+            isClickedAngle('<');
+          }}
+        />
+
         {pageNum.map((el: number) => {
           return (
             <PageButton
               id={String(el)}
+              className="selected"
               key={el}
               style={
                 el === 1
-                  ? { background: '#f876de', color: '#ffffff' }
+                  ? {
+                      background: '#f876de',
+                      color: '#ffffff',
+                    }
                   : { background: '#ffffff' }
               }
               onClick={(el: any) => {
                 const newSkipID = userInfo.likes.indexOf(
                   userInfo.likes[(Number(el.target.innerHTML) - 1) * 16]
                 );
-                setPageNumBtnStyling(el);
-                makeRecipesPageNation(clickedMenuAllRecipes, newSkipID);
+
+                makePagenationBtnStyling('num', el);
+                makeRecipesPageNation(clickedMyList, newSkipID);
               }}
             >
               {el}
             </PageButton>
           );
         })}
+        <i
+          role="button"
+          tabIndex={0}
+          className="angle right icon"
+          onKeyPress={(): void => {
+            console.log('next');
+          }}
+          style={{ cursor: 'pointer' }}
+          onClick={() => {
+            isClickedAngle('>');
+          }}
+        />
+        <i
+          role="button"
+          tabIndex={0}
+          className="angle double right icon"
+          onKeyPress={(): void => {
+            console.log('next');
+          }}
+          style={{ cursor: 'pointer' }}
+          onClick={() => {
+            isClickedAngle('>>');
+          }}
+        />
       </PageButtonSection>
     </Body>
 

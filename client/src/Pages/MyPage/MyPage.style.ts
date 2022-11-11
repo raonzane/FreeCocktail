@@ -188,23 +188,20 @@ const PageButtonSection = styled.div`
 `;
 
 const PageButton = styled(Button)({
-  'width': '1.3rem',
-  'height': '1.3rem',
-  'margin': '1rem',
   'font-family': 'Gmarket Sans TTF',
 
   '&&&': {
-    'textAlign': 'center',
-    'paddingLeft': '16px',
+    'width': '3rem',
+    'height': '1.3rem',
+    'margin': '0.3rem',
+    'padding': '10px',
     'lineHeight': '0px',
     'fontSize': '1rem',
-    'backgroundColor': '#ffffff',
     'color': '#494949',
     'borderRadius': '50px',
 
-    '&:hover': {
-      background: '#F876DE',
-      color: '#FFFFFF',
+    '&&&:hover': {
+      color: '#F876DE',
     },
   },
 });

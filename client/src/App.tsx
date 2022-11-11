@@ -5,7 +5,7 @@ import './App.style.ts';
 import { HeaderContainer, FooterContainer } from 'App.style';
 import Header from 'Components/Header';
 import Footer from 'Components/Footer/Footer';
-import RecipeListPage from 'Pages/RecipePage/RecipeListPage';
+import RecipeListPage from 'Pages/RecipeListPage/RecipeListPage';
 import Landing from './Pages/Landing/Landing';
 import LoginPage from './Pages/LoginPage/LoginPage';
 import SignUpPage from './Pages/SignUpPage/SignUpPage';

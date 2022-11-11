@@ -27,7 +27,7 @@ const Check: React.FC<Props> = function ({ email, setIsChecked }) {
     };
 
     axios
-      .post(`http://localhost:3001/user/login`, body)
+      .post(`${process.env.REACT_APP_SERVER}user/login`, body)
       .then((res) => {
         if (res.status === 200) {
           setIsChecked(true);

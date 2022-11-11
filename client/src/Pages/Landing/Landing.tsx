@@ -1,11 +1,7 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import React, { lazy, Suspense, useState } from 'react';
 import Section1 from './Section1/Section1';
-import Section2 from './Section2/Section2';
 import Section3 from './Section3/Section3';
-import pointingHand from '../../images/pointingHand.png';
-import Main from '../../images/Main.png';
+import pointingHand from '../../images/pointingHand.webp';
 import {
   Container,
   Section,
@@ -16,15 +12,13 @@ import {
   PointingHand,
 } from './Landing.style';
 
-gsap.registerPlugin(ScrollTrigger);
-
 const Landing = function Landing() {
   const [isAdult, setIsAdult] = useState(false);
   const checkAge = (e: any) => {
     return e.target.innerHTML === 'YES' ? setIsAdult(true) : setIsAdult(false);
   };
 
-  const startPoint: any = useRef();
+  const LazySection2 = lazy(() => import('./Section2/Section2'));
 
   return (
     <Container>
@@ -32,13 +26,15 @@ const Landing = function Landing() {
         ''
       ) : (
         <>
-          <LadingModal>
+          <LadingModal id="성인확인" aria-label="성인확인안내">
             <LandingNotice>
               만 19세 이상만 이용할 수 있는 서비스입니다.
               <br />만 19세 이상입니까?
             </LandingNotice>
-            <LandingBtnSection>
+            <LandingBtnSection aria-label="성인확인버튼">
               <AgeCheckButton
+                type="button"
+                aria-labelledby="성인확인 19세이상"
                 onClick={(e: any) => {
                   checkAge(e);
                 }}
@@ -46,6 +42,8 @@ const Landing = function Landing() {
                 YES
               </AgeCheckButton>
               <AgeCheckButton
+                type="button"
+                aria-labelledby="성인확인 19세미만"
                 onClick={(e: any) => {
                   checkAge(e);
                 }}
@@ -54,19 +52,19 @@ const Landing = function Landing() {
               </AgeCheckButton>
             </LandingBtnSection>
           </LadingModal>
-          <PointingHand src={pointingHand} />
+          <PointingHand
+            src={pointingHand}
+            alt="성인확인 안내를 가리키는 손가락 그림"
+          />
         </>
       )}
 
-      {/* <img alt="pointingHand" src={Component1} /> */}
       <Section>
         <Section1 />
       </Section>
-
-      <Section>
-        <Section2 startPoint={startPoint} />
-      </Section>
-
+      <Suspense fallback={<div> Loading </div>}>
+        <LazySection2 />
+      </Suspense>
       <Section>
         <Section3 />
       </Section>

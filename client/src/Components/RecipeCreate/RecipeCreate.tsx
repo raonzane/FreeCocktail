@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { recipeData } from '../../_slices/recipeSlice';
+import { userData } from '../../_slices/userSlice';
 
 import {
   Container,
@@ -19,8 +20,10 @@ import Ingredient from './Ingredient/Ingredient';
 import Instruction from './Instruction/Instruction';
 
 const RecipeCreate = function RecipeCreate() {
+  document.body.style.overflow = 'hidden'; //* 모달 열 때 body 스크롤 제어
   const navigate = useNavigate();
   const data = useSelector(recipeData);
+  const userInfo: any = useSelector(userData);
 
   //* 입력정보 유효성 검사
   const [isValid, setIsValid] = useState<boolean>(true);
@@ -43,8 +46,8 @@ const RecipeCreate = function RecipeCreate() {
       data.tags.map((el) => formData.append('tags', el));
       data.ingredient.map((el) => formData.append('Ingredient', el));
       data.measure.map((el) => formData.append('measure', el));
-      //! --- redux-persist 및 로그인 구현 후 user.id 추가 예정
-      // console.log(...formData);
+      formData.append('userId', userInfo.id);
+      console.log(...formData);
       axios
         .post(`http://localhost:3001/recipe`, formData)
         .then((res) => {

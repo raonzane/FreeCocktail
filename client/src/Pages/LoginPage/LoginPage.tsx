@@ -1,10 +1,8 @@
-import React, { useState } from 'react';
+import React, { lazy, Suspense, useState, useEffect } from 'react';
 import Waves from 'Components/Waves';
 import { useDispatch, useSelector } from 'react-redux';
 import { setAuth, ILoginData } from '_slices/authSlice';
 import { Link } from 'react-router-dom';
-import Google from '../../Components/SocialLoginGoogle';
-import Naver from '../../Components/SocialLoginNaver';
 import {
   Body,
   MainArea,
@@ -17,18 +15,19 @@ import {
   InputField,
   InvalidMessage,
   LoginBtn,
-  SocialLoginBtn2,
+  SocialLoginBtnSection,
   SignupBtn,
 } from './LoginPage.style';
 import { userLoginAsync } from '../../_slices/userSlice';
-import { store } from '../../_store/store';
 
 const LoginPage = function LoginPage() {
   const dispatch = useDispatch();
+
   const { isLoggedIn, isInValid } = useSelector(ILoginData);
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [onLoad, setOnLoad] = useState(false);
 
   const setEmailData = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setEmail(e.target.value);
@@ -40,11 +39,11 @@ const LoginPage = function LoginPage() {
   // dispatch로 setAuth에 서버에 로그인 요청
   const handleLogin = (email: string, password: string) => {
     // dispatch(setAuth({ email, password }));
-    const SIGNININ_ARG = {
+    const LOGIN_INPUT = {
       email,
       password,
     };
-    dispatch(userLoginAsync(SIGNININ_ARG));
+    dispatch(userLoginAsync(LOGIN_INPUT));
   };
 
   const handleKeyPress = (
@@ -56,6 +55,13 @@ const LoginPage = function LoginPage() {
       handleLogin(email, password);
     }
   };
+
+  const LazyNaver = lazy(
+    (): any => import('../../Components/SocialLoginNaver')
+  );
+  const LazyGoogle = lazy(
+    (): any => import('../../Components/SocialLoginGoogle')
+  );
 
   return (
     <>
@@ -74,12 +80,14 @@ const LoginPage = function LoginPage() {
               <InputTitle>이메일</InputTitle>
               <InputField
                 type="email"
+                aria-label="이메일 주소 입력"
                 onChange={(e) => setEmailData(e)}
                 onKeyPress={(e) => handleKeyPress(e, email, password)}
               />
               <InputTitle>비밀번호</InputTitle>
               <InputField
                 type="password"
+                aria-label="비밀번호 입력"
                 onChange={(e) => setPasswordData(e)}
                 onKeyPress={(e) => handleKeyPress(e, email, password)}
               />
@@ -97,13 +105,15 @@ const LoginPage = function LoginPage() {
                   <Link to="/signupPage">회원가입 하러가기</Link>
                 </p>
               </SignupBtn>
-              <SocialLoginBtn2>
-                <div> SNS를 이용한 소셜 로그인 </div>
+              <SocialLoginBtnSection>
+                <div>SNS를 이용한 소셜 로그인</div>
                 <div>
-                  <Naver />
-                  <Google />
+                  <Suspense fallback={<div> Loading </div>}>
+                    <LazyNaver />
+                    <LazyGoogle />
+                  </Suspense>
                 </div>
-              </SocialLoginBtn2>
+              </SocialLoginBtnSection>
             </ContentContainer>
           </Container>
           {/* )} */}

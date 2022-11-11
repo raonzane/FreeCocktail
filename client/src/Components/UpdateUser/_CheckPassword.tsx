@@ -18,11 +18,13 @@ type UserInfo = {
 type Props = {
   userInfo: UserInfo;
   setUserInfo(data: UserInfo): void;
+  setPassCheck(data: boolean): void;
 };
 
 const CheckPassword: React.FC<Props> = function CheckPassword({
   userInfo,
   setUserInfo,
+  setPassCheck,
 }) {
   const [errMsg, setErrMsg] = useState('');
 
@@ -33,6 +35,16 @@ const CheckPassword: React.FC<Props> = function CheckPassword({
       setErrMsg('');
     }
   }, [userInfo.newPassword, userInfo.checkPassword]);
+
+  useEffect(() => {
+    if (errMsg) {
+      setPassCheck(false);
+    } else if (userInfo.newPassword && !errMsg) {
+      setPassCheck(true);
+    } else if (!userInfo.newPassword && !errMsg) {
+      setPassCheck(true);
+    }
+  }, [userInfo.newPassword, errMsg]);
 
   return (
     <InputArea>
